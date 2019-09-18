@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-=======
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 
 /*
  * Changes:
@@ -14,18 +10,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * 2. Change 'encryption_key' in application\config\config.php
  *    Link for encryption_key: http://jeffreybarke.net/tools/codeigniter-encryption-key-generator/
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
  * 3. Change 'jwt_key' in application\config\jwt.php
  *
  */
 
 class Auth extends REST_Controller
 {
-<<<<<<< HEAD
     public function __construct()
     {
         parent::__construct();
@@ -39,24 +30,10 @@ class Auth extends REST_Controller
      */
     public function token_post()
     {
-=======
-    public function __construct(){
-        parent::__construct();
-        $this->load->helper(array('authorization','jwt'));
-        $this->load->model('user/m_user');
-    }
-    /**
-     * URL: http://localhost/CodeIgniter-JWT-Sample/auth/token
-     * Method: GET
-     */
-    public function token_post()
-    {   
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         $username = $this->post('username');
         $password = $this->post('password');
         $tokenData = array();
         $output = array('status' => 0, 'content' => '', 'message' => '');
-<<<<<<< HEAD
         $user = $this->m_user->login($username, $password);
         if (!empty($user)) {
             $tokenData['kode_user'] = $user['KODE_PEGAWAI'];
@@ -69,23 +46,10 @@ class Auth extends REST_Controller
         } else {
             $output['message'] = 'Username atau password salah';
         }
-=======
-        $user = $this->m_user->login($username,$password);
-        if(!empty($user)){
-            $tokenData['kode_user'] = $user['KODE_PEGAWAI'];        
-            $tokenData['level_user'] = $user['GRUP_PEGAWAI'];
-            $tokenData['kode_farm'] = $user['KODE_FARM'];           
-            $output['content'] = AUTHORIZATION::generateToken($tokenData); 
-            $output['status'] = 1;
-        }else{
-            $output['message'] = 'Username atau password salah';
-        }                
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         $this->response($output, 200);
     }
 
     public function tokenSCF_post()
-<<<<<<< HEAD
     {
         $username = $this->post('username');
         $password = $this->post('password');
@@ -119,32 +83,3 @@ class Auth extends REST_Controller
 	->result_array();
     }
 }
-=======
-    {   
-        $username = $this->post('username');
-        $password = $this->post('password');
-   
-        $tokenData = array();
-        $output = array('status' => 0, 'content' => '', 'message' => '');
-        $user = $this->m_user->login($username,$password);
-        if(!empty($user)){
-            $tokenData['kode_user'] = $user['KODE_PEGAWAI'];        
-            $tokenData['level_user'] = $user['GRUP_PEGAWAI'];
-            $tokenData['kode_farm'] = $user['KODE_FARM'];           
-            if($tokenData['level_user'] == 'SCF'){
-				$output['farm']	= $user['KODE_FARM'];
-                $output['content'] = AUTHORIZATION::generateToken($tokenData); 
-                $output['status'] = 1;
-            }else{
-                $output['message'] = 'Anda bukan security';    
-            }            
-        }else{
-            $output['message'] = 'Username atau password salah';
-        }                
-        $this->response($output, 200);
-    }
-
-
-    
-}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
