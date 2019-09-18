@@ -1,0 +1,40 @@
+table{
+  font-size : 80%;
+}
+.table_paging>.btn.prev{
+  position : relative;
+  top: 60px;
+  padding : 10px;
+  border : 1px solid gray;
+  background-color: green;
+}
+.table_paging>.btn.next{
+  position : relative;
+  top: 60px;
+  left : 95%;
+  padding : 10px;
+  background-color: green;
+  border : 1px solid gray;
+}
+
+.table_paging td.pegawai{
+  min-width : 170px;
+}
+
+.table_paging td.tgl{
+  min-width : 100px;
+}
+
+.table_paging td.tglwaktu{
+  min-width : 120px;
+}
+.table_paging td.no_ppsk{
+  min-width : 120px;
+}
+.table_paging td.no_so{
+  min-width : 100px;
+}
+
+.table_paging td.sak_diambil{
+  width : 50px;
+}

@@ -1,0 +1,20 @@
+@CHARSET "ISO-8859-1";
+
+.new-line {
+	padding-top: 1%;
+}
+
+#picking-list-table table th,#picking-list-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#transaction-table table th,#transaction-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#print-preview-table table th,#print-preview-table table td {
+	text-align: center;
+	vertical-align: middle;
+}

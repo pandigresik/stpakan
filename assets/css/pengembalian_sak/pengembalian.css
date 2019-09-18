@@ -1,0 +1,51 @@
+
+/*fixed header untuk detail pakan per kandang*/
+
+table.header-fixed {
+  max-width : 100%
+}
+table.header-fixed>thead {
+  display : block;
+  text-align : center;
+}
+table.header-fixed>tbody {
+  display : block;
+  overflow-y : auto;
+  overflow-x : hidden;
+  max-height : 200px;
+}
+
+table.header-fixed>thead>tr>th.no_pengembalian,table.header-fixed>tbody>tr>td.no_pengembalian{
+  width : 15%;
+}
+table.header-fixed>thead>tr>th.flock,table.header-fixed>tbody>tr>td.flock{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.jenis_pakan,table.header-fixed>tbody>tr>td.jenis_pakan{
+  width : 8%;
+}
+table.header-fixed>thead>tr>th.kandang,table.header-fixed>tbody>tr>td.kandang{
+  width : 8%;
+}
+table.header-fixed>thead>tr>th.tanggal,table.header-fixed>tbody>tr>td.tanggal{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.jml_kirim,table.header-fixed>tbody>tr>td.jml_kirim{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.jml_pakai,table.header-fixed>tbody>tr>td.jml_pakai{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.target,table.header-fixed>tbody>tr>td.target{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.jml_aktual,table.header-fixed>tbody>tr>td.jml_aktual{
+  width : 10%;
+}
+table.header-fixed>thead>tr>th.outstanding,table.header-fixed>tbody>tr>td.outstanding{
+  width : 10%;
+}
+
+table.header-fixed>thead>tr>th.status,table.header-fixed>tbody>tr>td.status{
+  width : 10%;
+}

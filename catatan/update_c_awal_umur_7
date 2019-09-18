@@ -1,0 +1,6 @@
+declare @noreg varchar(15) = 'CJ/2018-6/14'
+-- select * from rhk where no_reg = @noreg and TGL_TRANSAKSI = dateadd(day,7,(select tgl_doc_in from kandang_siklus where no_reg = @noreg))
+
+update rhk set c_awal =  (select (select stok_awal from bap_doc where no_reg = @noreg) - (sum(c_afkir)) from rhk  where no_reg = @noreg and TGL_TRANSAKSI <= dateadd(day,7,(select tgl_doc_in from kandang_siklus where no_reg = @noreg))) where no_reg = @noreg and TGL_TRANSAKSI = dateadd(day,7,(select tgl_doc_in from kandang_siklus where no_reg = @noreg))
+
+select c_awal from rhk  where no_reg = @noreg and TGL_TRANSAKSI <= dateadd(day,7,(select tgl_doc_in from kandang_siklus where no_reg = @noreg))

@@ -1,0 +1,8 @@
+Setelah di install copy file cv2.pyd -> Letak folder/opencv/build/python/2.7/x86 (windows 64 bit) atau x64 (windows 32 bit)/cv2.pyd  Paste ke C:/Python27/lib/site-packages.
+pip install numpy
+pip install scipy
+pip install matplotlib
+
+install tesseract
+
+pip install pytesseract

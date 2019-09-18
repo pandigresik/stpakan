@@ -1,0 +1,49 @@
+-- INSERT INTO glangsing_movement
+SELECT kode_farm,235 AS kode_siklus,kode_barang,jml_stok FROM glangsing_movement WHERE kode_farm = 'CJ' AND kode_siklus = 234
+
+SELECT * FROM M_PERIODE WHERE KODE_FARM = 'CJ'
+
+SELECT kode_farm,235 AS kode_siklus,kode_barang,jml_stok FROM glangsing_movement WHERE kode_farm = 'CJ' AND kode_siklus = 235
+
+
+-- INSERT INTO dbo.sinkronisasi (transaksi, asal, tujuan, aksi, tgl_buat)
+VALUES ('insert_manual_glangsing_movement', 'FM', 'CJ', 'PUSH',getdate())
+GO
+
+INSERT INTO dbo.detail_sinkronisasi (sinkronisasi, aksi, tabel, kunci, status_identity)
+VALUES (130086, 'I', 'glangsing_movement', '{"kode_farm":"CJ","kode_siklus":"235","kode_barang":"GB"}', '0')
+GO
+
+INSERT INTO dbo.detail_sinkronisasi (sinkronisasi, aksi, tabel, kunci, status_identity)
+VALUES (130086, 'I', 'glangsing_movement', '{"kode_farm":"CJ","kode_siklus":"235","kode_barang":"GBP"}', '0')
+GO
+
+INSERT INTO dbo.detail_sinkronisasi (sinkronisasi, aksi, tabel, kunci, status_identity)
+VALUES (130086, 'I', 'glangsing_movement', '{"kode_farm":"CJ","kode_siklus":"235","kode_barang":"GP"}', '0')
+GO
+
+INSERT INTO dbo.detail_sinkronisasi (sinkronisasi, aksi, tabel, kunci, status_identity)
+VALUES (130086, 'I', 'glangsing_movement', '{"kode_farm":"CJ","kode_siklus":"235","kode_barang":"GS"}', '0')
+GO
+
+SELECT 130086,aksi,tabel,kunci,status_identity FROM detail_sinkronisasi WHERE sinkronisasi = 129660
+
+update realisasi_panen
+--DECLARE @nomer_do VARCHAR(20) = 'BDY004369/18'
+--DECLARE @aktual_tonase decimal(10,3) = 2486.3
+--UPDATE realisasi_panen SET berat_aktual = @aktual_tonase,berat_badan_rata2 = @aktual_tonase / jumlah_aktual,berat_akhir = @aktual_tonase, berat_timbang = @aktual_tonase WHERE NO_DO = @nomer_do
+--SELECT * FROM REALISASI_PANEN WHERE NO_DO = @nomer_do
+
+--INSERT INTO dbo.sinkronisasi (transaksi, asal, tujuan, aksi, tgl_buat)
+--VALUES ('update_realisasi_panen_manual', 'FM', 'GD', 'PUSH',getdate())
+SELECT TOP 90 * FROM sinkronisasi ORDER BY id DESC
+-- INSERT INTO detail_sinkronisasi
+select 137177 as sinkronisasi
+					, 'U' as aksi
+					, 'realisasi_panen' as tabel
+					,'{"no_reg" : "'+no_reg+'","no_surat_jalan":"'+no_surat_jalan+'"}' as kunci
+					, 0 status_identity
+				from realisasi_panen
+				where no_do IN (
+					'BDY004362/18','BDY004363/18','BDY004368/18','BDY004369/18'
+				)

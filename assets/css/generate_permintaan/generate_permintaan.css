@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+
+a {
+	cursor: pointer;
+}
+
+#order-kandang-table table th,#order-kandang-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#tbl-tambah-barang tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+.very-large>.modal-dialog {
+	width: 85% !important;
+}

@@ -1,0 +1,30 @@
+div.grey_color {
+  color: grey;
+}
+table#header_pakan_rusak tr th, table#header_pakan_rusak tr td{
+	text-align: center;
+	vertical-align: middle;
+}
+table#detail_pakan_rusak tr th, table#detail_pakan_rusak tr td{
+	text-align: center;
+	vertical-align: middle;
+}
+div.div_button {
+	text-align: center;
+	vertical-align: middle;
+	margin-top: 2%;
+}
+table#header_pakan_rusak tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+table#header_pakan_rusak tbody tr.mark td {
+	background-color: #A1E7FC;
+}
+
+span.do-not-valid{
+	color: red;
+	font-size: 12px;
+	font-weight: bold;
+	font-style: italic;
+}

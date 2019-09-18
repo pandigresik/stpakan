@@ -1,0 +1,34 @@
+
+'08870/18','08871/18','08872/18','08873/18','08874/18','08875/18'
+insert into detail_sinkronisasi (sinkronisasi,aksi,tabel,kunci,status_identity)
+select 154545 as sinkronisasi
+					, 'I' as aksi
+					, 'do' as tabel
+					,'{"no_do" : "'+no_do+'"}' as kunci
+					, 0 status_identity
+				from do
+				where no_op in ('08870/18','08871/18','08872/18','08873/18','08874/18','08875/18')
+				union all
+				select 154545 as sinkronisasi
+						, 'I' as aksi
+						, 'do_d' as tabel
+						,'{"no_do" : "'+no_do+'", "kode_barang" : "'+kode_barang+'"}' as kunci
+						, 0 status_identity
+					from do_d
+					where no_op in ('08870/18','08871/18','08872/18','08873/18','08874/18','08875/18')
+				union all
+				select distinct 154545 as sinkronisasi
+							, 'I' as aksi
+							, 'do_e' as tabel
+							,'{"no_do" : "'+de.no_do+'", "kode_barang" : "'+de.kode_barang+'","no_reg" : "'+no_reg+'"}' as kunci
+							, 0 status_identity
+					from do_e de
+					join do_d dd on dd.no_do = de.no_do and dd.no_op in ('08870/18','08871/18','08872/18','08873/18','08874/18','08875/18')
+				union all
+				select distinct 154545 as sinkronisasi
+							, 'I' as aksi
+							, 'op_vehicle' as tabel
+							,'{"no_op" : "'+no_op+'","no_urut" : "'+cast(no_urut as varchar(2))+'" , "kode_barang" : "'+kode_barang+'"}' as kunci
+							, 0 status_identity
+					from op_vehicle
+					where no_op in ('08870/18','08871/18','08872/18','08873/18','08874/18','08875/18')

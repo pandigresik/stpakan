@@ -1,0 +1,395 @@
+@CHARSET "ISO-8859-1";
+body {
+    padding-top: 0px;
+    padding-bottom: 10px;
+}
+
+.navbar {
+    margin-top: 1px;
+}
+
+.panel-default {
+    clear: both;
+}
+
+.ui-datepicker {
+    z-index: 99995 !important
+}
+
+.ui-autocomplete {
+    z-index: 99995 !important
+}
+
+.ui-datepicker-calendar td.abang span,
+.ui-datepicker-calendar td.abang a {
+    color: red !important;
+}
+
+.new-line {
+    padding-top: 1%;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.1em;
+}
+
+.largeWidth>div.modal-dialog {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.mediumWidth>div.modal-dialog {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.very-large>.modal-dialog {
+    width: 95% !important;
+}
+
+._wrap_breakdown {
+    max-height: 480px;
+    overflow: auto;
+}
+
+.breakdown_pakan th {
+    text-align: center;
+    valign: middle
+}
+
+.link_span {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+/* PINGENDO COMMENT DO NOT REMOVE */
+
+.left-inner-addon {
+    position: relative;
+}
+
+.left-inner-addon input {
+    padding-left: 30px;
+}
+
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.right-inner-addon {
+    position: relative;
+}
+
+.right-inner-addon input {
+    padding-right: 30px;
+}
+
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.master_row td:nth-child(1)>span:hover {
+    cursor: pointer;
+}
+
+.number {
+    text-align: right;
+}
+
+.abang {
+    color: red;
+}
+
+.bg-pink {
+    background-color: pink;
+}
+
+.ijo {
+    color: green;
+}
+
+.biru {
+    color: blue;
+}
+
+.bg_biru {
+    background-color: #BDD7EE;
+}
+
+.bg_kuning {
+    background-color: yellow;
+}
+
+.bg_abuabu {
+    background-color: gray;
+}
+
+.abuabu {
+    color: gray;
+}
+
+.coklat {
+    color: brown;
+}
+
+.bg_orange {
+    background-color: orange;
+}
+
+.remeng {
+    opacity: .4
+}
+
+.terpilih {
+    background-color: #FFFABA;
+    width: auto;
+}
+
+table.custom_table tbody td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+td.kuning {
+    background-color: yellow;
+}
+
+table.custom_table thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.custom_table thead th>div {
+    margin: 0 auto;
+}
+
+table.custom_table tr td,
+table.custom_table tr th {
+    line-height: 14px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.table tbody tr:hover {
+    background-color: #FFFAFA;
+    cursor: pointer;
+}
+
+.table {
+    margin-bottom: 1px;
+}
+
+
+/* override css bootstrap */
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+    cursor: default;
+    background-color: #eee;
+    opacity: 1;
+}
+
+.date input[readonly] {
+    background-color: #fff;
+}
+
+.date input:disabled {
+    background-color: #eee;
+}
+
+.modal-body {
+    max-height: '90%';
+    overflow-y: auto;
+}
+
+
+/* css untuk input type file */
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+
+/**/
+
+div.non-margin-left {
+    margin-left: -19px;
+}
+
+div.non-margin-top {
+    margin-top: -14px;
+}
+
+.menu_list_retur {
+    border: 0px;
+}
+
+.menu_list_retur:hover {
+    cursor: pointer;
+    background-color: #FFFABA;
+}
+
+.input_error {
+    border: 1px solid red;
+}
+
+.input_edit {
+    border: 1px solid blue;
+}
+
+input[type=checkbox].input_error {
+    outline: 1px solid red;
+}
+
+tr.rekap {
+    background-color: #FFFABA;
+}
+
+tr.rekap.panen {
+    font-weight: bolder;
+}
+
+
+/* separator breadcrumb*/
+
+.breadcrumb {
+    background-color: #FFF;
+    padding: 3px;
+    margin-bottom: 5px;
+}
+
+.breadcrumb>li+li:before {
+    color: blue;
+    content: ">";
+    padding: 0 5px;
+}
+
+.breadcrumb .active>.link_span {
+    color: #000000;
+    text-decoration: none;
+}
+
+.dropdown-menu>.disabled {
+    cursor: not-allowed;
+}
+
+
+/* The real magic ;) */
+
+.dropdown-menu>.disabled>a {
+    pointer-events: none;
+}
+
+.no_border {
+    border-width: 0px;
+}
+
+span.glyphicon-shopping-cart {
+    border: 2px solid blue;
+    margin-left: 10px;
+    padding: 5px 5px;
+    border-radius: 5px;
+}
+
+thead.header_center>tr>th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+/* untuk tampilan dashboard*/
+
+.x_panel_header {
+    background: #2471a3;
+    margin: 40px 0 0 20px;
+    padding: 15px 15px 15px 25px;
+    /*border-radius:2em;*/
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    /*border-bottom-right-radius:1em;
+	border-bottom-left-radius:1em;*/
+    color: #ffffff;
+    /*margin: 10px 3px 10px 3px;*/
+}
+
+.x_content_header {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    margin: 0 0 0 20px;
+    padding-bottom: 10px;
+}
+
+.x_panel {
+    background: #c0c0c0;
+    margin: 10px 15px 0 5px;
+    padding: 5px 15px 5px 15px;
+    border-radius: 2em;
+    border-top-left-radius: 2em;
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    border-bottom-left-radius: 2em;
+    cursor: pointer;
+    /*margin: 10px 3px 10px 3px;*/
+}
+
+.x_panel_text {
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+    /*margin: 10px 3px 10px 3px;*/
+}
+
+.x_panel_number {
+    border: 4px #666666 solid;
+    color: #666666;
+    border-radius: 2em;
+    border-top-left-radius: 2em;
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    border-bottom-left-radius: 2em;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 2px;
+    text-align: center;
+    position: relative;
+    min-height: 1px;
+    float: right;
+    /*margin: 10px 3px 10px 3px;*/
+}
+
+.div_baris {
+    line-height: 24px;
+    border-bottom: 0px solid gray;
+    min-width: 80px;
+}

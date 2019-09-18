@@ -1,0 +1,225 @@
+@CHARSET "ISO-8859-1";
+
+#picking-list-table table th,#picking-list-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#transaction-table table th,#transaction-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#print-preview-table table th,#print-preview-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.very-large>.modal-dialog {
+	width: 85% !important;
+}
+
+.mark_row td {
+	background-color: #A1E7FC;
+}
+
+.table tr.tr-header:hover {
+	background-color: #A1E7FC;
+}
+
+#picking-list-table table tbody tr.tr_order:hover {
+	background-color: #A1E7FC;
+}
+
+#picking-list-table table tbody tr td.no-referensi {
+	color: #428bca;
+}
+
+#transaction-table table th {
+	background: #f5f5f5;
+}
+
+div.div-detail-pakan {
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+
+table.tbl-detail-pakan {
+	margin-left: 5%;
+	width: 95%;
+
+}
+
+table.tbl-detail-pakan th, table.tbl-detail-pakan td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tbl-detail-pakan th.arrow, table.tbl-detail-pakan td.arrow {
+	min-width: 3px;
+	max-width: 3px;
+}
+
+table.tbl-detail-pakan th.no-pallet, table.tbl-detail-pakan td.no-pallet {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.no-kavling, table.tbl-detail-pakan td.no-kavling {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.no-kavling, table.tbl-detail-pakan td.no-kavling {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-pallet, table.tbl-detail-pakan td.berat-pallet {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-timbang, table.tbl-detail-pakan td.berat-timbang {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-bersih, table.tbl-detail-pakan td.berat-bersih {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.jumlah-sak, table.tbl-detail-pakan td.jumlah-sak {
+	min-width: 5px;
+	max-width: 5px;
+}
+
+table.tbl-detail-pakan th.keterangan, table.tbl-detail-pakan td.keterangan {
+	min-width: 20px;
+	max-width: 20px;
+}
+table.tbl-detail-pakan th.sisa-pallet, table.tbl-detail-pakan td.sisa-pallet {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-kandang {
+	width: 75%;
+
+}
+
+table.tbl-detail-kandang th, table.tbl-detail-kandang td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tbl-detail-kandang th.checkbox-kandang, table.tbl-detail-kandang td.checkbox-kandang {
+	min-width: 3px;
+	max-width: 3px;
+}
+table.tbl-detail-kandang th.nama-kandang, table.tbl-detail-kandang td.nama-kandang {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.jml-kebutuhan, table.tbl-detail-kandang td.jml-kebutuhan {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.hutang-sak-kosong, table.tbl-detail-kandang td.hutang-sak-kosong {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.jml-aktual, table.tbl-detail-kandang td.jml-aktual {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.berat, table.tbl-detail-kandang td.berat {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.sisa, table.tbl-detail-kandang td.sisa {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.konfirmasi, table.tbl-detail-kandang td.konfirmasi {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table#tbl-detail-penerimaan th, table#tbl-detail-penerimaan td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+div#tabel-riwayat table
+{
+	width: 100%;
+}
+
+div#tabel-riwayat table th, div#tabel-riwayat table td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+div#tabel-riwayat table th.r-kode-pakan, div#tabel-riwayat table td.r-kode-pakan {
+	min-width: 10px;
+	max-width: 10px;
+}
+div#tabel-riwayat table th.r-nama-pakan, div#tabel-riwayat table td.r-nama-pakan {
+	min-width: 13px;
+	max-width: 13px;
+}
+div#tabel-riwayat table th.r-tgl-jam-pengambilan, div#tabel-riwayat table td.r-tgl-jam-pengambilan {
+	min-width: 13px;
+	max-width: 13px;
+}
+div#tabel-riwayat table th.r-jml-yg-diminta, div#tabel-riwayat table td.r-jml-yg-diminta {
+	min-width: 8px;
+	max-width: 8px;
+}
+div#tabel-riwayat table th.r-hutang-sak-kosong, div#tabel-riwayat table td.r-hutang-sak-kosong {
+	min-width: 8px;
+	max-width: 8px;
+}
+div#tabel-riwayat table th.r-jumlah-terima, div#tabel-riwayat table td.r-jumlah-terima {
+	min-width: 8px;
+	max-width: 8px;
+}
+div#tabel-riwayat table th.r-stok-gudang, div#tabel-riwayat table td.r-stok-gudang {
+	min-width: 8px;
+	max-width: 8px;
+}
+div#tabel-riwayat table th.r-user-gudang, div#tabel-riwayat table td.r-user-gudang {
+	min-width: 13px;
+	max-width: 13px;
+}
+div#tabel-riwayat table th.r-user-kandang, div#tabel-riwayat table td.r-user-kandang {
+	min-width: 13px;
+	max-width: 13px;
+}
+div#tabel-riwayat table th.r-keterangan, div#tabel-riwayat table td.r-keterangan {
+	min-width: 15px;
+	max-width: 15px;
+}
+/*
+div#picking-list-table table { width: 100%; }
+
+
+div#picking-list-table table thead,div#picking-list-table table tbody { display: block; }
+
+div#picking-list-table table tbody {
+    height: 350px;       
+    overflow-y: auto;    
+    overflow-x: hidden;  
+}
+
+div#picking-list-table table tbody td, div#picking-list-table table thead th {
+    width: 10%; 
+}
+*/

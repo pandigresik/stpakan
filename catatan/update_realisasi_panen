@@ -1,0 +1,4 @@
+declare @berat_aktual decimal(7,2) = 294.2
+declare @ekor_aktual int = 378
+declare @no_sj varchar(20) = 'SB001454/18'
+update realisasi_panen set BERAT_AKTUAL = @berat_aktual,JUMLAH_AKTUAL = @ekor_aktual, BERAT_BADAN_RATA2 = @berat_aktual/@ekor_aktual,berat_timbang = @berat_aktual,jumlah_akhir = @ekor_aktual,JUMLAH_TIMBANG = @ekor_aktual  where no_surat_jalan = @no_sj

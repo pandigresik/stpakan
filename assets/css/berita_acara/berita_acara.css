@@ -1,0 +1,41 @@
+@CHARSET "ISO-8859-1";
+
+.new-line {
+	padding-top: 1%;
+}
+
+.daftar-barang-table table th,.daftar-barang-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.input-group-addon {
+	cursor: pointer;
+}
+
+table#list-berita-acara th, table#list-berita-acara td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#list-surat-jalan th, table#list-surat-jalan td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#list-surat-jalan tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+#list-berita-acara tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+.modal-body {
+	max-height: 420px;
+	overflow-y: auto;
+}

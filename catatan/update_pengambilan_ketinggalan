@@ -1,0 +1,29 @@
+EXEC PICKING_CONFIRM_BDY
+               'GD'
+              ,'GD/2018-5/03'
+              ,'I1-01' -- no kavling
+              ,'SYS00003280' -- no pallet
+              ,'1127-10-12' -- kode barang
+              ,'2018-5/0100' -- no order
+              ,11 -- jml order
+              ,11
+              ,11
+              ,550 -- berat order dalam kg
+              ,550
+              ,'PG0201'
+              ,'GD/2018-5/03'
+              ,'C'
+              ,'1' -- flok
+              
+-- exec KONFIRMASI_PENERIMAAN_KANDANG_BDY
+            'GD',
+            'GD/2018-5/03',
+            '00000028',
+            '2018-5/0100',
+            '1127-10-12',
+            'PENERIMAAN KANDANG',
+            'PG0201',
+            'C',
+            'PG0050',
+            '1',
+            'SYS00003280'              

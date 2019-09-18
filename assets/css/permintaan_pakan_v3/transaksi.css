@@ -1,0 +1,132 @@
+.kotak{
+	border : 1px solid gray;
+}
+.no_border{
+	border-width : 0px ;
+}
+.baris_terpilih {
+	background-color : #FFFAFA
+}
+
+/*fixed header untuk detail pakan per kandang*/
+
+table .header-fixed {
+  width : 100%
+}
+table .header-fixed>thead {
+  display : block;
+  text-align : center;
+}
+table .header-fixed>tbody {
+  display : block;
+  overflow-y : auto;
+  overflow-x : hidden;
+  max-height : 300px;
+}
+table .header-fixed>thead>tr>th:nth-child(1){
+  width : 2%;
+}
+table .header-fixed>thead>tr>th:nth-child(2){
+  width : 5%;
+}
+table .header-fixed>thead>tr>th:nth-child(3){
+  width : 6%;
+}
+table .header-fixed>thead>tr>th:nth-child(4){
+  width : 6%;
+}
+table .header-fixed>thead>tr>th:nth-child(5){
+  width : 7%;
+}
+table .header-fixed>thead>tr>th:nth-child(6){
+  width : 9%;
+}
+table .header-fixed>thead>tr>th:nth-child(7){
+  width : 7%;
+}
+
+table.header-fixed>tbody>tr>td:nth-child(1){
+  width : 5%;
+}
+table.header-fixed>tbody>tr>td:nth-child(2){
+  width : 7%;
+}
+table.header-fixed>tbody>tr>td:nth-child(3){
+  width : 8%;
+}
+table.header-fixed>tbody>tr>td:nth-child(4){
+  width : 7%;
+}
+table.header-fixed>tbody>tr>td:nth-child(5){
+  width : 11%;
+}
+table.header-fixed>tbody>tr>td:nth-child(6){
+  width : 10%;
+}
+table.header-fixed>tbody>tr>td:nth-child(7){
+  width : 8%;
+}
+
+
+/*fixed header untuk detail pakan per kandang*/
+
+table .header-fixed-bdy {
+  width : 100%
+}
+table .header-fixed-bdy>thead {
+  display : block;
+  text-align : center;
+}
+table .header-fixed-bdy>tbody {
+  display : block;
+  overflow-y : auto;
+  overflow-x : hidden;
+  max-height : 300px;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(1){
+  width : 3%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(2){
+  width : 5%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(3){
+  width : 6%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(4){
+  width : 6%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(5){
+  width : 7%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(6){
+  width : 9%;
+}
+table .header-fixed-bdy>thead>tr>th:nth-child(7){
+  width : 7%;
+}
+
+table.header-fixed-bdy>tbody>tr>td:nth-child(1){
+  width : 12%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(2){
+  min-width : 8%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(3){
+  min-width : 11%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(4){
+  width : 7%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(5){
+  width : 11%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(6){
+  width : 10%;
+}
+table.header-fixed-bdy>tbody>tr>td:nth-child(7){
+  width : 8%;
+}
+
+.ket_review > textarea{
+  height : 100%;
+}

@@ -1,0 +1,19 @@
+-- select * from M_PLOTING_PELAKSANA where no_reg like 'GD/2018-4/05%'
+kafarm sandhao PG0027
+Kandang 01:
+    operator PG0167,PG0166
+    pengawas PG0046
+Kandang 02:
+    operator PG0169
+    pengawas PG0046
+Kandang 03:
+    operator PG0170,PG0171
+    pengawas PG0195
+Kandang 04:
+    operator PG0172,PG0173
+    pengawas PG0195  
+          
+declare @kode_pegawai varchar(10) = ''
+update fingerprint_verification set verificator = @kode_pegawai, date_verification = getdate() where verificator is null
+
+

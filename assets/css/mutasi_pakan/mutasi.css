@@ -1,0 +1,185 @@
+@CHARSET "ISO-8859-1";
+
+table#tabel_daftar_kandang{
+	width: 100%;
+}
+
+table#tabel_detail_mutasi_pakan th, table#tabel_detail_mutasi_pakan td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#tabel_detail_mutasi_pakan td.valign_top {
+	text-align: center;
+	vertical-align: top;
+}
+
+#daftar_mutasi_pakan div.panel-body table{
+	width: 100%;
+}
+
+#daftar_mutasi_pakan div.panel-body table th, #daftar_mutasi_pakan div.panel-body table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#daftar_mutasi_pakan div.panel-body table td.no_mutasi {
+	color: blue;
+	font-weight: bold;
+	cursor: pointer;
+	text-decoration: underline;
+}
+                   
+#daftar_mutasi_pakan div.panel-body table th.no_mutasi, #daftar_mutasi_pakan div.panel-body table td.no_mutasi {
+	min-width: 100px;
+	max-width: 100px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.tanggal_pemberian, #daftar_mutasi_pakan div.panel-body table td.tanggal_pemberian {
+	min-width: 90px;
+	max-width: 90px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.tanggal_kebutuhan, #daftar_mutasi_pakan div.panel-body table td.tanggal_kebutuhan {
+	min-width: 90px;
+	max-width: 90px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.jenis_pakan, #daftar_mutasi_pakan div.panel-body table td.jenis_pakan {
+	min-width: 80px;
+	max-width: 80px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.jumlah_mutasi, #daftar_mutasi_pakan div.panel-body table td.jumlah_mutasi {
+	min-width: 80px;
+	max-width: 80px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.kandang, #daftar_mutasi_pakan div.panel-body table td.kandang {
+	min-width: 50px;
+	max-width: 50px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.umur, #daftar_mutasi_pakan div.panel-body table td.umur {
+	min-width: 50px;
+	max-width: 50px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.status_permintaan_mutasi, #daftar_mutasi_pakan div.panel-body table td.status_permintaan_mutasi {
+	min-width: 90px;
+	max-width: 90px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.tindak_lanjut_kepala_farm, #daftar_mutasi_pakan div.panel-body table td.tindak_lanjut_kepala_farm {
+	min-width: 90px;
+	max-width: 90px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.tindak_lanjut_kepala_departemen, #daftar_mutasi_pakan div.panel-body table td.tindak_lanjut_kepala_departemen {
+	min-width: 140px;
+	max-width: 140px;
+}
+
+#daftar_mutasi_pakan div.panel-body table th.tindak_lanjut_kepala_divisi, #daftar_mutasi_pakan div.panel-body table td.tindak_lanjut_kepala_divisi {
+	min-width: 140px;
+	max-width: 140px;
+}
+
+#daftar_mutasi_pakan div.panel-body table td.tindak_lanjut_kepala_departemen {
+	text-align: left;
+	vertical-align: middle;
+}
+
+#daftar_mutasi_pakan div.panel-body table td.tindak_lanjut_kepala_divisi {
+	text-align: left;
+	vertical-align: middle;
+}
+
+td.tindak_lanjut_kepala_departemen .dropdown-menu{
+	top: 2px;
+	left: 95px;
+}
+
+td.tindak_lanjut_kepala_divisi .dropdown-menu{
+	left:-70px;
+}
+
+#daftar_mutasi_pakan div.panel-body table span.btn{
+	width: 90px;
+}
+
+#daftar_mutasi_pakan div.panel-body table span.btn_reject{
+	margin-top: 5%;
+}
+
+span.waktu{
+	color: gray;
+	font-style: italic;
+}
+
+#daftar_kandang table.table thead tr th{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#tabel_daftar_kandang th, table#tabel_daftar_kandang td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#tabel_daftar_kandang th.kandang, table#tabel_daftar_kandang td.kandang {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.umur, table#tabel_daftar_kandang td.umur {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.dh, table#tabel_daftar_kandang td.dh {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.fcr, table#tabel_daftar_kandang td.fcr {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.ip, table#tabel_daftar_kandang td.ip {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.stok_gudang, table#tabel_daftar_kandang td.stok_gudang {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.stok_kandang, table#tabel_daftar_kandang td.stok_kandang {
+	min-height: 10px;
+	max-height: 10px;
+}
+
+table#tabel_daftar_kandang th.aksi, table#tabel_daftar_kandang td.aksi {
+	min-height: 10px;
+	max-height: 10px;
+	text-align: left;
+}
+
+td.aksi input.checkbox{
+	min-height: 0px;
+}
+
+td.red_color{
+	color: red;
+}
+
+.tooltip{
+	width: 300px;
+}
+
+.tooltip-inner{
+	max-width: 600px;
+}

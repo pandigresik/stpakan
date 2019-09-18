@@ -1,0 +1,95 @@
+.section.kertaskerja{
+	margin-bottom : 10px;
+	position : relative;
+}
+.diagonal_line .line{
+    position: relative;
+    top: 0px; 
+    margin: 1px auto;
+    height: auto; 
+    min-width: 80%;
+  /*  max-width: 85%; */
+    border-top: 1px solid #000000;    
+    -webkit-transform: rotate(26.5deg);
+       -moz-transform: rotate(180deg);
+        -ms-transform: rotate(26.5deg);
+         -o-transform: rotate(26.5deg);
+            transform: rotate(170.8deg); /* asalnya 150.5 */
+}		
+table.kertas_kerja{
+	font-size : 90%;	
+}
+
+table.kertas_kerja td{
+	min-width : 70px;
+	padding : 0px 5px 0px 0px;
+}
+table.kertas_kerja td:first-child{
+	min-width : 80px;
+}
+table.kertas_kerja th.waktu{
+	min-width : 120px;
+}
+table.kertas_kerja th.kode_nama_pakan{
+	min-width : 225px;
+}
+table.kertas_kerja th.nama_pakan{
+	min-width : 170px;
+}
+ 
+.table_wrap{
+	max-width : 1270px;
+	max-height : 400px;
+	overflow : auto;
+}
+
+.hari_ini{
+	background-color : yellow;	
+}
+.hari_ini div{
+	background-color : yellow;	
+}
+
+.tebal{
+	font-weight : bold;
+}
+.load_info{
+	position : absolute;
+}
+.load_info.atas{
+	top : 10% 
+	margin : 0 auto;
+}
+.load_info.bawah{
+	top : 90% 
+	margin : 0 auto;
+}
+/* tombol untuk hidden kolom selanjutnya */
+.hide_column{
+/*	position : absolute;
+	top : 0px;
+	right : 0px;
+*/	
+	position: relative; 
+	right : -7px ; 
+	cursor : pointer;
+	/*top : -90px */ 
+}
+
+.div_grafik{
+	padding : 10px;
+	margin-bottom : 50px;
+}
+.dygraph-label{font-size : 90%}
+.dygraph-title{font-size : 90%;margin-bottom:40px}
+.dygraph-xlabel{padding: 3px;margin-top : 22px}
+.dygraph-axis-label { font-size : 80% }
+.dygraph-legend {
+   background-color: transparent !important;
+   left: 90% !important;
+   top : -2% !important;
+}
+.dygraph-legend>span{
+	display : block;
+	font-size : 80%
+}

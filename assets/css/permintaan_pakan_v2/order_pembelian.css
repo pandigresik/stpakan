@@ -1,0 +1,50 @@
+.box-kendaraan {
+    border: 1px solid gray;
+    padding: 3px;
+    min-height: 30px;
+    position: relative;
+    max-width: 50px;
+    margin: 2px;
+}
+
+.box-kendaraan.readonly {
+    border: 1px solid gray;
+    color: gray;
+    margin: -5px 2px;
+    padding: 13px 5px;
+}
+
+tbody>tr:nth-child(even)>td>span.box-kendaraan.readonly {
+    padding-bottom: 10px;
+}
+
+tbody>tr:nth-child(odd)>td>span.box-kendaraan.readonly {
+    padding-top: 10px;
+}
+
+.box-kendaraan input[type=text] {
+    padding: 6px;
+    width: 40px;
+    border: none;
+}
+
+.box-kendaraan input[type=checkbox] {
+    position: absolute;
+    right: -1px;
+    top: -5px;
+}
+
+.box-kendaraan span.remove {
+    position: absolute;
+    left: 0px;
+    top: -5px;
+    padding-left: 1px;
+}
+
+.box-kendaraan span.remove:hover {
+    cursor: pointer;
+}
+
+.gabung_do {
+    background-color: gray;
+}

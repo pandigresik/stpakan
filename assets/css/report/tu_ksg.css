@@ -1,0 +1,98 @@
+td.tanggal, th.tanggal {
+  min-width: 87px;
+  max-width: 87px;
+  text-align: center;
+  word-wrap: normal;
+  word-break: keep-all;
+}
+
+th.tanggal {
+  height: 135px;
+}
+
+th.rit, td.rit {
+  max-width: 37px;
+  min-width: 37px;
+  text-align: center;
+}
+
+th.mitra, td.mitra {
+  min-width: 160px;
+  max-width: 160px;
+  text-align: left;
+}
+
+th.alamat, td.alamat {
+  min-width: 160px;
+  max-width: 160px;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+th.unit, td.unit {
+  text-align: center;
+  min-width: 50px;
+  max-width: 50px;
+}
+
+.table-bordered > tbody > tr > td.batas_kanan, .table-bordered > tbody > tr > th.batas_kanan, .table-bordered > tfoot > tr > td.batas_kanan, .table-bordered > tfoot > tr > th.batas_kanan, .table-bordered > thead > tr > td.batas_kanan, .table-bordered > thead > tr > th.batas_kanan {
+  border-right: 3px solid #333;
+}
+
+th.kilogram, td.kilogram, th.rupiah, td.rupiah, th.ekor, td.ekor {
+  text-align: right;
+}
+
+th.rupiah, td.rupiah {
+  max-width: 95px;
+  min-width: 50px;
+  word-wrap: break-word;
+}
+
+td.jam, td.menit {
+  max-width: 50px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+td.nopol {
+  min-width: 88px;
+  text-align: center;
+}
+
+th.sopir, td.sopir {
+  /*min-width: 125px;*/
+}
+
+.tu-float-btn {
+  margin-top: 5%;
+}
+
+th.keterangan, td.keterangan {
+  min-width: 230px;
+}
+
+.checkbox, .radio {
+  margin-bottom: inherit;
+  margin-top: inherit;
+  margin-left: 6px;
+}
+
+table.custom_table thead th.aksi > div{
+  margin-bottom: inherit;
+  margin-top: inherit;
+  margin-left: 6px;
+}
+
+.pagination {
+  margin :inherit;
+}
+
+ol, ul {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+table.custom_table td.red, table.custom_table th.red{
+  color: red;
+}

@@ -1,0 +1,16 @@
+/*fixed header untuk daftar PP */
+
+table.monitoring_pp td{
+	min-width : 100px;
+}
+table.monitoring_pp td.no_pp{
+	min-width : 180px;
+}
+table.monitoring_pp td.tgl_jam{
+	min-width : 140px;
+}
+table.monitoring_pp td.nama_do{
+	min-width : 200px;
+}
+
+  

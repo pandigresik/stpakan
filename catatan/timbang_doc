@@ -1,0 +1,68 @@
+CREATE TABLE TIMBANG_DOC (
+	NO_REG varchar(20) NOT NULL,
+	STATUS varchar(2) NOT NULL,
+	JML_BOX int NOT NULL,
+	JML_EKOR int NOT NULL,
+	TOTAL_BERAT numeric(8,2),
+	BB_RATA2 numeric(8,2) NOT NULL,
+	PRIMARY KEY (NO_REG),
+	CONSTRAINT TIMBANG_DOC_KANDANG_SIKLUS FOREIGN KEY (NO_REG) REFERENCES KANDANG_SIKLUS(NO_REG) 
+)
+
+CREATE TABLE TIMBANG_DOC_DETAIL (
+	NO_REG varchar(20) NOT NULL,
+	NO_URUT int not null,
+	JML_BOX int NOT NULL,
+	JML_EKOR int NOT NULL,
+	TARA_BOX numeric(8,2) not null,
+	BERAT numeric(8,2) not null,
+	USER_BUAT varchar(15) not null,
+	TGL_BUAT datetime default getdate(),
+	PRIMARY KEY (NO_REG,NO_URUT),
+	CONSTRAINT TIMBANG_DOC_DETAIL_KANDANG_SIKLUS FOREIGN KEY (NO_REG) REFERENCES KANDANG_SIKLUS(NO_REG) 
+)
+
+CREATE TABLE timbang_pakan (
+	no_reg varchar(20) NOT NULL,
+	no_order varchar(15) not null,
+	status tinyint NOT NULL default(0),
+	user_buat varchar(15) not null,
+	user_ack varchar(15),
+	tgl_buat datetime DEFAULT CURRENT_TIMESTAMP,
+	tgl_ack datetime,
+	berat numeric(8,3),
+	PRIMARY KEY (NO_REG,NO_ORDER),
+	CONSTRAINT timbang_pakan_fk FOREIGN KEY (no_reg) REFERENCES KANDANG_SIKLUS(NO_REG)
+) 
+
+CREATE TABLE timbang_pakan_detail (
+	no_reg varchar(20) NOT NULL,
+	no_order varchar(15) not null,
+	no_urut int not null DEFAULT 1,
+	jml int not null,
+	berat NUMERIC(5,2) not null,
+	tgl_buat datetime DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (no_reg,no_order,no_urut),
+	CONSTRAINT timbang_pakan_detail_fk FOREIGN KEY (no_reg) REFERENCES KANDANG_SIKLUS(NO_REG)
+) 
+
+
+drop table sys_ssid;
+create table sys_ssid(
+	kode_farm varchar(4) not null,
+	kode_kandang varchar(2) not null,
+	ssid varchar(50) not null,
+	ip_timbangan varchar(15) not null
+)
+ALTER TABLE sys_ssid ADD CONSTRAINT sys_ssid_UN UNIQUE (ssid); 
+insert into sys_ssid values
+('BW','01','BWJ-Kandang1','192.168.100.10'),
+('BW','02','BWJ-Kandang2','192.168.100.10'),
+('BW','03','BWJ-Kandang3','192.168.100.10'),
+('BW','04','BWJ-Kandang4','192.168.100.10'),
+('BW','05','BWJ-Kandang5','192.168.100.10'),
+('BW','06','BWJ-Kandang6','192.168.100.10'),
+('BW','07','BWJ-Kandang7','192.168.100.10'),
+('BW','08','BWJ-Kandang8','192.168.100.10'),
+('BW','09','BWJ-Kandang9','192.168.100.10'),
+('BW','10','BWJ-Kandang10','192.168.100.10')

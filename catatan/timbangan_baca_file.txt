@@ -1,0 +1,22 @@
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   application/config/database.php
+	new file:   application/modules/api/config/timbangan.php
+	new file:   application/modules/api/controllers/Timbangan.php
+	modified:   application/modules/penerimaan_pakan/views/bdy/detail_penimbangan_pakan.php
+	modified:   application/modules/pengambilan_barang/views/bdy/transaksi.php
+	modified:   application/modules/pengembalian_sak/views/bdy/detail_transaksi.php
+	modified:   application/modules/permintaan_glangsing/views/bdy/pengembalian_sak.php
+	modified:   assets/js/commonHandler.js
+	modified:   assets/js/master/hand_pallet.js
+	modified:   assets/js/master/pallet.js
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	catatan/timbangan_baca_file.txt
+

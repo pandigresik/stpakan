@@ -1,0 +1,76 @@
+@CHARSET "ISO-8859-1";
+table {
+	font-size : 88%;
+}
+div.list_checkbox{
+	position : absolute;
+	border : 1px solid gray;
+	background-color : #FFF;
+	z-index : 999;
+	min-width : 90%;
+	margin-top : 2px;
+	padding : 6px;
+}
+table.stok_pakan>tbody>tr>td{
+	width : 50px;
+}
+td.nama_bentuk,th.nama_bentuk{
+	min-width : 250px
+}
+td.dh,th.dh{
+	min-width : 80px
+}
+.plus_sign{
+	float : left;
+}
+td.tanggal,th.tanggal{
+	min-width : 120px
+}
+table.detail_retur>tbody>tr>td:nth-child(1){
+	width : 5%;
+}
+table.detail_retur>tbody>tr>td:nth-child(2){
+	width : 19%;
+
+}
+
+th.header_pakan{
+	text-align : right;
+}
+
+#container_detailrhk{
+	max-height : 400px;
+	overflow : auto;
+//	border : 1px solid gray;
+}
+td.terima_sak{
+	min-width : 50px;
+}
+td.td_top_border{
+	padding : 0px;
+}
+ div.top_border{
+	 border-top : 1px solid #000;
+	 margin : 0px;
+ }
+tr.number>td{
+	text-align : right
+}
+
+.btn.prev,.btn.next{
+	font-size : 30px;
+	padding : 10px 20px;
+	font-weight: bolder;
+	position: fixed;
+	top : 48%;
+	opacity: .4
+}
+.btn.prev{
+	left : 10px;
+}
+.btn.next{
+	right : 10px;
+}
+.btn.prev:hover,.btn.next:hover{
+	opacity: 1;
+}

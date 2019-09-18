@@ -1,0 +1,50 @@
+-- pp per tglkebutuhan
+select l.no_lpb, l.tgl_rilis, l.tgl_ubah, le.tgl_kirim, le.tgl_kebutuhan, le.jml_order
+from lpb l
+join lpb_e le on le.NO_LPB = l.NO_LPB and le.NO_REG = 'CJ/2018-6/01'
+where l.status_lpb != 'V' and l.KODE_FARM = 'CJ'
+
+-- do perkode barang sampai dengan penerimaan perdo
+select l.no_lpb
+	,do.no_do
+	,do_e.kode_barang
+	,do_e.jml_muat
+	,vdp.nopol 
+	,vdp.tgl_verifikasi
+	,vdp.user_verifikasi
+	,p.tgl_terima
+	,pe.jumlah 
+	,pe.berat
+	,m.kode_pallet
+	,p.user_buat
+from lpb l
+join op on op.no_lpb = l.no_lpb
+join do on do.no_op = op.no_op 
+join do_e on do_e.no_do = do.no_do and do_e.no_reg = 'CJ/2018-6/01'
+join verifikasi_do_pakan vdp on vdp.no_do  = do_e.no_do
+join penerimaan p on p.keterangan1 = do.no_do 
+join penerimaan_e pe on pe.no_penerimaan = p.no_penerimaan and p.kode_farm = pe.kode_farm and do_e.kode_barang = pe.kode_barang
+join movement m on m.no_pallet = pe.no_pallet and m.kode_farm = pe.kode_farm
+where l.status_lpb != 'V' and l.KODE_FARM = 'CJ'
+
+-- cari pakan  yang didroping
+select  oke.no_reg,oke.tgl_kebutuhan,md.picked_date,md.kode_pallet,md.jml_pick,md.berat_pick,md.picked_name
+from order_kandang_e oke
+join order_kandang_d okd on okd.no_order = oke.no_order and okd.no_reg = oke.no_reg and okd.status_order = 'C'
+join rhk_rekomendasi_pakan rrp on rrp.tgl_kebutuhan = oke.tgl_kebutuhan and rrp.kode_barang = oke.kode_barang and rrp.no_reg = oke.no_reg
+join movement_d md on md.no_referensi = oke.no_order and md.kode_farm = okd.kode_farm 
+where oke.tgl_kebutuhan between '2018-09-20' and getdate()
+
+-- cari data rhk 
+select rc.no_reg,rc.tgl_cetak,rc.user_cetak ,r.tgl_buat, r.tgl_transaksi, r.user_buat, r.user_ack1
+from rhk_cetak rc
+join rhk r on r.no_reg = rc.no_reg and r.tgl_transaksi = rc.tgl_transaksi 
+where rc.no_reg = 'CJ/2018-6/01'
+
+-- cari data retur sak kosong
+select rsk.tgl_buat,rskip.id,sum(rskitp.jml_sak) jml_sak,rsk.user_buat 
+from retur_sak_kosong rsk
+join retur_sak_kosong_item_pakan rskip on rsk.id = rskip.retur_sak_kosong 
+join retur_sak_kosong_item_timbang_pakan rskitp on rskitp.retur_sak_kosong_item_pakan = rskip.id 
+where rsk.no_reg = 'CJ/2018-6/01'
+group by rskip.id,rsk.user_buat,rsk.tgl_buat 

@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+/config/database.php
+/config/serverws.php
+=======
+*/config/database.php
+*/config/serverws.php
+>>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
+/application/cache/*
+/application/logs
+/application/config/database.php
+/file_upload
+/filetimbang
+/catatan/contoh_plat
+/application/third_party/ALPR/images
+/application/third_party/ALPR/imgOriginalScene.png

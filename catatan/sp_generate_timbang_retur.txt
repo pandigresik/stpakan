@@ -1,0 +1,137 @@
+ALTER PROCEDURE [dbo].[GENERATE_TIMBANG_RETUR_FARM] 
+	-- Add the parameters for the stored procedure here
+	@kode_farm varchar(5),
+  	@no_retur VARCHAR(20)
+WITH EXEC AS CALLER  	
+AS
+BEGIN
+	begin transaction
+	set nocount on	
+
+	declare @min_pallet varchar(50) = (
+		select min(no_pallet) from MOVEMENT_D md
+                       join KANDANG_SIKLUS ks
+                        on ks.NO_REG = md.keterangan2 
+                        and ks.status_siklus = 'O' 
+                        and ks.KODE_FARM = md.KODE_FARM
+                       where md.keterangan1 = 'PUT' and md.KODE_FARM = @kode_farm
+	)
+	declare @movement table (
+		[KODE_FARM] [varchar](5),
+		[NO_KAVLING] [varchar](10),
+		[NO_PALLET] [varchar](12),
+		[KODE_BARANG] [varchar](15),				
+		[JML_AVAILABLE] [int],
+		[BERAT_AVAILABLE] numeric(8, 3),
+		[JML_ON_PICK] [int],				
+		[KODE_PALLET] [varchar](50)
+		
+	)
+	
+	/* periksa apakah sudah pernah digenerate */	
+	DECLARE @sudahGenerate INT = (SELECT count(*) FROM MOVEMENT_D WHERE no_referensi = @no_retur)
+	
+	DECLARE @result INT = 0, @selesai INT = 0, @pesan_error VARCHAR(200)
+	DECLARE @no_kavling VARCHAR(10),@no_pallet VARCHAR(15),@kode_barang VARCHAR(15),@jml_onhand int,@jml_available INT,@berat_available NUMERIC(8,2),@kode_pallet VARCHAR(20)
+	-- cari list pakan yang akan dilakukan retur
+	DECLARE @kode_pakan VARCHAR(15), @jumlah_retur INT, @tmp_retur INT, @total_pakan_retur INT = 0
+	
+	DECLARE @loop_in INT, @loop_out INT, @counter_loop_out INT = 0
+	DECLARE @jml_jenis_pakan_retur INT = (SELECT count(*) FROM RETUR_FARM_D WHERE NO_RETUR = @no_retur)
+	
+	IF(@sudahGenerate > 0) 
+	BEGIN 
+		SET @pesan_error = 'sudah dilakukan generate untuk nomer retur tersebut'
+		GOTO stop
+	END 
+	
+	DECLARE cur_out CURSOR FOR 
+		SELECT kode_pakan,jumlah FROM RETUR_FARM_D WHERE NO_RETUR = @no_retur
+	OPEN cur_out 
+	FETCH NEXT FROM cur_out INTO @kode_pakan,@jumlah_retur 
+		SET @loop_out = @@fetch_status 
+		SET @counter_loop_out = @counter_loop_out + 1
+		SET @total_pakan_retur = @total_pakan_retur + @jumlah_retur
+	while @loop_out = 0 AND @selesai = 0		
+	BEGIN			   		
+		declare cur cursor for
+		SELECT m.NO_KAVLING,m.NO_PALLET,m.kode_barang,m.JML_ON_HAND,m.JML_AVAILABLE,m.BERAT_AVAILABLE,m.kode_pallet
+		FROM movement m
+		WHERE m.JML_AVAILABLE > 0 
+		AND m.KODE_FARM = @kode_farm
+		AND m.NO_PALLET IN (SELECT NO_PALLET FROM MOVEMENT_D WHERE no_pallet >= @min_pallet AND KETERANGAN2 IN (SELECT kode_gudang FROM m_gudang WHERE KODE_FARM = @kode_farm))
+		AND m.KODE_BARANG = @kode_pakan
+		ORDER BY NO_PALLET
+
+			open cur
+			fetch next from cur into @no_kavling,@no_pallet,@kode_barang,@jml_onhand,@jml_available,@berat_available,@kode_pallet
+			SET @loop_in = @@fetch_status
+			while @loop_in = 0 AND @selesai = 0
+			BEGIN
+				IF(@jml_available >= @jumlah_retur) 
+					BEGIN 
+						SET @jml_available =  @jml_available  - @jumlah_retur				
+						SET @tmp_retur = @jumlah_retur
+						SET @jumlah_retur = 0
+						IF(@counter_loop_out = @jml_jenis_pakan_retur)
+						BEGIN 
+							SET @selesai = 1
+							set @result = 1
+						END 
+						
+					END 
+				ELSE IF(@jumlah_retur <= 0) 
+					BEGIN 
+						IF(@counter_loop_out = @jml_jenis_pakan_retur)
+						BEGIN 
+							SET @selesai = 1
+							set @result = 1
+						END 
+					END 
+				ELSE 
+					BEGIN
+						SET @jumlah_retur = @jumlah_retur - @jml_available
+						SET @tmp_retur = @jml_available	
+						SET @jml_available =  0
+					END	
+				
+				INSERT INTO dbo.MOVEMENT_D (kode_farm,no_kavling,no_pallet,kode_barang,jml_on_hand,jml_available,berat_available,jml_on_pick,kode_pallet,keterangan1,keterangan2,jenis_kelamin,status_stok,no_referensi,berat_pallet) 	
+				VALUES(@kode_farm,@no_kavling,@no_pallet,@kode_barang,@jml_onhand,@jml_available,@berat_available,@tmp_retur,@kode_pallet,'PICK',(SELECT TOP 1 farm_tujuan FROM RETUR_FARM WHERE NO_RETUR = @no_retur),'C','NM',@no_retur,(SELECT TOP 1 brt_bersih FROM M_PALLET WHERE KODE_FARM = @kode_farm AND KODE_PALLET = @kode_pallet ORDER BY TGL_TIMBANG desc))							  		
+				
+				 
+	   	  	  	UPDATE MOVEMENT 
+		 			SET JML_AVAILABLE = @jml_available,
+						JML_ON_PICK = JML_ON_PICK + @tmp_retur
+					WHERE KODE_FARM = @kode_farm AND NO_PALLET = @no_pallet
+					
+		 		fetch next from cur into @no_kavling,@no_pallet,@kode_barang,@jml_onhand,@jml_available,@berat_available,@kode_pallet	
+				SET @loop_in = @@fetch_status
+			end
+			close cur
+			deallocate cur
+			
+			-- jika tidak ada kavling yang tersedia maka set flag gagal
+			IF(@jumlah_retur > 0 )
+			BEGIN				
+				SET @pesan_error = 'tidak ada kavling untuk pakan dengan kode barang '+@kode_pakan				
+			END
+						
+		FETCH NEXT FROM cur_out INTO @kode_pakan,@jumlah_retur 
+		SET @loop_out = @@fetch_status 
+	end
+	close cur_out
+	deallocate cur_out	 	 	   	
+	
+	stop:
+	IF(@result = 1)
+		BEGIN
+			commit transaction;			
+		END 
+	ELSE 
+		BEGIN 
+			rollback transaction;
+		END 
+	 SELECT @result AS result, @pesan_error AS pesan,@total_pakan_retur AS total	
+END
+GO
+

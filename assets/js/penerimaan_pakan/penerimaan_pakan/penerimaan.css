@@ -1,0 +1,330 @@
+@CHARSET "ISO-8859-1";
+
+.new-line {
+	padding-top: 1%;
+}
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+label.tanggal-kirim-label{
+	padding-left: 20%;
+}
+
+td.no-kavling span:hover{
+	color: blue;
+}
+
+#penerimaan-pakan-table table th,#penerimaan-pakan-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tabel_input_rusak>thead>tr>th,table.tabel_input_rusak>tbody>tr>td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table#tbl-ganti-kavling>thead>tr>th,table#tbl-ganti-kavling>tbody>tr>td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#daftar-do-table table th,#daftar-do-table table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.div-detail-pakan {
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+div.div-detail-pakan-rusak-hilang {
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+#daftar-do-table table tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+table#tbl-ganti-kavling tbody tr:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+#daftar-do-table table tbody tr.pink {
+	background-color: pink;
+}
+
+label.grey-label {
+	color: gray;
+}
+
+span.do-not-valid{
+	color: red;
+	font-size: 12px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+a.seru, a.seru:hover{
+	color: red;
+	font-size: 20px;
+	font-weight: bold;
+	padding-right : 10%;
+}
+
+table.tbl-sub-detail-penerimaan {
+	margin-left: 5%;
+	width: 95%;
+
+}
+
+#detail-penerimaan-barang-rusak-table table tbody tr.header-barang-rusak:hover {
+	background-color: #A1E7FC;
+	cursor: pointer;
+}
+
+table.tabel_input_rusak tbody tr td div span.glyphicon:hover{
+	cursor: pointer;
+}
+
+#detail-penerimaan-pakan-table table th,#detail-penerimaan-pakan-table table td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#detail-penerimaan-barang-rusak-table table th,#detail-penerimaan-barang-rusak-table table td
+	{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#detail-penerimaan-barang-kurang-table table th,#detail-penerimaan-barang-kurang-table table td
+	{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tbl-detail-pakan {
+	margin-left: 5%;
+	width: 95%;
+
+}
+
+table.tbl-detail-pakan th, table.tbl-detail-pakan td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tbl-detail-pakan th.arrow, table.tbl-detail-pakan td.arrow {
+	min-width: 3px;
+	max-width: 3px;
+}
+
+table.tbl-detail-pakan th.no-pallet, table.tbl-detail-pakan td.no-pallet {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.no-kavling, table.tbl-detail-pakan td.no-kavling {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.no-kavling, table.tbl-detail-pakan td.no-kavling {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-pallet, table.tbl-detail-pakan td.berat-pallet {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-timbang, table.tbl-detail-pakan td.berat-timbang {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.berat-bersih, table.tbl-detail-pakan td.berat-bersih {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.timbangan-sak, table.tbl-detail-pakan td.timbangan-sak {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-pakan th.selesai, table.tbl-detail-pakan td.selesai {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table.tbl-detail-kandang {
+	width: 75%;
+
+}
+
+table.tbl-detail-kandang th, table.tbl-detail-kandang td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.tbl-detail-kandang th.checkbox-kandang, table.tbl-detail-kandang td.checkbox-kandang {
+	min-width: 3px;
+	max-width: 3px;
+}
+table.tbl-detail-kandang th.nama-kandang, table.tbl-detail-kandang td.nama-kandang {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.jml-kebutuhan, table.tbl-detail-kandang td.jml-kebutuhan {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.jml-aktual, table.tbl-detail-kandang td.jml-aktual {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.berat, table.tbl-detail-kandang td.berat {
+	min-width: 10px;
+	max-width: 10px;
+}
+table.tbl-detail-kandang th.sisa, table.tbl-detail-kandang td.sisa {
+	min-width: 10px;
+	max-width: 10px;
+}
+
+table#tbl-detail-penerimaan th, table#tbl-detail-penerimaan td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#table-daftar-do-sj table th, #table-daftar-do-sj table td
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+#scan-barcode {
+	/*font-size: 20px;*/
+	
+}
+
+.input-group-addon {
+	cursor: pointer;
+}
+
+.mark_row td {
+	background-color: #A1E7FC;
+}
+
+.table tr.tr-header:hover {
+	background-color: #A1E7FC;
+}
+
+.very-large>.modal-dialog {
+	width: 95% !important;
+}
+
+.table tbody>tr>td.text-middle,.table thead>tr>th.text-middle {
+	vertical-align: middle;
+}
+
+.table tbody>tr>td.text-baris,.table thead>tr>th.text-baris {
+	background-color: #FFD966;
+}
+
+.table tbody>tr>td.text-posisi,.table thead>tr>th.text-posisi {
+	min-width: 50px;
+	max-width: 50px;
+	background-color: #9BC2E6;
+}
+
+.table tbody>tr>td.text-kolom,.table thead>tr>th.text-kolom {
+	min-width: 50px;
+	max-width: 50px;
+	background-color: #548235;
+}
+
+.table tbody>tr>td.text-value,.table thead>tr>th.text-value {
+	min-width: 75px;
+	max-width: 75px;
+	cursor: pointer;
+}
+
+.table tbody>tr>td.text-road,.table thead>tr>th.text-road {
+	min-width: 75px;
+	max-width: 75px;
+	color: #ffffff;
+	background-color: #ffffff;
+}
+
+.table tbody>tr>td.text-value:hover {
+	/*,.table thead>tr>th.text-value {*/
+	color: red;
+}
+
+.table tbody>tr>td.isi,.table thead>tr>th.isi {
+	background-color: #F4B084;
+}
+
+.table tbody>tr>td.tidak-isi,.table thead>tr>th.tidak-isi {
+	background-color: #FCE4D6;
+}
+
+.vertical-text {
+	transform: rotate(270deg);
+}
+/*
+.modal{
+    display: block !important;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 500px;
+    overflow-y: auto;
+}
+*/
+.modal-body {
+	max-height: 420px;
+	overflow-y: auto;
+}
+
+div.total_zak{
+	color: blue;
+	font-weight: bold;
+}
+
+div.total_zak:hover{
+	color: grey;
+}

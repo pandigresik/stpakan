@@ -1,0 +1,10 @@
+download dll dari http://pecl.php.net/package/imagick , sesuaikan dengan versi PHP yang terinstall di PC
+copykan semua fil *.dll ke ../xampp/apache/bin  dan ../xampp/php kecuali file php_imagick.dll
+php_imagick.dll dicopy ke ../xampp/php/ext
+edit php.ini tambahkan baris [Imagick] extension=php_imagick.dll
+restart apachenya
+
+https://mlocati.github.io/articles/php-windows-imagick.html
+
+http://ftp.icm.edu.pl/packages/ImageMagick/binaries/
+install lalu .dll dalam folder modules/coder copykan kedalam ../xampp/php

@@ -1,0 +1,14 @@
+
+declare @periode_sikklus varchar(6) = '2018-3'
+select kode_barang,sum(jml_on_hand) - coalesce((
+		select sum(rfd.JUMLAH) from RETUR_FARM rf
+		inner join RETUR_FARM_D rfd on rf.NO_RETUR = rfd.NO_RETUR
+		where rf.status not in ('RJ1','RJ2','V') and rf.NO_RETUR like 'RL/GD/'+@periode_sikklus+'%' and rfd.kode_pakan = kode_barang
+		),0) bisa_diretur 
+from movement where NO_PALLET >= (
+select min(no_pallet) from movement_d where kode_farm = 'GD' and KETERANGAN1 = 'PUT' and KETERANGAN2 in (
+	select no_reg from KANDANG_SIKLUS where STATUS_SIKLUS = 'O' and KODE_FARM = 'GD'
+) 
+) and kode_farm = 'GD' and jml_on_hand > 0
+group by kode_barang
+ 

@@ -1,0 +1,93 @@
+/*fixed header untuk daftar PP */
+
+table.list_permintaan {
+  width : 100%
+}
+
+table.list_permintaan>thead{
+  display : block;
+  padding-right: 10px;
+}
+table.list_permintaan>thead th:first-child{
+  min-width: 156px;
+}
+table.list_permintaan>thead th:nth-child(2){
+  min-width: 100px;
+}
+table.list_permintaan>thead th:nth-child(3){
+  min-width: 250px;
+}
+table.list_permintaan>thead th:nth-child(4){
+  min-width: 150px;
+}
+table.list_permintaan>thead th:nth-child(5){
+  min-width:150px;
+}
+table.list_permintaan>thead th:nth-child(6){
+  min-width: 156px;
+}
+table.list_permintaan>thead th:nth-child(7){
+  min-width: 150px;
+}
+table.list_permintaan>tbody {
+  display : block;
+  overflow-y : auto;
+  overflow-x : hidden;
+  max-height : 370px;
+  padding-right: 10px;
+}
+table.list_permintaan>tbody>tr>td:first-child{
+  min-width: 150px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(2){
+  min-width: 100px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(3){
+  min-width: 250px;
+  max-width: 250px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(4){
+  min-width: 150px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(5){
+  min-width:150px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(6){
+  min-width:150px;
+}
+table.list_permintaan>tbody>tr>td:nth-child(7){
+  min-width: 150px;
+}
+.filter-container{
+    position: absolute; 
+    background-color: white;
+    z-index: 10;
+}
+
+.filter-table .input-search{
+    width: 100%;
+}
+
+.filter-table .btn-ok{
+    font-size: 25px;
+    cursor: pointer;
+    padding: 0;
+    margin: 2px;
+}
+
+.filter-table .btn-search{
+    height: 22px;
+    line-height: 1;
+    padding: 0 4px;
+    border: 1px solid #d2d6de;
+}
+
+.filter-table td span{
+    top: -2px;
+    position: relative;
+}
+
+.filter-container .filter-table td
+, .filter-container .filter-table th{
+    text-align: left;
+}

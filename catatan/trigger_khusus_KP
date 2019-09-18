@@ -1,0 +1,75 @@
+
+ALTER trigger update_stok_glangsing_movement_kp_d
+	on glangsing_movement_d
+	after insert
+as
+begin
+	SET NOCOUNT ON;
+
+	DECLARE @ada INT = 0
+	DECLARE @kode_siklus INT,
+			@kode_farm VARCHAR(5),
+			@kode_barang VARCHAR(15),
+			@jml_stok INT,
+			@jml_awal INT,
+			@jml_akhir INT,
+			@tgl_transaksi date,
+			@no_referensi VARCHAR(100),
+			@jml_order int,
+			@keterangan1 VARCHAR(150),
+			@keterangan2 VARCHAR(150),
+			@tgl_buat datetime,
+			@user_buat VARCHAR(10)
+	DECLARE CUR CURSOR FOR
+	SELECT kode_farm,kode_siklus,kode_barang,tgl_transaksi,no_referensi,jml_order,keterangan1,keterangan2,tgl_buat,user_buat FROM inserted WHERE keterangan1 != 'SOLD_OUT' ORDER BY tgl_buat
+			
+	OPEN CUR
+	FETCH NEXT FROM CUR INTO @kode_farm,@kode_siklus,@kode_barang,@tgl_transaksi,@no_referensi,@jml_order,@keterangan1,@keterangan2,@tgl_buat,@user_buat
+	WHILE @@FETCH_STATUS = 0 BEGIN				 
+		SET @jml_awal = (SELECT jml_stok FROM glangsing_movement_kp WHERE kode_siklus = @kode_siklus and kode_barang = @kode_barang AND kode_farm = @kode_farm)
+		SET @jml_akhir = @jml_awal + @jml_order
+		
+		INSERT INTO glangsing_movement_kp_d(kode_farm,kode_siklus,kode_barang,tgl_transaksi,no_referensi,jml_order,keterangan1,keterangan2,tgl_buat,user_buat,jml_awal,jml_akhir) 
+		VALUES(@kode_farm,@kode_siklus,@kode_barang,@tgl_transaksi,@no_referensi,@jml_order,@keterangan1,@keterangan2,@tgl_buat,@user_buat,@jml_awal,@jml_akhir)		  
+		FETCH NEXT FROM CUR INTO @kode_farm,@kode_siklus,@kode_barang,@tgl_transaksi,@no_referensi,@jml_order,@keterangan1,@keterangan2,@tgl_buat,@user_buat
+		
+		UPDATE glangsing_movement_kp SET jml_stok = @jml_akhir WHERE kode_siklus = @kode_siklus and kode_barang = @kode_barang AND kode_farm = @kode_farm
+		
+	END
+	CLOSE CUR
+	DEALLOCATE CUR
+end
+GO
+
+
+ALTER trigger update_stok_glangsing_kp
+	on glangsing_movement
+	after insert
+as
+begin
+	SET NOCOUNT ON;
+	/* periksa dulu apakah sudah ada atau belum */
+	DECLARE @ada INT = 0
+	DECLARE @kode_siklus INT,
+			@kode_farm VARCHAR(5),
+			@kode_barang VARCHAR(15),
+			@jml_stok INT
+	DECLARE CUR CURSOR FOR
+	SELECT kode_farm,kode_siklus,kode_barang,jml_stok FROM inserted
+			
+	OPEN CUR
+	FETCH NEXT FROM CUR INTO @kode_farm,@kode_siklus,@kode_barang,@jml_stok
+	WHILE @@FETCH_STATUS = 0 BEGIN				 
+		SET @ada = (SELECT count(*) FROM glangsing_movement_kp WHERE kode_siklus = @kode_siklus AND kode_barang = @kode_barang)
+		IF @ada <= 0
+		begin
+			INSERT INTO glangsing_movement_kp(kode_farm,kode_siklus,kode_barang,jml_stok) 
+			VALUES(@kode_farm,@kode_siklus,@kode_barang,@jml_stok)
+		END
+		FETCH NEXT FROM CUR INTO @kode_farm,@kode_siklus,@kode_barang,@jml_stok
+	END
+	CLOSE CUR
+	DEALLOCATE CUR
+end
+GO
+
