@@ -1,12 +1,9 @@
-<<<<<<< HEAD
 <?php
 $lepasKontrolFlag = ''; 
 if($lepaskontrol){
 	$lepasKontrolFlag = 'data-lepaskontrol=1';
 }
-=======
-<?php 
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
+
 if($tipe == 'append'){ 
 	$no=0;
 	$count_pakan = 0;
@@ -50,11 +47,7 @@ if($tipe == 'append'){
 					data-maxpakai="'.$lhk.'" value=0 name="jml_pengembalian" onchange="Pengembalian.checkMaxValue(this)" 
 					data-noreg="'.$no_reg.'" data-kode_barang='.$pakan['kode_barang'].' data-jenis_kelamin='.$pakan['jenis_kelamin'].' 
 					data-jml_retur="'.$retur_sak.'" data-jml_kirim="'.$pakan_dikirim[$kode_barang][$jk].'"  data-jml_pakai="'.$pakan['jml_pakai'].'"
-<<<<<<< HEAD
 					'.$lepasKontrolFlag.' onkeyup="number_only(this)"/>
-=======
-					onkeyup="number_only(this)"/>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					</td>
 				</tr>';
 			$no++;

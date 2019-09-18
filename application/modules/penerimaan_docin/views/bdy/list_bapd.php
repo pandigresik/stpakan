@@ -62,11 +62,7 @@
 								echo '<td class="jmlbox" data-jmlterima="'.($baris['jmlboxterima']*102).'">'.angkaRibuan($baris['jmlboxterima']*102).'</td>';
 								echo '<td class="jml_afkir">'.$baris['jml_afkir'].'</td>';
 								echo '<td class="stok_awal">'.angkaRibuan($baris['stok_awal']).'</td>';
-<<<<<<< HEAD
 								echo '<td class="bb_rata2">'.formatAngka($baris['bb_rata2'],5).'</td>';
-=======
-								echo '<td class="bb_rata2">'.formatAngka($baris['bb_rata2'],3).'</td>';
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 								echo '<td class="uniformity">'.formatAngka($baris['uniformity'],2).'</td>';
 								echo '<td class="status">'.$status.'</td>';
 								echo '<td class="keterangan"><div>'.implode('</div><div>',$keterangan_tmp).'</div></td>';

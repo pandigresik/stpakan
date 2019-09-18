@@ -11,11 +11,7 @@ class Main extends MY_Controller {
 
     protected $_level_user;
     protected $_user;
-<<<<<<< HEAD
-    protected $_farm;sa
-=======
     protected $_farm;
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
     protected $_grup_farm;
 
     public function __construct() {

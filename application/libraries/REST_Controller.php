@@ -503,7 +503,6 @@ abstract class REST_Controller extends MX_Controller
             header('Content-Length: ' . strlen($output));
         }
 
-<<<<<<< HEAD
         // Output the data
         $this->output->set_output($output);
 
@@ -518,8 +517,6 @@ abstract class REST_Controller extends MX_Controller
             ob_end_flush();
         }
         /*
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         if($continue){
             echo($output);
             ob_end_flush();
@@ -527,7 +524,6 @@ abstract class REST_Controller extends MX_Controller
             flush();
         }else{
             exit($output);
-<<<<<<< HEAD
         }*/
     }
 
@@ -547,11 +543,6 @@ abstract class REST_Controller extends MX_Controller
     }
 
 
-=======
-        }
-    }
-
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
     /*
      * Detect SSL use
      *

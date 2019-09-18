@@ -32,17 +32,10 @@ $config['route_sinkronisasi'] = array(
             //,'riwayat_harian_kandang/riwayat_harian_kandang_bdy/buat_pengajuan_retur'
             , 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_ack', 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_kadep', 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_kadiv', 'riwayat_harian_kandang/cetak_form_lhk/insert_rhk_cetak'
         /*realisasi panen*/
-<<<<<<< HEAD
             , 'riwayat_harian_kandang/realisasi_panen/simpan', 'riwayat_harian_kandang/realisasi_panen/simpan_admin_farm', 'api/verifikasiDOPanen/verifikasiDOkeluar'
         /*berita acara penerimaan doc in*/
             , 'penerimaan_docin/berita_acara/ackapprove', 'penerimaan_docin/import_box/simpan_box'
 
-=======
-            , 'riwayat_harian_kandang/realisasi_panen/simpan', 'riwayat_harian_kandang/realisasi_panen/simpan_admin_farm'
-
-        /*berita acara penerimaan doc in*/
-            , 'penerimaan_docin/berita_acara/ackapprove'
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         /*pengajuan permintaan glangsing*/
         , 'permintaan_glangsing/pengajuan/simpan', 'permintaan_glangsing/pengajuan/konfirmasiPengambilan', 'permintaan_glangsing/pengembalian_sak/konfirmasiPengembalian', 'permintaan_glangsing/pengembalian_sak/simpanAck', 'report/kontrol_stok_glangsing/updatePpsk'
 
@@ -71,14 +64,11 @@ $config['route_sinkronisasi'] = array(
         /* simpan pengajuan budget glangsing save_budget  */
         , 'budget_pengembalian_glangsing/main/save_budget'
         /* plotting pelaksana */
-        , 'kandang/plotting_pelaksana/save', 'kandang/plotting_pelaksana/ack',
-<<<<<<< HEAD
+        , 'kandang/plotting_pelaksana/save', 'kandang/plotting_pelaksana/ack'
         /** timbang doc */
-        'api/timbangDoc/simpanDataTimbang',
+        ,'api/timbangDoc/simpanDataTimbang'
         /** timbang pakan */
-        'api/timbangPakan/simpanTimbang',
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
+        ,'api/timbangPakan/simpanTimbang'
 );
 $config['methode_sinkronisasi'] = array(
     /* forecast */
@@ -110,15 +100,9 @@ $config['methode_sinkronisasi'] = array(
             //,'riwayat_harian_kandang/riwayat_harian_kandang_bdy/buat_pengajuan_retur' => 'lhk_buat_pengajuan_retur'
             , 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_ack' => 'lhk_simpan_ack', 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_kadep' => 'lhk_simpan_kadep', 'riwayat_harian_kandang/pemantauan_lhk_bdy/simpan_kadiv' => 'lhk_simpan_kadiv', 'riwayat_harian_kandang/cetak_form_lhk/insert_rhk_cetak' => 'lhk_cetak'
             /*realisasi panen*/
-<<<<<<< HEAD
             , 'riwayat_harian_kandang/realisasi_panen/simpan' => 'realisasi_panen', 'riwayat_harian_kandang/realisasi_panen/simpan_admin_farm' => 'simpan_admin_farm', 'api/verifikasiDOPanen/verifikasiDOkeluar' => 'verifikasi_panen_keluar'
             /*berita acara penerimaan doc in*/
             , 'penerimaan_docin/berita_acara/ackapprove' => 'approvebapd', 'penerimaan_docin/import_box/simpan_box' => 'importbapdbox'
-=======
-            , 'riwayat_harian_kandang/realisasi_panen/simpan' => 'realisasi_panen', 'riwayat_harian_kandang/realisasi_panen/simpan_admin_farm' => 'simpan_admin_farm'
-            /*berita acara penerimaan doc in*/
-            , 'penerimaan_docin/berita_acara/ackapprove' => 'approvebapd'
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 
             /*pengajuan permintaan glangsing*/
             , 'permintaan_glangsing/pengajuan/simpan' => 'pengajuan_glangsing_simpan', 'permintaan_glangsing/pengajuan/konfirmasiPengambilan' => 'pengajuan_glangsing_pengambilan', 'permintaan_glangsing/pengembalian_sak/konfirmasiPengembalian' => 'pengajuan_glangsing_pengembalian_sak', 'permintaan_glangsing/pengembalian_sak/simpanAck' => 'pengajuan_glangsing_pengembalian_sak_ack', 'report/kontrol_stok_glangsing/updatePpsk' => 'kontrol_stok_glangsing_updateppsk'
@@ -147,13 +131,9 @@ $config['methode_sinkronisasi'] = array(
             /* simpan pengajuan budget glangsing save_budget  */
             , 'budget_pengembalian_glangsing/main/save_budget' => 'simpanBudgetGlangsing'
             /* plotting pelaksana */
-<<<<<<< HEAD
             , 'kandang/plotting_pelaksana/save' => 'plotting_pelaksana', 'kandang/plotting_pelaksana/ack' => 'plotting_pelaksana_ack'
             /** timbang doc */    
             ,'api/timbangDoc/simpanDataTimbang' => 'timbang_doc_simpan'
                 /** timbang pakan */
             ,'api/timbangPakan/simpanTimbang' => 'timbang_pakan_simpan'
-=======
-            , 'kandang/plotting_pelaksana/save' => 'plotting_pelaksana', 'kandang/plotting_pelaksana/ack' => 'plotting_pelaksana_ack',
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 );

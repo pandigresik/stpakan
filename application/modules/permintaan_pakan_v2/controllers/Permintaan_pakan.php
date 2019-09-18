@@ -1713,10 +1713,7 @@ SQL;
         $noreg = $this->input->post('noreg');
         $editRekomendasi = array(
             'KF' => array('', 'D'),
-<<<<<<< HEAD
             'P' => array('', 'D'),
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         );
         $sisa_pakan = array();
         $arr = $this->mpp->list_kebutuhan_pakan_tambahan_bdy($noreg, $awal, $akhir, $kodepj);

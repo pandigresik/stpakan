@@ -212,11 +212,7 @@ class Pengembalian extends MY_Controller {
 			/* cek apakah masih bisa melakukan pengembalian atau tidak, max adalah h+1 pada jam 09 dari lhk */
 		//	if($this->cek_max_pengembalian($no_reg)){
 				$list_pakan = $this->mps->get_list_pakan_terpakai($no_reg)->result_array();
-<<<<<<< HEAD
 				//log_message('error',$this->db->last_query());
-=======
-				log_message('error',$this->db->last_query());
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 				$pakan_dikirim = $this->mps->get_list_pakan_dikirim($no_reg)->result_array();
 				$stok_akhir = $this->mps->get_list_pakan_akhir($no_reg)->result_array();
 
@@ -229,10 +225,7 @@ class Pengembalian extends MY_Controller {
 				$data['maxjmltimbang'] = $this->grouping_sakAkhir($stok_akhir);
 				$data['tipe'] = $tipe;
 				$data['rowid'] = $rowid;
-<<<<<<< HEAD
 				$data['lepaskontrol'] = $this->control_lhk();
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 				$this->load->view('pengembalian_sak/'.$this->grup_farm.'/detail_transaksi',$data);
 	/*		}
 			else{
@@ -251,13 +244,10 @@ class Pengembalian extends MY_Controller {
 		if(!empty($result)){
 			$no_reg = $result['no_reg'];
 			$sudah_input_rhk = $this->cek_input_lhk($no_reg);
-<<<<<<< HEAD
 			$control_lhk = $this->control_lhk();
 			if($control_lhk){
 				$sudah_input_rhk = 1;
 			}
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			if($sudah_input_rhk){
 				$this->result['status'] = 1;
 				$this->result['content'] = array('no_reg' => $result['no_reg'],'nama_kandang' => $result['nama_kandang'],'flok_bdy' => $result['flok_bdy'], 'pengawas' => $result['pengawas']);												
@@ -429,7 +419,6 @@ class Pengembalian extends MY_Controller {
 		echo json_encode($result);
 	}
 
-<<<<<<< HEAD
 	private function control_lhk(){
 		$result = 0;
 		$kode_farm = $this->session->userdata ( 'kode_farm' );
@@ -440,6 +429,4 @@ class Pengembalian extends MY_Controller {
 		return $result;
 	}
 
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 }

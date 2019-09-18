@@ -51,10 +51,7 @@ class Fingerprint extends MY_Controller{
         $transaction = $this->input->post('transaction');
         $kode_flok = $this->input->post('kode_flok');
         $result = $this->finger->simpan_transaksi_verifikasi($kode_farm, $user, $transaction, $kode_flok);
-<<<<<<< HEAD
         
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         echo json_encode($result);
     }
 

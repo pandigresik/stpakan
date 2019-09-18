@@ -216,10 +216,7 @@ class VerifikasiDOPanen extends REST_Controller
 SQL;
 
                 $this->db->query($sqlRealisasiPanen);
-<<<<<<< HEAD
                 //log_message('error',$sqlRealisasiPanen);
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                 if ($ins) {
                     $output['status'] = 1;
                     $output['message'] = 'DO berhasil diverifikasi';

@@ -242,11 +242,7 @@ QUERY;
         if (!empty($kode_pegawai)) {
             $joinPengawas = ' JOIN M_PLOTING_PELAKSANA mpp ON mpp.NO_REG = siklus.NO_REG AND mpp.PENGAWAS = \''.$kode_pegawai.'\'';
         }
-<<<<<<< HEAD
 /*        $sql = <<<QUERY
-=======
-        $sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 		SELECT distinct siklus.NO_REG
 				, CAST(getdate() AS DATE) AS tgl_lhk
 				, siklus.FLOK_BDY AS flock
@@ -285,7 +281,6 @@ QUERY;
 		where siklus.KODE_FARM = '{$kode_farm}' and siklus.STATUS_SIKLUS = 'O'
 		AND DATEDIFF(DAY, siklus.TGL_DOC_IN, getdate()) >= 1
 QUERY;
-<<<<<<< HEAD
 */
         $sql = <<<QUERY
         declare @maxCetak integer =  (select value from SYS_CONFIG_GENERAL where KODE_FARM = 'WK' and KODE_CONFIG = '_max_cetak_rhk')
@@ -330,9 +325,6 @@ QUERY;
 
         
         //log_message('error',$sql);
-=======
-
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 

@@ -49,21 +49,12 @@
 					<select class="form-control" name="q_satuan" id="q_satuan">
 						<option value="">Semua</option>
 						<?php
-<<<<<<< HEAD
                         foreach ($satuan as $s) {
                             ?>
 							<option value="<?php echo $s['uom']; ?>"><?php echo $s['uom']; ?></option>
 						<?php
                         }
                         ?>
-=======
-						foreach($satuan as $s){
-						?>
-							<option value="<?php echo $s["uom"];?>"><?php echo $s["uom"];?></option>
-						<?php
-						}
-						?>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					</select>
 				</div>
 			</th>
@@ -102,13 +93,8 @@
 </div>
 
 <?php
-<<<<<<< HEAD
 $style_label = 'col-sm-4';
 $style_value = 'col-sm-8';
-=======
-$style_label = "col-sm-4";
-$style_value = "col-sm-8";
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 ?>
 
 <div class="modal fade" id="modal_barang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -120,13 +106,8 @@ $style_value = "col-sm-8";
 		<div class="modal-body">
 			<form class="form-horizontal">
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_jenisbarang" class="<?php echo $style_label; ?> control-label">Jenis Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_jenisbarang" class="<?php echo $style_label;?> control-label">Jenis Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						<select class="form-control input-sm" name="jenisbarang" id="inp_jenisbarang">
 							<option value="PA">Pakan Ayam</option>
 							<option value="PI">Pakan Ikan</option>
@@ -137,13 +118,8 @@ $style_value = "col-sm-8";
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_tipepakan" class="<?php echo $style_label; ?> control-label">Tipe Pakan</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_tipepakan" class="<?php echo $style_label;?> control-label">Tipe Pakan</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						<label class="radio-inline">
 							<input type="radio" name="tipepakan" id="inp_tipepakan_eksternal" value="E" checked> Eksternal
 						</label>
@@ -155,58 +131,33 @@ $style_value = "col-sm-8";
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_kodebarang" class="<?php echo $style_label; ?> control-label">Kode Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_kodebarang" class="<?php echo $style_label;?> control-label">Kode Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<input type="text" class="form-control input-sm field_input" name="kodebarang" id="inp_kodebarang" placeholder="Kode Barang" maxlength="15" required>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_jenisgrupbarang" class="<?php echo $style_label; ?> control-label">Jenis/Group</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_jenisgrupbarang" class="<?php echo $style_label;?> control-label">Jenis/Group</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<input type="text" class="form-control input-sm field_input" name="jenisgrupbarang" id="inp_jenisgrupbarang" placeholder="Jenis/Group">
 					<input type="hidden" class="form-control input-sm field_input" name="jenisgrupbarang_val" id="inp_jenisgrupbarang_val">
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_namabarang" class="<?php echo $style_label; ?> control-label">Nama Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_namabarang" class="<?php echo $style_label;?> control-label">Nama Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<input type="text" class="form-control input-sm field_input" name="namabarang" id="inp_namabarang" placeholder="Nama Barang" maxlength="50" required>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_namaaliasbarang" class="<?php echo $style_label; ?> control-label">Nama Alias Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_namaaliasbarang" class="<?php echo $style_label;?> control-label">Nama Alias Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<input type="text" class="form-control input-sm field_input" name="namaaliasbarang" id="inp_namaaliasbarang" placeholder="Nama Alias Barang" maxlength="25" required>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_bentukbarang" class="<?php echo $style_label; ?> control-label">Bentuk Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_bentukbarang" class="<?php echo $style_label;?> control-label">Bentuk Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						<select class="form-control input-sm" name="bentukbarang" id="inp_bentukbarang">
 							<option value="C">Crumble</option>
 							<option value="T">Tepung</option>
@@ -217,7 +168,6 @@ $style_value = "col-sm-8";
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_satuanbarang" class="<?php echo $style_label; ?> control-label">Satuan Barang</label>
 					<div class="<?php echo $style_value; ?> input-group">
 						<select class="form-control input-sm" name="satuanbarang" id="inp_satuanbarang">
@@ -228,29 +178,12 @@ $style_value = "col-sm-8";
 							<?php
                             }
                             ?>
-=======
-					<label for="inp_satuanbarang" class="<?php echo $style_label;?> control-label">Satuan Barang</label>
-					<div class="<?php echo $style_value;?> input-group">
-						<select class="form-control input-sm" name="satuanbarang" id="inp_satuanbarang">
-							<?php
-							foreach($satuan as $s){
-							?>
-								<option value="<?php echo $s["uom"];?>"><?php echo $s["uom"];?></option>
-							<?php
-							}
-							?>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_jeniskelaminternak" class="<?php echo $style_label; ?> control-label">Jenis Kelamin Ternak</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_jeniskelaminternak" class="<?php echo $style_label;?> control-label">Jenis Kelamin Ternak</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						<label class="checkbox-inline">
 							<input type="checkbox" id="inp_jeniskelaminternak_betina" value="B"> Betina
 						</label>
@@ -260,35 +193,22 @@ $style_value = "col-sm-8";
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_usiawalternak" class="<?php echo $style_label; ?> control-label">Usia Awal Ternak</label>
-=======
-					<label for="inp_usiawalternak" class="<?php echo $style_label;?> control-label">Usia Awal Ternak</label>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<div class="col-md-3 input-group">
 						<input type="text" class="form-control input-sm field_input" name="usiawalternak" id="inp_usiawalternak" onkeyup="cekNumerik(this)" required>
 						<span class="input-group-addon" id="basic-addon2">Minggu</span>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_usiakhirternak" class="<?php echo $style_label; ?> control-label">Usia Akhir Ternak</label>
-=======
-					<label for="inp_usiakhirternak" class="<?php echo $style_label;?> control-label">Usia Akhir Ternak</label>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 					<div class="col-md-3 input-group">
 						<input type="text" class="form-control field_input input-sm" name="usiakhirternak" id="inp_usiakhirternak" onkeyup="cekNumerik(this)" required>
 						<span class="input-group-addon" id="basic-addon2">Minggu</span>
 					</div>
 				</div>
 				<div class="form-group">
-<<<<<<< HEAD
 					<label for="inp_status" class="<?php echo $style_label; ?> control-label">Status</label>
 					<div class="<?php echo $style_value; ?> input-group">
-=======
-					<label for="inp_status" class="<?php echo $style_label;?> control-label">Status</label>
-					<div class="<?php echo $style_value;?> input-group">
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" name="status" id="inp_status" value="A"> Aktif
@@ -310,8 +230,4 @@ $style_value = "col-sm-8";
   </div>
 </div>
 
-<<<<<<< HEAD
 <script type="text/javascript" src="assets/js/master/barang.js"></script>
-=======
-<script type="text/javascript" src="assets/js/master/config_general.js"></script>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526

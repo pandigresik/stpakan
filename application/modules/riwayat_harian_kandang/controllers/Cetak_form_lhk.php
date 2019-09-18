@@ -99,10 +99,6 @@ class Cetak_form_lhk extends MX_Controller{
 				$data["pakan"][$key]['JML_STOK_PAKAN_PAKAI'] = $data['pakan_pakai'][$val['KODE_BARANG']]['jml_stok'];
 				$data["pakan"][$key]['JML_MAKS_PP_ORDER'] = isset($jml_maks_pp_order[$val['KODE_BARANG']]) ? $jml_maks_pp_order[$val['KODE_BARANG']] : 0;
 			}
-<<<<<<< HEAD
-
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			
 			//populasi (penjumlahan mati + afkir), harus lebih kecil dari STOK_AYAM
 			/* cari jumlah ayamnya dan stok akhir kandang tgl lhk sebelumnya */
@@ -160,7 +156,6 @@ class Cetak_form_lhk extends MX_Controller{
 				$sisa_rowspan = $rowspan;
 			}
 			$loop = 0;
-<<<<<<< HEAD
 			
 			foreach ($data["pakan"] as $key=>$val) {
 				//$rowspan_total = $rowspan+($sisa_rowspan*(($key+1==count($data["pakan"])) ? 0 : 1));
@@ -169,14 +164,6 @@ class Cetak_form_lhk extends MX_Controller{
 				$loop = $rowspan_total;
 			}
 			
-=======
-			foreach ($data["pakan"] as $key=>$val) {
-				$rowspan_total = $rowspan+($sisa_rowspan*(($key+1==count($data["pakan"])) ? 0 : 1));
-				$val['rowspan'] = $rowspan_total;
-				$data["detail_finger_LHK"]['pakan'][$loop] = $val;
-				$loop = $rowspan_total;
-			}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 		}
 		return $this->load->view('detail_finger_LHK',$data);
 	}

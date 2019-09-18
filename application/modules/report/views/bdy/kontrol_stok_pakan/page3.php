@@ -6,11 +6,7 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
         <thead>
             <tr>
                 <th colspan="5">Permintaan Pakan<?php echo $breadcumb_pp ?></th>
-<<<<<<< HEAD
                 <th colspan="12">Dropping Pakan ke Kandang</th>
-=======
-                <th colspan="10">Dropping Pakan ke Kandang</th>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
             </tr>
             <tr>
                 <th>No.PP</th>
@@ -24,7 +20,6 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                 <th>Req. Kandang (Sak)</th>
                 <th>Qty. Retur (Sak)</th>
                 <th>Tgl Dropping</th>
-<<<<<<< HEAD
             <!--    <th>Penerima</th> -->
                 <th>No. Pallet</th>
                 <th>Qty (Sak)</th>
@@ -32,12 +27,6 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                 <th>Tgl Terima Kandang</th>
                 <th>User Verifikasi (Kandang)</th>
                 <th>Kg Dropping (Kandang)</th>
-=======
-                <th>Penerima</th>
-                <th>No. Pallet</th>
-                <th>Qty (Sak)</th>
-                <th>Kg Dropping</th>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                 <th>Stok Akhir (Sak)</th>
                 
             </tr>
@@ -146,7 +135,6 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                                     $stokAkhir = isset($stok_gudang[$_dpk['picked_date']][$_kb]) ? $stok_gudang[$_dpk['picked_date']][$_kb] : '';
                                 }
                                 echo '<td class="'.$status_dropping.'">'.convertElemenTglWaktuIndonesia($_dpk['picked_date']).'</td>';
-<<<<<<< HEAD
                             //    echo '<td>'.$pengawas.'</td>';
                                 echo '<td>'.$_dpk['kode_pallet'].'</td>';
                                 echo '<td>'.$_dpk['jml_pick'].'</td>';
@@ -158,18 +146,6 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                                 echo '</tr>';
                                 $_index++;
                             }
-=======
-                                echo '<td>'.$pengawas.'</td>';
-                                echo '<td>'.$_dpk['kode_pallet'].'</td>';
-                                echo '<td>'.$_dpk['jml_pick'].'</td>';
-                                echo '<td>'.formatAngka($_dpk['berat_pick'],3).'</td>';
-                                echo '<td>'.$stokAkhir.'</td>';
-                                echo '</tr>';
-                                $_index++;
-
-                            }
-                            
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                         }else{
                             echo '<td></td>';
                             echo '<td></td>';
@@ -177,11 +153,8 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                             echo '<td></td>';
                             echo '<td></td>';
                             echo '<td></td>';
-<<<<<<< HEAD
                             echo '<td></td>';
                             echo '<td></td>';
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                             
                             echo '</tr>';
                         }

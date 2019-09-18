@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 
 class M_std_budidaya_bdy extends CI_Model
 {
@@ -14,23 +13,10 @@ class M_std_budidaya_bdy extends CI_Model
     public function get_strain()
     {
         $sql = <<<QUERY
-=======
-class M_std_budidaya_bdy extends CI_Model{
-	private $dbSqlServer ;
-
-	public function __construct(){
-		parent::__construct();
-		$this->dbSqlServer = $this->load->database("default", true);
-	}
-
-	function get_strain(){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select kode_strain, nama_strain, umur_awal_layer
 			from m_strain
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -40,16 +26,6 @@ QUERY;
     public function get_last_std($kode_strain, $kode_farm)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_last_std($kode_strain, $kode_farm){
-
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select m_std.kode_std_budidaya
 				   ,m_std.kode_strain
 				   ,m_std.tgl_efektif
@@ -63,7 +39,6 @@ QUERY;
 			order by m_std.tgl_efektif
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -73,15 +48,6 @@ QUERY;
     public function get_masa_pertumbuhan($kode_strain)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_masa_pertumbuhan($kode_strain){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select b.kode_pertumbuhan, b.deskripsi, a.umur_awal, a.umur_akhir
 			from masa_pertumbuhan a
 			inner join m_pertumbuhan b on a.kode_pertumbuhan = b.kode_pertumbuhan
@@ -89,7 +55,6 @@ QUERY;
 
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -111,26 +76,6 @@ QUERY;
     public function get_detail_std($kode_std)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_head_std($kode_std){
-		$sql = <<<QUERY
-			select * from m_std_budidaya where kode_std_budidaya = '{$kode_std}'
-QUERY;
-
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-
-	}
-
-	function get_detail_std($kode_std){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select * from (
 				select c.kode_std_budidaya, min(c.std_umur) umur_awal, max(c.std_umur) umur_akhir, c.bentuk_barang, nama_barang
 				from (
@@ -144,7 +89,6 @@ QUERY;
 		  order by d.umur_awal
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -154,15 +98,6 @@ QUERY;
     public function get_detail_std_budidaya($kode_std)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_detail_std_budidaya($kode_std){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select a.*, b.nama_barang
 			from m_std_budidaya_d a
 			left join m_barang b on a.kode_barang = b.kode_barang
@@ -170,7 +105,6 @@ QUERY;
 			order by a.std_umur asc
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -180,15 +114,6 @@ QUERY;
     public function get_grup_pakan()
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_grup_pakan(){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select c.kode_barang, c.nama_barang, c.bentuk_barang grup_barang, c.bentuk deskripsi from(
 				select
 			  a.nama_barang,
@@ -204,7 +129,6 @@ QUERY;
 
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -214,22 +138,12 @@ QUERY;
     public function get_last_std_formated($format)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function get_last_std_formated($format){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select top 1 kode_std_budidaya
 			from m_std_budidaya
 			where kode_std_budidaya like '{$format}%'
 			order by convert(int,substring(kode_std_budidaya,CHARINDEX('-', kode_std_budidaya)+1,len(kode_std_budidaya))) desc
 QUERY;
 
-<<<<<<< HEAD
         // $sql = <<<QUERY
         // select max(kode_std_budidaya) kode_std_budidaya
         // from m_std_budidaya
@@ -245,21 +159,6 @@ QUERY;
     public function get_rows_std($kode_std, $umur_awal, $umur_akhir)
     {
         $sql = <<<QUERY
-=======
-		// $sql = <<<QUERY
-			// select max(kode_std_budidaya) kode_std_budidaya
-			// from m_std_budidaya
-			// where kode_std_budidaya like '{$format}%'
-// QUERY;
-
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-	}
-
-	function get_rows_std($kode_std, $umur_awal, $umur_akhir){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select
 				kode_std_budidaya, std_umur, dh_kum_prc, dh_hr_prc, pkn_kum_std, pkn_hr_std,
 				pkn_kum, pkn_hr, target_bb, kode_barang
@@ -268,7 +167,6 @@ QUERY;
 			order by std_umur
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -339,72 +237,6 @@ QUERY;
     public function get_range_detail_std($kode_std, $musim)
     {
         $sql = <<<QUERY
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function insert_multiple_std_budidaya($data_h, $data){
-		$this->dbSqlServer->trans_begin();
-		$tgl_buat    = $this->get_today();
-
-		$success = 0;
-		$this->dbSqlServer->insert("m_std_budidaya", $data_h);
-		if($this->dbSqlServer->affected_rows() > 0){
-			$sinkronisasi = array();
-			$sinkronisasi['transaksi'] = "master_standart_budidaya";
-			$sinkronisasi['asal'] 		= "FM";
-			$sinkronisasi['tujuan'] 	= $data_h['kode_farm'];
-			$sinkronisasi['aksi'] 		= "PUSH";
-			$sinkronisasi['tgl_buat'] 	= $tgl_buat['today'];
-
-			$this->dbSqlServer->insert("sinkronisasi", $sinkronisasi);
-
-			if($this->dbSqlServer->affected_rows() > 0){
-				$id = $this->dbSqlServer->insert_id();
-
-				$detail_sinkronisasi = array();
-				$detail_sinkronisasi["sinkronisasi"] = $id;
-				$detail_sinkronisasi["aksi"] 	= "I";
-				$detail_sinkronisasi["tabel"] = "M_STD_BUDIDAYA";
-				$detail_sinkronisasi["kunci"] = '{"KODE_STD_BUDIDAYA":"'.$data_h['kode_std_budidaya'].'"}';
-				$detail_sinkronisasi["status_identity"] = 0;
-				$this->dbSqlServer->insert("detail_sinkronisasi", $detail_sinkronisasi);
-			}
-			foreach($data as $d){
-				$this->dbSqlServer->insert("m_std_budidaya_d", $d);
-				if($this->dbSqlServer->affected_rows() > 0){
-					$success++;
-
-					$detail_sinkronisasi = array();
-					$detail_sinkronisasi["sinkronisasi"] = $id;
-					$detail_sinkronisasi["aksi"] 	= "I";
-					$detail_sinkronisasi["tabel"] = "M_STD_BUDIDAYA_D";
-					$detail_sinkronisasi["kunci"] = '{"KODE_STD_BUDIDAYA":"'.$d['kode_std_budidaya'].'","DH_KUM_PRC":"'.$d['dh_kum_prc'].'"}';
-					$detail_sinkronisasi["status_identity"] = 0;
-					$this->dbSqlServer->insert("detail_sinkronisasi", $detail_sinkronisasi);
-				}
-			}
-
-			if($success == count($data)){
-				$this->dbSqlServer->trans_commit();
-				return 1;
-			}else{
-				$this->dbSqlServer->trans_rollback();
-				return 0;
-			}
-		}else{
-			$this->dbSqlServer->trans_rollback();
-			return 0;
-		}
-	}
-
-	//------------------------------------
-
-	function get_range_detail_std($kode_std, $musim){
-		$sql = <<<QUERY
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 			select * from (
 				select min(c.std_umur) umur_awal, max(c.std_umur) umur_akhir, c.deskripsi
 				from (
@@ -419,7 +251,6 @@ QUERY;
 			) d order by d.umur_awal
 QUERY;
 
-<<<<<<< HEAD
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
@@ -464,44 +295,4 @@ QUERY;
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-=======
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function update_std_breeding($data, $kode, $umur){
-		$this->dbSqlServer->trans_begin();
-
-		$success = 0;
-		for($i=0;$i<count($umur);$i++){
-			$detail = $data[$i];
-
-			$this->dbSqlServer->where("kode_std_breeding", $kode);
-			$this->dbSqlServer->where("std_umur", $umur[$i]);
-			$this->dbSqlServer->update("m_std_breeding", $detail);
-
-			if($this->dbSqlServer->affected_rows() > 0){
-				$success++;
-			}
-		}
-
-		if($success == count($umur)){
-			$this->dbSqlServer->trans_commit();
-			return true;
-		}else{
-			$this->dbSqlServer->trans_rollback();
-			return false;
-		}
-
-	}
-	function get_today(){
-		$sql = <<<QUERY
-		select getdate() as [today]
-QUERY;
-		$stmt = $this->dbSqlServer->conn_id->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-	}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 }

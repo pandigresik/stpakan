@@ -42,12 +42,6 @@ class VerifikasiDOPakan extends REST_Controller
             $this->response("Unauthorized", 401);
             return;
         }
-<<<<<<< HEAD
-   
-=======
-    
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
-        
     }
 
     public function check_post()
@@ -138,8 +132,4 @@ class VerifikasiDOPakan extends REST_Controller
         $output['message'] = 'DO berhasil diverifikasi';        
         $this->response($output, 200);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526

@@ -4,13 +4,8 @@ class M_user extends MY_Model{
 	
 	public function __construct(){
 		parent::__construct();
-<<<<<<< HEAD
 		$this->_table = 'm_pegawai';
 		$this->_primary_key= 'kode_pegawai';
-=======
-		$this->_table = 'user';
-		$this->_primary_key= 'id';
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 	}
 	public function login($username,$password){		
 		$sql = <<<SQL
@@ -61,8 +56,4 @@ QUERY;
 		->where(array('pm.published'=>1,'w.published'=>1,'pm.[user]'=>$username))
 		->get();
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526

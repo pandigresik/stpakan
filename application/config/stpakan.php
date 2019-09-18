@@ -17,11 +17,7 @@ $config['lockEntryRHK'] = 1; /* jika 1, berarti user harus melakukan finger, jik
 
 $config['smsDO'] = array(
     /*'GD' => array('085791726948'),*/
-<<<<<<< HEAD
     'GD' => array('081939344473'),
-=======
-    'GD' => array('085733659400'),
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
    /* 'CJ' => array('087855977704'),*/
     'BW' => array('085733659400'),
     'JD' => array('085733659400'),
@@ -49,7 +45,6 @@ $config['versiBaru'] = array(
     'BW' => 0,
     'JD' => 0,
  );
-<<<<<<< HEAD
 
  $config['versi3'] = array(
     'GD' => 1,
@@ -58,5 +53,3 @@ $config['versiBaru'] = array(
     'BW' => 0,
     'JD' => 0,
  );
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
