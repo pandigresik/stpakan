@@ -514,10 +514,7 @@ SQL;
     public function simpan_pp_v2($params, $output)
     {
         $statusLpb = $params['POST']['statusLpb'];
-<<<<<<< HEAD
         if($statusLpb == 'D') return;
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
         $statusLpbLama = $params['POST']['_sl'];
         /* output dalam format json */
         $output_arr = json_decode($output, true);
@@ -4877,20 +4874,12 @@ QUERY;
         }
     }
 
-<<<<<<< HEAD
     public function verifikasi_panen_keluar($params, $output)
     {
         $output_arr = json_decode($output, true);
         if ($output_arr['status'] == 1) {
             $detail_do = $output_arr['detail'];
             $str_do = implode("','", $detail_do);
-=======
-    function verifikasi_panen_keluar(){
-        $output_arr = json_decode($output, true);
-        if ($output_arr['status'] == 1) {
-            $detail_do = $output_arr['detail'];
-            $str_do = implode("','", $detail_do);            
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 
             $sqlDetail = <<<QUERY
 				select :key1 as sinkronisasi
@@ -4921,7 +4910,6 @@ QUERY;
             $dataKey = array(':key2' => '');
             $this->db->trans_begin();
             $this->sinkronisasi->insert($datatransaksi, $dataKey, $sqlDetail);
-<<<<<<< HEAD
         }
     }
 
@@ -5013,6 +5001,7 @@ QUERY;
         $output_arr = json_decode($output, true);
         if ($output_arr['status'] == 1) {
             $details = $output_arr['detail'];
+            $detailSilo = $output_arr['detailSilo'];
             $sqlDetailNoreg = [];
             foreach($details as $noreg => $noOrders){
                 $strNoOrder = implode("','",$noOrders);
@@ -5035,6 +5024,22 @@ QUERY;
                 
 QUERY;
             }
+            if(!empty($detailSilo)){
+                foreach($detailSilo as $ds){
+                    $noreg = $ds['no_reg'];
+                    $nourut = $ds['no_urut'];
+                    $sqlDetailNoreg[] = <<<QUERY
+                    select :key1 as sinkronisasi
+                        , 'U' as aksi
+                        , 'timbang_pakan_silo_detail' as tabel
+                        ,'{"no_reg" : "'+no_reg+'","no_urut":"'+cast(no_urut  as varchar(5))+'"}' as kunci
+                        , 0 status_identity
+                    from timbang_pakan_silo_detail
+                    where no_reg = '{$noreg}' and no_urut = '{$nourut}'
+QUERY;
+                }
+            }
+            
 
             $sqlDetail = implode(' union all ',$sqlDetailNoreg);
 
@@ -5055,8 +5060,5 @@ QUERY;
                 $this->db->trans_commit();
             }
         }
-=======
-        }        
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
     }
 }

@@ -5,7 +5,6 @@ declare @p_kode_farm varchar(2) = 'CJ'
                         on ks.NO_REG = md.keterangan2 and ks.status_siklus = 'O' and ks.KODE_FARM = md.KODE_FARM
                        where md.keterangan1 = 'PUT' and md.KODE_FARM = @p_kode_farm
 	)
-<<<<<<< HEAD
     declare @p_flok varchar(2) = '4'
 
 select distinct
@@ -49,57 +48,3 @@ select distinct
                '2019-05-14',
                'PG0088'
 */			   
-=======
-
-select * from (
-	select
-		md_put.NO_REG
-		, md_put.KODE_BARANG		
-		, md_put.JML_PUTAWAY-isnull(md_pick.JML_PICK,0) JML_AVAILABLE
-	from (
-		select
-			KETERANGAN2 NO_REG
-			, KODE_BARANG
-			, KODE_FARM
-			, sum(JML_PUTAWAY) JML_PUTAWAY
-		from MOVEMENT_D
-		where KETERANGAN2 in (
-			select
-				NO_REG
-			from kandang_siklus where status_siklus = 'O' and kode_farm = @p_kode_farm
-			group by NO_REG
-		)
-		and STATUS_STOK = 'NM'
-		and KETERANGAN1 = 'PUT'
-		and NO_PALLET >= @maksimal_pallet
-		group by
-			KETERANGAN2
-			, KODE_BARANG
-			, KODE_FARM
-	) md_put
-	left join (
-		select
-			KETERANGAN2 NO_REG
-			, KODE_BARANG
-			, KODE_FARM
-			, sum(JML_PICK) JML_PICK
-		from MOVEMENT_D
-		where KETERANGAN2 in (
-			select
-				NO_REG
-			from kandang_siklus where status_siklus = 'O' and kode_farm = @p_kode_farm
-			group by NO_REG
-		)
-		and STATUS_STOK = 'NM'
-		and KETERANGAN1 = 'PICK'
-		and NO_PALLET >= @maksimal_pallet
-		group by
-			KETERANGAN2
-			, KODE_BARANG
-			, KODE_FARM
-	) md_pick
-		on md_put.NO_REG = md_pick.NO_REG
-		and md_put.KODE_BARANG = md_pick.KODE_BARANG
-		and md_put.KODE_FARM = md_pick.KODE_FARM
-)x where x.jml_available > 0 order by x.no_reg
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526

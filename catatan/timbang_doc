@@ -46,6 +46,17 @@ CREATE TABLE timbang_pakan_detail (
 	CONSTRAINT timbang_pakan_detail_fk FOREIGN KEY (no_reg) REFERENCES KANDANG_SIKLUS(NO_REG)
 ) 
 
+CREATE TABLE timbang_pakan_silo_detail (
+	no_reg varchar(20) NOT NULL,
+	no_urut int not null DEFAULT 1,
+	jml int not null,
+	berat NUMERIC(5,2) not null,
+	tgl_buat datetime DEFAULT CURRENT_TIMESTAMP,
+	created_by varchar(15) not null,
+	PRIMARY KEY (no_reg,no_urut),
+	CONSTRAINT timbang_pakan_detail_silo_fk FOREIGN KEY (no_reg) REFERENCES KANDANG_SIKLUS(NO_REG)
+) 
+
 
 drop table sys_ssid;
 create table sys_ssid(

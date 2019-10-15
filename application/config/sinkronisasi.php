@@ -64,11 +64,11 @@ $config['route_sinkronisasi'] = array(
         /* simpan pengajuan budget glangsing save_budget  */
         , 'budget_pengembalian_glangsing/main/save_budget'
         /* plotting pelaksana */
-        , 'kandang/plotting_pelaksana/save', 'kandang/plotting_pelaksana/ack'
+        , 'kandang/plotting_pelaksana/save', 'kandang/plotting_pelaksana/ack',
         /** timbang doc */
-        ,'api/timbangDoc/simpanDataTimbang'
+        'api/timbangdoc/simpanDataTimbang',
         /** timbang pakan */
-        ,'api/timbangPakan/simpanTimbang'
+        'api/timbangPakan/simpanTimbang',
 );
 $config['methode_sinkronisasi'] = array(
     /* forecast */
@@ -133,7 +133,7 @@ $config['methode_sinkronisasi'] = array(
             /* plotting pelaksana */
             , 'kandang/plotting_pelaksana/save' => 'plotting_pelaksana', 'kandang/plotting_pelaksana/ack' => 'plotting_pelaksana_ack'
             /** timbang doc */    
-            ,'api/timbangDoc/simpanDataTimbang' => 'timbang_doc_simpan'
+            ,'api/timbangdoc/simpanDataTimbang' => 'timbang_doc_simpan'
                 /** timbang pakan */
             ,'api/timbangPakan/simpanTimbang' => 'timbang_pakan_simpan'
 );

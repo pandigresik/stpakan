@@ -42,6 +42,8 @@ class VerifikasiDOPakan extends REST_Controller
             $this->response("Unauthorized", 401);
             return;
         }
+   
+        
     }
 
     public function check_post()

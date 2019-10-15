@@ -67,6 +67,7 @@ class TimbangPakan extends REST_Controller
     
     public function simpanTimbang_post(){
         $detailTimbang = json_decode($this->post('detail'),1);
+        $detailTimbangSilo = json_decode($this->post('detailSilo'),1);
         /*$detailTimbang = [
             ["berat"=>149.9,"tgl_buat"=>"2019/08/10 09:26:27","id"=>1,"jml"=>3,"no_order"=>"2019-1/0001","no_reg"=>"WK/2019-1/01","no_urut"=>1],
             ["berat"=>149.9,"tgl_buat"=>"2019/08/10 09:32:56","id"=>2,"jml"=>3,"no_order"=>"2019-1/0003","no_reg"=>"WK/2019-1/01","no_urut"=>1]
@@ -74,44 +75,59 @@ class TimbangPakan extends REST_Controller
         $kode_pegawai = $this->decodedToken->kode_user;
         $this->load->model('m_timbang_pakan','md');
         $this->load->model('m_timbang_pakan_detail','mdtl');
+        $this->load->model('m_timbang_pakan_silo_detail','mdtls');
 		$listNoreg = array();
 		$dataDetail = array();        
-		
-	foreach($detailTimbang as $dt){
-		$noreg = $dt['no_reg'];
-		$no_order = $dt['no_order'];
-		if(!isset($listNoreg[$noreg])){
-			$listNoreg[$noreg] = [];
-		}
-		
-		if(!isset($listNoreg[$noreg][$no_order])){
-				$listNoreg[$noreg][$no_order] = [
-					'no_reg' => $noreg,	
-					'no_order' => $no_order,
-					'user_buat' => $kode_pegawai,
-					'tgl_buat' => $dt['tgl_buat'],
-                    'status' => 1,
-                    'berat' => 0
-				];
-			}
-        $listNoreg[$noreg][$no_order]['tgl_buat'] = $dt['tgl_buat'];
-        $listNoreg[$noreg][$no_order]['berat'] += $dt['berat'];
-		unset($dt['id']);
-		array_push($dataDetail,$dt);
-		
-	}
-	$details = [];
-	foreach($listNoreg as $noreg => $timbang){
-		/* hapus dulu datanya untuk memastikan saja*/
-		$this->mdtl->delete_by(['no_reg' => $noreg,'no_order' => array_keys($timbang)]);
-		$this->md->delete_by(['no_reg' => $noreg,'no_order' => array_keys($timbang)]);
-		$details[$noreg] = 	array_keys($timbang);
-		$this->md->insert_many($timbang);
-	}
-	
-	$this->mdtl->insert_many($dataDetail);
+        $details = [];
+        if(!empty($detailTimbang)){
+            foreach($detailTimbang as $dt){
+                $noreg = $dt['no_reg'];
+                $no_order = $dt['no_order'];
+                if(!isset($listNoreg[$noreg])){
+                    $listNoreg[$noreg] = [];
+                }
+                
+                if(!isset($listNoreg[$noreg][$no_order])){
+                        $listNoreg[$noreg][$no_order] = [
+                            'no_reg' => $noreg,	
+                            'no_order' => $no_order,
+                            'user_buat' => $kode_pegawai,
+                            'tgl_buat' => $dt['tgl_buat'],
+                            'status' => 1,
+                            'berat' => 0
+                        ];
+                    }
+                $listNoreg[$noreg][$no_order]['tgl_buat'] = $dt['tgl_buat'];
+                $listNoreg[$noreg][$no_order]['berat'] += $dt['berat'];
+                unset($dt['id']);
+                array_push($dataDetail,$dt);
+                
+            }
+            
+            foreach($listNoreg as $noreg => $timbang){
+                /* hapus dulu datanya untuk memastikan saja*/
+                $this->mdtl->delete_by(['no_reg' => $noreg,'no_order' => array_keys($timbang)]);
+                $this->md->delete_by(['no_reg' => $noreg,'no_order' => array_keys($timbang)]);
+                $details[$noreg] = 	array_keys($timbang);
+                $this->md->insert_many($timbang);
+            }
+            
+            $this->mdtl->insert_many($dataDetail);
+        }	
+        
+        if(!empty($detailTimbangSilo)){
+            foreach($detailTimbangSilo as $dts){
+                $this->mdtls->delete_by(['no_reg' => $dts['no_reg'], 'no_urut' => $dts['no_urut']]);
+                unset($dts['id']);
+                unset($dts['uploaded']);
+                $this->mdtls->insert($dts);
+            }
+        }
+
         $this->result['status'] = 1;
         $this->result['detail'] = $details;
+        $this->result['detailSilo'] = $detailTimbangSilo;
+        
         $this->result['message'] = 'Data penimbangan berhasil disimpan';
         
         $this->set_response($this->result, 200);
