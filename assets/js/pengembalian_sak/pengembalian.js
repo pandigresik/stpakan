@@ -178,11 +178,7 @@ var Pengembalian = {
                 _total_sak_semua = 0,
                 _tmp = {};
             var _no_reg = $('#tabel_detail_pengembalian_sak').data('no_reg');
-<<<<<<< HEAD
             var _jml_kembali, _brt_kembali, _kode_barang, _jenis_kelamin, _target_kembali, _lepas_kontrol;
-=======
-            var _jml_kembali, _brt_kembali, _kode_barang, _jenis_kelamin, _target_kembali;
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
             var _total_kembali = {}; /* total pengembalian sak per kode barang */
             var _total_outstanding = {}; /* total outstanding sak per kode barang */
             _siap_simpan.each(function() {
@@ -195,7 +191,6 @@ var Pengembalian = {
 
                 /** pastikan yang diinput = target pengembalian */
                 _target_kembali = $(this).find('input[name=jml_pengembalian]').data('maxvalue');
-<<<<<<< HEAD
                 _lepas_kontrol = $(this).find('input[name=jml_pengembalian]').data('lepaskontrol');
                 if (_jml_kembali != _target_kembali) {
                     if(!_lepas_kontrol){
@@ -203,12 +198,6 @@ var Pengembalian = {
                         _pesan.push('Jumlah pengembalian sak belum sesuai dengan jumlah pemakaian');
                         return false;
                     }
-=======
-                if (_jml_kembali != _target_kembali) {
-                    _error++;
-                    _pesan.push('Jumlah pengembalian sak belum sesuai dengan jumlah pemakaian');
-                    return false;
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                 }
                 if (_total_kembali[_kode_barang] === undefined) {
                     _total_kembali[_kode_barang] = 0;
@@ -259,17 +248,13 @@ var Pengembalian = {
                             var rowid = 0;
                             var jml_target = 0;
                             var input_jml = 0;
-<<<<<<< HEAD
                             var _error_flag = 0;
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                             $('#tabel_pengembalian_sak #tabel_detail_pengembalian_sak tbody').find('tr .input_jml_kembali').each(function() {
                                 rowid++;
                                 jml_target += parseInt($('#tabel_pengembalian_sak #tabel_detail_pengembalian_sak tbody #tr' + rowid + ' .target_kembali').html());
                                 input_jml += parseInt($('#tabel_pengembalian_sak #tabel_detail_pengembalian_sak tbody #tr' + rowid + ' .input_jml_kembali').val());
                             });
 
-<<<<<<< HEAD
                             
                             if (jml_target != input_jml) {
                                 _error_flag = 1;
@@ -280,9 +265,6 @@ var Pengembalian = {
                             }
                             
                             if (!_error_flag) {
-=======
-                            if (jml_target == input_jml) {
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                                 Pengembalian._total_jml_sak = input_jml;
                                 Pengembalian.tampil_dialog_timbang();
                             } else {

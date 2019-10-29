@@ -713,11 +713,7 @@ var BAPD = {
         }
         _tr.find('input[name=bb_rata2]').priceFormat({
             prefix: '',
-<<<<<<< HEAD
             centsLimit: 5,
-=======
-            centsLimit: 3,
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
             centsSeparator: ',',
             thousandsSeparator: '.'
         });
