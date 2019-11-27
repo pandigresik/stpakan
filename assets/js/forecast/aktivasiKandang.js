@@ -9,10 +9,20 @@ var AktivasiKandang = {
     minKonfirmasi: 9, //9
     maxRejectApprove: 6,
     kandangReject: {},
+    tglKirimBisaDiubah : 0,
+    //statusBolehGantiTglKirim: [1, 'RJ','RL','P1'],
     statusBolehGantiTglKirim: [1, 'RJ'],
     minKirim: 3, // 3
     maxKirim: 2, //2
     maxKirim25: 1, //1
+    /* standarnya adalah pp adalah 3 */
+    maxKebutuhanPakan: 3,
+    /* standarnya adalah pp hanya untuk pp pertama kali */
+    maxKebutuhanPakanDoc: 7,
+    maxKebutuhanHarian: 1,
+    umurPakanHarian: 19,
+    ppAkanPanen: 22,
+
     rejectedElm: null,
     setKandangReject: function(idFarm, tglDocIn, noreg) {
         if (this.kandangReject[idFarm] == undefined) {
@@ -396,7 +406,13 @@ var AktivasiKandang = {
     },
 
     generateRencanaKirim: function(_rencanaKirim, idFarm, _tglDocIn, _populasi) {
-        var _tr_arr = Forecast.generateRencanaKirim(_rencanaKirim, idFarm, _tglDocIn, _populasi);
+        var _tr_arr = Forecast.generateRencanaKirim(_rencanaKirim, idFarm, _tglDocIn, _populasi,_rulePP);
+        var _rulePP = {
+            maxKebutuhanPakan : this.maxKebutuhanPakan,
+            maxKebutuhanPakanAwaBdy: this.maxKebutuhanPakanDoc,
+            maxKebutuhanPakanHarian: this.maxKebutuhanHarian,
+            umurPakanHarian: this.umurPakanHarian,
+        };
         var _tbody = '<tbody><tr>' + _tr_arr['data'].join('</tr><tr>') + '</tr></tbody>';
         var _thead = '<thead><tr><th data-id="tglkirim">Tanggal Kirim</th><th data-id="tglkebutuhan">Tanggal Kebutuhan</th><th data-id="kodepakan">Kode Pakan</th><th data-id="namapakan">Nama Pakan</th><th data-id="bentuk">Bentuk</th><th data-id="kuantitas">Kuantitas <br /> (Sak)</th></tr></thead>';
         var _content = '<div class="div_rencana_kirim"><table data-sheetname="' + _tglDocIn + '" class="table table-bordered breakdown_pakan">' + _thead + _tbody + '</table></div>';
@@ -405,8 +421,13 @@ var AktivasiKandang = {
     },
 
     generateRencanaKirimInput: function(_rencanaKirim, idFarm, _tglDocIn, _populasi) {
-
-        var _tr_arr = Forecast.generateRencanaKirimInput(_rencanaKirim, idFarm, _tglDocIn, _populasi);
+        var _rulePP = {
+            maxKebutuhanPakan : this.maxKebutuhanPakan,
+            maxKebutuhanPakanAwaBdy: this.maxKebutuhanPakanDoc,
+            maxKebutuhanPakanHarian: this.maxKebutuhanHarian,
+            umurPakanHarian: this.umurPakanHarian,
+        };
+        var _tr_arr = Forecast.generateRencanaKirimInput(_rencanaKirim, idFarm, _tglDocIn, _populasi,_rulePP);
         //	console.log(_tr_arr);
         var standart_perumur = Forecast.get_standart_budidaya_bdy(idFarm, _tglDocIn);
         var _ganti_pakan = Forecast.getGantiPakan(standart_perumur['j']);
@@ -754,6 +775,12 @@ var AktivasiKandang = {
             dateFormat: 'dd M yy',
         };
         var bolehRubahTglKirim = (bisaRubahTglKirim == undefined) ? 0 : bisaRubahTglKirim;
+
+        /** tgl kirim gak boleh dirubah, mengikuti settingan database */
+		if(!this.tglKirimBisaDiubah){
+			bolehRubahTglKirim = 0;
+        }
+        
         var _tglLama, _ini, _adadp, _maxDate, _tmpMaxDate, _tmpMinDate;
         tabel.find('table tbody>tr').each(function() {
             var _tdKirim = $(this).find('td:first');

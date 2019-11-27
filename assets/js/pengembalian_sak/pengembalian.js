@@ -310,6 +310,9 @@ var Pengembalian = {
 
     check_hasil_timbang: function(elm) {
         var berat = $(elm).val();
+        if(empty(berat)){
+            berat = 0;
+        }
         //$('.modal-dialog #dlg_hasil_timbang').val(parseFloat(berat).toFixed(3));
         Pengembalian._total_berat_timbang_kg = berat;
         Pengembalian._total_berat_timbang = parseInt(berat * 1000);

@@ -387,17 +387,19 @@ class Pengembalian extends MY_Controller {
 
 	public function check_pengembalian_noreg_hari_ini(){
 		$noreg = $this->input->get('noreg');		
-		$pengembalian = $this->mps->check_pengembalian_noreg_hari_ini($noreg)->result();
+		//$pengembalian = $this->mps->check_pengembalian_noreg_hari_ini($noreg)->result();
+		$pengembalian = 1; //angggap sudah ada pengembalian hari ini
 		$result = array('status' => 0, 'message' => '', 'content' => array());
 		if(empty($pengembalian)){
 			/* kalau kosong berarti tidak ada sak yang perlu dikembalikan */
 			$result['status'] = 1;
 		}else{
-			foreach($pengembalian as $p){
+			/*foreach($pengembalian as $p){
 				if(empty($p->no_reg)){
-					array_push($result['content'],$p->ksnoreg);/* berarti belum input pengembalian sak */
+					array_push($result['content'],$p->ksnoreg);
 				}
-			}
+			}*/
+			array_push($result['content'],$noreg);
 			if(!empty($result['content'])){
 				$result['status'] = 0;
 				/* cek hutang sak */

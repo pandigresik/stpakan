@@ -15,7 +15,8 @@
 					})
 				},
 			},
-			cache: false,
+			//cache: false,
+			cache: true,
 			beforeSend:function(){
 
 			},

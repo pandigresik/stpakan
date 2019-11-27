@@ -99,6 +99,7 @@ class Cetak_form_lhk extends MX_Controller{
 				$data["pakan"][$key]['JML_STOK_PAKAN_PAKAI'] = $data['pakan_pakai'][$val['KODE_BARANG']]['jml_stok'];
 				$data["pakan"][$key]['JML_MAKS_PP_ORDER'] = isset($jml_maks_pp_order[$val['KODE_BARANG']]) ? $jml_maks_pp_order[$val['KODE_BARANG']] : 0;
 			}
+
 			
 			//populasi (penjumlahan mati + afkir), harus lebih kecil dari STOK_AYAM
 			/* cari jumlah ayamnya dan stok akhir kandang tgl lhk sebelumnya */
@@ -494,7 +495,7 @@ class Cetak_form_lhk extends MX_Controller{
 				$totalMati = $_totalMati['mati'];
 				// $tmp = $this->db->select(array('c_awal','c_jumlah','c_mati','c_afkir'))->where(array('no_reg' => $noreg))->order_by('tgl_transaksi','desc')->get('rhk')->row_array();				
 				$tmp = $this->m_riwayat->get_populasi_pakan_rhk($noreg);
-				$c_jumlah_sebelumnya = $tmp['C_AWAL'];
+				$c_jumlah_sebelumnya = $tmp['c_awal'];
 			}
 		}else{
 			// $tmp = $this->db->select(array('c_awal','c_jumlah','c_mati','c_afkir'))->where(array('no_reg' => $noreg))->order_by('tgl_transaksi','desc')->get('rhk')->row_array();

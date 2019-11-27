@@ -109,7 +109,6 @@ class Transaksi extends MY_Controller {
         if ($this->_grup_farm == 'bdy'){
             $data_pengambilan = $this->m_transaksi->susun_data_detail_order_kandang_bdy($no_order, $kode_farm, $this->_berat);
             $data ['items_result_transaksi'] = $data_pengambilan['data'];
-       
         }        
         $this->load->model('master/m_hand_pallet','mhp');
         $data['jml_hand_pallet'] = count($this->mhp->as_array()->get_many_by(array('status_pallet'=>'N')));

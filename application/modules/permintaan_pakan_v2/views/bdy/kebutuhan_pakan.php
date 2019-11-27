@@ -57,8 +57,13 @@
 								if(!$index){
 									//echo '<td class="sisa_gudang" rowspan="'.$rowspan.'">'.$summary['sisa_gudang'].'</td>';
 									echo '<td class="sisa_kandang" rowspan="'.$rowspan.'">'.$summary['sisa_kandang'].'</td>';									
+									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['adg']) ? formatAngka($summary['adg'] ,0) : '').'</td>';
+									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['adg_standart']) ? formatAngka(($summary['adg'] / $summary['adg_standart']) * 100 ,2) : '').' %</td>';
+									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['kons']) ? formatAngka($summary['kons'],0) : '').'</td>';
+									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['kons_standart']) ? formatAngka(($summary['kons'] / $summary['kons_standart']) * 100 ,2) : '').' %</td>';
 								}
-								echo '<td class="pakan_farm_lain">'.$p['pakan_farm_lain'].'</td>';
+								
+							//	echo '<td class="pakan_farm_lain">'.$p['pakan_farm_lain'].'</td>';
 								echo '<td class="rekomendasi_pp" data-komposisi="'.$p['komposisi'].'" data-pengurang_pp="'.$p['pengurang_pp'].'" data-jml_pp_asli="'.$p['jml_asli'].'" data-pengurang_pp="'.$p['pengurang_pp'].'" data-forecast="'.$p['forecast'].'">'.$p['rekomendasi_pp'].'</td>';
 								echo '<td>'.$input_kf.'</td>';
 								echo '<td>'.$keterangan_kf.'</td>';								

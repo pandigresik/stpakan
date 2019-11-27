@@ -42,7 +42,7 @@ $config['versiBaru'] = array(
     'GD' => 1,
     'CJ' => 1,
     'WK' => 1,
-    'BW' => 0,
+    'BW' => 1,
     'JD' => 0,
  );
 
@@ -53,3 +53,7 @@ $config['versiBaru'] = array(
     'BW' => 0,
     'JD' => 0,
  );
+
+ define('JSVERSION', '0.0.2');
+ define('CSSVERSION', '0.0.1');
+ 

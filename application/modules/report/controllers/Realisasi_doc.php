@@ -32,12 +32,13 @@ class Realisasi_doc extends MY_Controller {
 		$d_kodebox		= $this->m_model->get_kode_box_noreg($noreg)->result_array();
 		$status			= $this->m_model->get_status_approval($noreg)->row();
 		$log_approval	= $this->m_model->get_log_approval($noreg)->result_array();
-		
+		$d_timbangdoc   = $this->m_model->get_timbang_doc_noreg($noreg)->result_array();		
 		$data 		= array(
 				'noreg'			=> $noreg,
 				'tgl_docin'		=> $tgl_docin,
 				'bapdoc'		=> $bapdoc,
 				'DkodeBox'		=> $d_kodebox,
+				'dtimbangdoc'	=> $d_timbangdoc,
 				'status'		=> $status,
 				'log_approval'	=> $log_approval,
 		);

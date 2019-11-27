@@ -52,7 +52,7 @@ SQL;
 	}
 	public function list_kebutuhan_pakan_bdy($farm,$no_reg,$keb_awal,$keb_akhir,$tgl_awal_ganti = NULL){						
 		$sql = <<<SQL
-		exec dbo.pp_bdy_v2 :farm,:no_reg,:keb_awal,:keb_akhir,:tgl_awal_ganti
+		exec dbo.pp_bdy_v3 :farm,:no_reg,:keb_awal,:keb_akhir,:tgl_awal_ganti
 SQL;
 		$stmt = $this->db->conn_id->prepare($sql);
 		$stmt->bindParam(':farm',$farm);

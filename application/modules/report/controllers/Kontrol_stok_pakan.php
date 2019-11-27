@@ -30,4 +30,31 @@ class Kontrol_stok_pakan extends MY_Controller {
 		$this->load->view('report/'.$this->grup_farm.'/kontrol_stok_pakan',$data);
 	}
 
+	public function timbang_kandang()
+    {
+        $this->load->model('api/m_timbang_pakan_detail', 'mtpd');
+        
+        $noreg = $this->input->post('noreg');
+        $tglTransaksi = $this->input->post('tgl_transaksi');
+        $keyWhere = array(
+			'cast(tgl_buat as date) = \''.$tglTransaksi.'\'',
+            'no_reg' => $noreg
+        );
+		$mtpd = $this->mtpd->as_array()->get_many_by($keyWhere);
+        $this->load->view('report/'.$this->grup_farm.'/kontrol_stok_pakan/detail_timbang_pakan',['data' => $mtpd]);
+    }
+
+	public function timbang_silo()
+    {
+        $this->load->model('api/m_timbang_pakan_silo_detail', 'mtpd');
+        
+        $noreg = $this->input->post('noreg');
+        $tglTransaksi = $this->input->post('tgl_transaksi');
+        $keyWhere = array(
+			'cast(tgl_buat as date) = \''.$tglTransaksi.'\'',
+            'no_reg' => $noreg
+        );
+		$mtpd = $this->mtpd->as_array()->get_many_by($keyWhere);
+        $this->load->view('report/'.$this->grup_farm.'/kontrol_stok_pakan/detail_timbang_pakan_silo',['data' => $mtpd]);
+    }
 }

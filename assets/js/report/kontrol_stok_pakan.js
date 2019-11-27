@@ -488,7 +488,55 @@ var KSP = {
         }
 
         $(elm).toggleClass('glyphicon-minus glyphicon-plus');
-    }
+    },
+
+    showDetailTimbangKandang: function(elm) {
+        var noreg = $(elm).data('noreg');
+        var tgl_transaksi = $(elm).data('tgl_transaksi');
+        $.ajax({
+            beforeSend: function() {
+
+            },
+            type: 'post',
+            dataType: 'html',
+            data: { noreg: noreg, tgl_transaksi: tgl_transaksi },
+            url: 'report/kontrol_stok_pakan/timbang_kandang',
+            success: function(data) {
+                var _options = {
+                    title: 'Detail Timbang Pakan ' + noreg + ' Tanggal ' + Config._tanggalLocal(tgl_transaksi, '-', ' '),
+                    message: data,
+                    className: 'largeWidth',
+                };
+
+                bootbox.dialog(_options);
+            },
+        });
+        return false;
+    },
+
+    showDetailTimbangSilo: function(elm) {
+        var noreg = $(elm).data('noreg');
+        var tgl_transaksi = $(elm).data('tgl_transaksi');
+        $.ajax({
+            beforeSend: function() {
+
+            },
+            type: 'post',
+            dataType: 'html',
+            data: { noreg: noreg, tgl_transaksi: tgl_transaksi },
+            url: 'report/kontrol_stok_pakan/timbang_silo',
+            success: function(data) {
+                var _options = {
+                    title: 'Detail Timbang Silo ' + noreg + ' Tanggal ' + Config._tanggalLocal(tgl_transaksi, '-', ' '),
+                    message: data,
+                    className: 'largeWidth',
+                };
+
+                bootbox.dialog(_options);
+            },
+        });
+        return false;
+    },
 
 };
 var Approval = {

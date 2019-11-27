@@ -1321,7 +1321,7 @@ SQL;
         $belumInputRhk = array();
         $belumAckRhk = array();
         if (!empty($inputRhk)) {
-            foreach ($inputRhk as $ks) {
+        foreach ($inputRhk as $ks) {
                 if ($ks['sudahentrylhk']) {
                     if (empty($ks['ack_kf'])) {
                         array_push($belumAckRhk, $ks['nama']);
@@ -1346,7 +1346,7 @@ SQL;
         $r = array();
         $belumInputRhk = array();
         $belumAckRhk = array();
-
+        
         if (!empty($inputRhk)) {
             foreach ($inputRhk as $ks) {
                 if ($ks['sudahentrylhk']) {

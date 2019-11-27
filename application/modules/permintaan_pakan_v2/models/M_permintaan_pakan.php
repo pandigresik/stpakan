@@ -42,7 +42,7 @@ SQL;
 	public function list_kebutuhan_pakan_bdy_approve($no_lpb){
 
 		$sql = <<<SQL
-		exec dbo.pp_bdy_approve :no_lpb
+		exec dbo.pp_bdy_approve_v2 :no_lpb
 SQL;
 		$stmt = $this->db->conn_id->prepare($sql);
 		$stmt->bindParam(':no_lpb',$no_lpb);
@@ -52,7 +52,7 @@ SQL;
 	}
 	public function list_kebutuhan_pakan_bdy($farm,$no_reg,$keb_awal,$keb_akhir,$tgl_awal_ganti = NULL){						
 		$sql = <<<SQL
-		exec dbo.pp_bdy_v2 :farm,:no_reg,:keb_awal,:keb_akhir,:tgl_awal_ganti
+		exec dbo.pp_bdy_v3 :farm,:no_reg,:keb_awal,:keb_akhir,:tgl_awal_ganti
 SQL;
 		$stmt = $this->db->conn_id->prepare($sql);
 		$stmt->bindParam(':farm',$farm);
@@ -66,7 +66,7 @@ SQL;
 
 	public function list_kebutuhan_pakan_tambahan_bdy($noreg,$keb_awal,$keb_akhir,$kodepj){
 		$sql = <<<SQL
-		exec dbo.pp_bdy_pakan_tambahan_v2 :no_reg,:keb_awal,:keb_akhir,:kodepj
+		exec dbo.pp_bdy_pakan_tambahan_v3 :no_reg,:keb_awal,:keb_akhir,:kodepj
 SQL;
 		$stmt = $this->db->conn_id->prepare($sql);
 		$stmt->bindParam(':no_reg',$noreg);		

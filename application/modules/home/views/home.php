@@ -87,20 +87,7 @@
       }
     }
   });
-  /*
-  $.ajax({
-    url: 'permintaan_sak_kosong/permintaan/cek_status_reject_home',
-    dataType: 'json',
-    data:{
-    },
-    type:'POST',
-    success:function(response){
-      if(response.message != ''){
-        toastr.warning(response.message);
-      }
-    }
-  });
-  */
+  
 </script>
 
 </html>

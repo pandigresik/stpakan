@@ -73,7 +73,7 @@ class Riwayat_harian_kandang extends MY_Controller
         $terlambat = $this->kontrolTimeline($cetakRhk['TGL_TRANSAKSI']);
         if ($terlambat['content']) {
             if ($terlambat['block']) {
-                $this->result['message'] = 'Batas entry LHK sampai dengan 09:00';
+                $this->result['message'] = $terlambat['message'];
                 display_json($this->result);
 
                 return;
@@ -220,10 +220,22 @@ class Riwayat_harian_kandang extends MY_Controller
 
     private function kontrolTimeline($tglTransaksi)
     {
-        $tglSetelahnya = tglSetelah($tglTransaksi, 1); /** H+1 */
+        $message = 'Entry LHK untuk transaksi '.convertElemenTglIndonesia($tglTransaksi).' dapat dientry pada ';
+        //$tglSetelahnya = tglSetelah($tglTransaksi, 1); /** H+1 */
         $sekarang = new \Datetime();
-        $maxInput = new \Datetime($tglSetelahnya.' 09:00:00');
-        $terlambat = $maxInput > $sekarang ? 0 : 1;
+        $maxInput = new \Datetime($tglTransaksi.' 23:59:59');
+        $minInput = new \Datetime($tglTransaksi.' 16:00:00');
+        
+        $tidakBisaEntry = 1;
+        if($sekarang >= $minInput){
+            if($sekarang <= $maxInput){
+                $tidakBisaEntry = 0;
+            }
+        }
+
+        if($tidakBisaEntry){
+            $message .= convertElemenTglWaktuIndonesia($minInput->format('Y-m-d H:i:s')).' s.d '.convertElemenTglWaktuIndonesia($maxInput->format('Y-m-d H:i:s'));
+        }
         /** jika  1 maka gak bisa lanjut, jika 0 maka bisa lanjut  */
         $blockEntry = 1;
         $lockEntryRHK = $this->db->select(array('kode_config', 'value'))->where(array('kode_config' => '_lock_entry_rhk', 'kode_farm' => $this->_farm, 'context' => 'rhk', 'status' => '1'))->get('SYS_CONFIG_GENERAL')->row_array();
@@ -231,7 +243,7 @@ class Riwayat_harian_kandang extends MY_Controller
             $blockEntry = intval($lockEntryRHK['value']);
         }
 
-        return array('status' => 1, 'content' => $terlambat, 'block' => $blockEntry);
+        return array('status' => 1, 'content' => $tidakBisaEntry, 'block' => $blockEntry, 'message' => $message);
     }
 
     public function simpan_lhk()

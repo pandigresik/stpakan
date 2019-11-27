@@ -48,7 +48,7 @@
 <script type="text/javascript" src="assets/js/forecast/config.js"></script>
 <script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js"></script>
 <script type="text/javascript" src="assets/js/jquery.stickytable.js"></script>
-<script type="text/javascript" src="assets/js/report/kontrol_stok_pakan.js"></script>
+<script type="text/javascript" src="assets/js/report/kontrol_stok_pakan.js?<?php echo rand() ?>"></script>
 <style>
 .detailrhk{
 	margin-bottom: 15px;

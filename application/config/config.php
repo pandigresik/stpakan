@@ -212,11 +212,7 @@ $config ['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-<<<<<<< HEAD
 $config['log_threshold'] =1;
-=======
-$config['log_threshold'] = 1;
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 
 /*
  * |--------------------------------------------------------------------------

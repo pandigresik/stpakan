@@ -141,7 +141,7 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                                 echo '<td>'.formatAngka($_dpk['berat_pick'],3).'</td>';
                                 echo '<td>'.convertElemenTglWaktuIndonesia($_dpk['timbang_kandang']).'</td>';
                                 echo '<td>'.(empty($_dpk['user_verifikasi_kandang']) ? '' : $pengawas ).'</td>';
-                                echo '<td>'.formatAngka($_dpk['berat_kandang'],3).'</td>';
+                                echo '<td onclick="return KSP.showDetailTimbangKandang(this)" data-noreg="'.$noreg.'" data-tgl_transaksi="'.substr($_dpk['timbang_kandang'],0,10).'"  class="link_span">'.formatAngka($_dpk['berat_kandang'],3).'</td>';
                                 echo '<td>'.$stokAkhir.'</td>';
                                 echo '</tr>';
                                 $_index++;

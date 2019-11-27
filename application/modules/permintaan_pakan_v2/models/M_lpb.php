@@ -94,7 +94,8 @@ SQL;
 			$kode_farm = $param['lpb.kode_farm'];
 			$whereFlok = ' and ks.kode_farm =\''.$kode_farm.'\' and ks.flok_bdy = \''.$flok.'\'';			
 		}
-		
+		$adgValue = 'dbo.ADG_VALUE(le.NO_REG,le.TGL_LHK) as adg';
+		$adgStandartValue = 'DBO.ADGSTANDART_VALUE(le.NO_REG,le.TGL_LHK) as adg_standart';
 
 		$sql = <<<SQL
 		select lpb.no_lpb
@@ -152,6 +153,8 @@ SQL;
 					on ks.NO_REG = le.no_reg 				
 				where no_lpb = lpb.no_lpb)
 				flok_kandang			
+			,{$adgValue}	
+			,{$adgStandartValue}	
 		from lpb
 		inner join m_farm mf
 			on lpb.kode_farm = mf.kode_farm
@@ -181,6 +184,8 @@ SQL;
 			,lpb.tgl_approve1
 			,lpb.REF_ID
 			,lpb.status_lpb
+			,le.TGL_LHK
+			,le.NO_REG
 			,mp.kode_strain
 			,mf.nama_farm
 			,rlb.jml_optimasi

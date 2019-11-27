@@ -28,4 +28,3 @@ if (!empty($data)) {
 } else {
     echo '<div class="alert alert-warning">Data tidak ditemukan</div>';
 }
-?>

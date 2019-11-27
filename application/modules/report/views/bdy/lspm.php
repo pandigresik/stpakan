@@ -78,11 +78,7 @@
 </div>
 
 <link rel="stylesheet" type="text/css" href="assets/css/report/stok_pakan.css?v=5" >
-<<<<<<< HEAD
 <script type="text/javascript" src="assets/libs/ExcelJs/dist/jquery.techbytarun.excelexportjs.min.js"></script>
-=======
-<script type="text/javascript" src="assets/libs/ExcelExportJs/dist/jquery.techbytarun.excelexportjs.min.js"></script>
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 <script type="text/javascript" src="assets/libs/jszip/dist/jszip.min.js"></script>
 <script type="text/javascript" src="assets/js/FileSaver.js"></script>
 <script type="text/javascript" src="assets/js/forecast/config.js"></script>

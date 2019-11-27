@@ -15,8 +15,8 @@ class MY_Controller extends MX_Controller {
 		$class = $CI->router->fetch_class();
 		$method = $CI->router->fetch_method();
 		$route = $module.'/'. $class.'/'.$method;	
-		//$hasPermission = Modules::run('user/user/hasPermission',$route);
-		$hasPermission = 1;
+		$hasPermission = Modules::run('user/user/hasPermission',$route);
+		//$hasPermission = 1;
 		//if(!$hasPermission)	$CI->firephp->log($route);
 
 		/* cek harus login dulu aja */

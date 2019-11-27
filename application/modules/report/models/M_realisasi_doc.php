@@ -18,12 +18,23 @@ SQL;
 		$sql = <<<SQL
 			select bds.NO_SJ NO_SJ, bds.FOTO,
 			bdb.KODE_BOX, bdb.JML_BOX, bds.TgL_TERIMA, mp.NAMA_PEGAWAI 
+			,(select top 1 mp2.NAMA_PEGAWAI from M_PLOTING_PELAKSANA mpp join M_PEGAWAI mp2 on mpp.PENGAWAS = mp2.KODE_PEGAWAI where NO_REG = '{$noreg}') as NAMA_PENGAWAS
+			,(select min(tgl_buat) from timbang_doc_detail where NO_REG = '{$noreg}') as TERIMA_KANDANG
 				from BAP_DOC_BOX bdb 
 				join BAP_DOC_SJ bds on bds.NO_REG = bdb.NO_REG 
 					and bds.NO_SJ = substring(bdb.NO_SJ, 0, 11) 
 				join M_PEGAWAI mp on mp.KODE_PEGAWAI = bds.USER_BUAT
 				where bdb.no_reg = '{$noreg}'
 				order by NO_SJ ASC
+SQL;
+		return $this->db->query($sql);
+	}
+
+	public function get_timbang_doc_noreg($noreg){
+		$sql = <<<SQL
+			select * from timbang_doc_detail
+				where no_reg = '{$noreg}'
+				order by NO_URUT
 SQL;
 		return $this->db->query($sql);
 	}

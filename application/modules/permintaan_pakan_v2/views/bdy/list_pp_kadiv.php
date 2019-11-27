@@ -11,7 +11,9 @@
 							echo '<th class="">Kandang</th>';							
 							echo '<th>Tanggal <br /> Kirim</th>';
 							echo '<th class="tgl_kebutuhan">Tanggal <br /> Kebutuhan</th>';
-							echo '<th>Umur Pakan</th>';							
+							echo '<th>Umur Pakan</th>';
+							echo '<th>ADG</th>';	
+							echo '<th>% STD</th>';							
 							echo '<th class="data_pp">Rekomendasi PP <br /> ( Sak )</th>';
 							echo '<th class="data_pp">Pengajuan <br />Kepala Farm<br />  ( Sak )</th>';
 							echo '<th class="data_pp">Pengajuan <br />Kepala Departemen <br /> ( Sak )</th>';
@@ -29,7 +31,10 @@
 							/** buat keterangan */
 							if(empty($baris['persetujuan_pp'])){
 								continue;
-							}							
+							}
+							$adg = $baris['adg'];
+							$adgPersen = !empty($baris['adg']) ? formatAngka(($baris['adg'] / $baris['adg_standart']) * 100,2) : '';						
+							$classAdg = $baris['adg'] < $baris['adg_standart'] ? 'abang' : '';
 							$keterangan = buildHistoryPP($baris);								
 							$flok_kandang = explode(' - ',$baris['flok_kandang']);
 							$flok = $flok_kandang[0];
@@ -49,6 +54,8 @@
 								echo '<td>'.$tgl_kirim.'</td>';
 								echo '<td>'.$tgl_kebutuhan.'</td>';								
 								echo '<td>'.$umur_pakan.'</td>';
+								echo '<td class="'.$classAdg.'">'.(!empty($adg) ? formatAngka($adg,0) : '').'</td>';
+								echo '<td class="'.$classAdg.'">'.$adgPersen.'</td>';
 								echo '<td class="data_pp">'.$baris['optimasi_pp'].'</td>';
 								echo '<td class="data_pp">'.$baris['rekomendasi_pp'].'</td>';
 								echo '<td class="data_pp">'.$baris['persetujuan_pp'].'</td>';	

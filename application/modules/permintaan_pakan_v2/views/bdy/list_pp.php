@@ -8,7 +8,9 @@
 							echo '<th class="ftl">Kandang</th>';																					
 							echo '<th class="tanggal">Tanggal <br /> Kirim</th>';
 							echo '<th class="tgl_kebutuhan">Tanggal <br /> Kebutuhan</th>';
-							echo '<th class="data_pp">Umur Pakan</th>';							
+							echo '<th class="data_pp">Umur Pakan</th>';						
+							echo '<th>ADG</th>';	
+							echo '<th>% STD</th>';	
 							echo '<th class="data_pp">Rekomendasi PP <br /> ( Sak )</th>';
 							echo '<th class="data_pp">Pengajuan <br /> Kepala Farm <br /> ( Sak )</th>';
 							echo '<th class="data_pp">Pengajuan <br /> Kepala Departemen <br /> ( Sak )</th>';
@@ -19,6 +21,9 @@
 						//$hidden_kuantitas_pp = array('V','RJ');
 						$show_persetujuan_pp = array('A','RV','RJ','V');
 						foreach($list_pp as $baris){
+							$adg = $baris['adg'];
+							$adgPersen = !empty($baris['adg']) ? formatAngka(($baris['adg'] / $baris['adg_standart']) * 100,2) : '';						
+							$classAdg = $baris['adg'] < $baris['adg_standart'] ? 'abang' : '';
 							echo '<tr>';
 								$status_lpb = $baris['status_lpb'];
 								$tgl_buat = convertElemenTglWaktuIndonesia($baris['tgl_buat']);
@@ -50,6 +55,8 @@
 								echo '<td class="tanggal">'.$tgl_kirim.'</td>';
 								echo '<td class="tgl_kebutuhan">'.$tgl_kebutuhan.'</td>';						
 								echo '<td class="data_pp">'.$umur_pakan.'</td>';
+								echo '<td class="'.$classAdg.'">'.(!empty($adg) ? formatAngka($adg,0) : '').'</td>';
+								echo '<td class="'.$classAdg.'">'.$adgPersen.'</td>';
 								echo '<td class="data_pp">'.$baris['optimasi_pp'].'</td>';
 								echo '<td class="data_pp">'.$baris['rekomendasi_pp'].'</td>';
 								echo '<td class="data_pp">'.(in_array($baris['status_lpb'],$show_persetujuan_pp) ? $baris['persetujuan_pp'] : '').'</td>';						

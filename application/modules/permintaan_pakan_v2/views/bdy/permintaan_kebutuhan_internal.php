@@ -19,7 +19,11 @@
 					<th rowspan="2">Tanggal Kebutuhan</th>
 					<th rowspan="2">Rekomendasi kebutuhan <br /> (Sak)</th>
 					<th rowspan="2">Stok Pakan Kandang (Sak)</th>
-					<th rowspan="2">Pakan dari Farm Lain <br /> (Sak)</th>
+					<th rowspan="2">ADG</th>
+					<th rowspan="2">% Std</th>
+					<th rowspan="2">Kons</th>
+					<th rowspan="2">% Std</th>
+			<!--	<th rowspan="2">Pakan dari Farm Lain <br /> (Sak)</th> -->
 					<th rowspan="2">Rekomendasi PP <br /> (sak)</th>
 					<th colspan="2">Pengajuan Kepala Farm</th>
 					<th colspan="2">Pengajuan Kepala Departemen</th>					

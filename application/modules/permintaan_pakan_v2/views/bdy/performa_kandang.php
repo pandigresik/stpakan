@@ -15,6 +15,7 @@
 			<th rowspan="2">DH (%)</th>
 			<th rowspan="2">FCR</th>
 			<th rowspan="2">ADG</th>
+		<!--	<th rowspan="2">ADG Standart</th> -->
 			<th rowspan="2">IP</th>
 		</tr>
 		<tr>
@@ -52,6 +53,7 @@
 				echo '<td>'.formatAngka($lhk['dh'],2).'</td>';
 				echo '<td>'.formatAngka($lhk['fcr'],3).'</td>';
 				echo '<td>'.formatAngka($lhk['adg'],3).'</td>';
+				//echo '<td>'.formatAngka($lhk['adg_standart'],3).'</td>';
 				echo '<td>'.formatAngka($lhk['ip'],0).'</td>';
 				echo '</tr>';
 			}

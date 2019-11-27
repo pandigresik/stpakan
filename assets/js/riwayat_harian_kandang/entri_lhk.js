@@ -57,21 +57,12 @@ var EntriLHK = {
         this.updateRekomendasiKebutuhan();
 
     },
-<<<<<<< HEAD
     calcBBRata2: function(elm) {
         var jumlah_sekat = $(elm).closest('tr').find('td.td_jumlah_sekat > input').val() || 0;
         var bb_sekat = $(elm).closest('tr').find('td.td_bb_sekat > input').val() || 0;
         var bb_rata2_sekat = bb_sekat / jumlah_sekat;
 
         $(elm).closest('tr').find('td.td_bb_rata_sekat > input').val(bb_rata2_sekat);
-=======
-	calcBBRata2: function(elm) {
-		var jumlah_sekat = $(elm).closest('tr').find('td.td_jumlah_sekat > input').val() || 0;
-		var bb_sekat = $(elm).closest('tr').find('td.td_bb_sekat > input').val() || 0;
-		var bb_rata2_sekat = bb_sekat/jumlah_sekat;
-		
-		$(elm).closest('tr').find('td.td_bb_rata_sekat > input').val(bb_rata2_sekat);
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
     },
     updateRekomendasiKebutuhan: function() {
         var _pengurang = 0;
@@ -217,7 +208,8 @@ var EntriLHK = {
             EntriLHK._keteranganTimeline = null;
             if (_t.content) {
                 if (_t.block) {
-                    bootbox.alert('Entry LHK hanya bisa dilakukan max jam 09:00');
+                    //bootbox.alert('Entry LHK hanya bisa dilakukan max jam 09:00');
+                    bootbox.alert(_t.message);
                     return false;
                 }
                 var _content = ['<div class="dialog_reject text-center">',
@@ -446,11 +438,7 @@ var EntriLHK = {
     simpan_transaksi_verifikasi: function(callback) {
         $.ajax({
             type: "POST",
-<<<<<<< HEAD
             url: "fingerprint/fingerprint/simpan_transaksi_verifikasi",
-=======
-            url: "pengambilan_barang/transaksi/simpan_transaksi_verifikasi",
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
             data: {
                 transaction: 'entry_lhk',
             },
@@ -467,11 +455,7 @@ var EntriLHK = {
             var _result = { result: 0 };
             $.ajax({
                 type: "POST",
-<<<<<<< HEAD
                 url: "fingerprint/fingerprint/cek_verifikasi",
-=======
-                url: "pengambilan_barang/transaksi/cek_verifikasi",
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                 data: {
                     date_transaction: date_transaction,
                     noreg: _noreg,

@@ -262,11 +262,7 @@ var CetakLHK = {
                                             toastr.success('Fingerprint sukses.', 'Berhasil');
                                             if (umur >= 26)
                                                 bootbox.dialog({
-<<<<<<< HEAD
                                                     message: "Apakah LHK tanggal " + tgllhk_sebelum + " merupakan LHK terakhir (Panen telah selesai)?",
-=======
-                                                    message: "Apakah LHK tanggal " + formatted_tgllhk + " merupakan LHK terakhir (Panen telah selesai)?",
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
                                                     title: "Konfirmasi",
                                                     buttons: {
                                                         success: {

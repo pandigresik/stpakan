@@ -2726,7 +2726,7 @@ var Forecast = {
             return Forecast.rencanaKirimBdy[kodeFarm][tglDocIn];
         }
     },
-    generateRencanaKirim: function(_rencanaKirim, idFarm, _tglDocIn, _populasi) {
+    generateRencanaKirim: function(_rencanaKirim, idFarm, _tglDocIn, _populasi, _rulePP) {
         _tglDocIn = Config._convertTgl(_tglDocIn);
         var _kebutuhan_awal = new Date(_tglDocIn);
         var _nextDate = new Date(_tglDocIn);
@@ -2771,11 +2771,11 @@ var Forecast = {
                         _timeline = Permintaan.timeline_pp(_kebutuhan_pakan_timeline, _grup_farm, _tglDocIn);
 
                         if (Config._getDateStr(_kebutuhan_awal) == Config._getDateStr(_DocInDate)) {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 7);
-                        } else if (_umur < 19) {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 3);
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakanAwaBdy);
+                        } else if (_umur < _rulePP.umurPakanHarian) {
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakan);
                         } else {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 1);
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakanHarian);
                         }
                         //	_tglKirim = _timeline.tglKirimDefault;
                         _tglKirim = _timeline.tglKirimDate;
@@ -2820,7 +2820,7 @@ var Forecast = {
         return { "data": _tr_arr, "resume_tglkirim": _totalPerTglKirim };
     },
     /* user bisa menentukan jumlah pakan */
-    generateRencanaKirimInput: function(_rencanaKirim, idFarm, _tglDocIn, _populasi) {
+    generateRencanaKirimInput: function(_rencanaKirim, idFarm, _tglDocIn, _populasi, _rulePP) {
         _tglDocIn = Config._convertTgl(_tglDocIn);
         var _kebutuhan_awal = new Date(_tglDocIn);
         var _nextDate = new Date(_tglDocIn);
@@ -2882,12 +2882,13 @@ var Forecast = {
                         _timeline = Permintaan.timeline_pp(_kebutuhan_pakan_timeline, _grup_farm, _tglDocIn);
 
                         if (Config._getDateStr(_kebutuhan_awal) == Config._getDateStr(_DocInDate)) {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 7);
-                        } else if (_umur < 19) {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 3);
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakanAwaBdy);
+                        } else if (_umur < _rulePP.umurPakanHarian) {
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakan);
                         } else {
-                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + 1);
+                            _kebutuhan_awal.setDate(_kebutuhan_awal.getDate() + _rulePP.maxKebutuhanPakanHarian);
                         }
+
                         //	_tglKirim = _timeline.tglKirimDefault;
                         _tglKirim = _timeline.tglKirimDate;
                         _tglKirimStr = Config._tanggalLocal(Config._getDateStr(_tglKirim), '-', ' ');
@@ -2938,7 +2939,7 @@ var Forecast = {
 
                 _td_arr = [_tglKirimStr, _tglTampil];
                 for (var _pj in _pakanStandart) {
-                    _td_arr.push('<input class="number jml_forecast" data-tglkebutuhan="' + Config._convertTgl(Config._getDateStr(_nextDate)) + '" data-kodepj="' + _pj + '" data-standart="' + _kebperpj[_pj] + '" type="text" value="' + Forecast.ceil2(_forecastperpj[_pj]) + '"/><span class="tooltip_bdy"> Nilai standart : ' + Forecast.ceil2(_kebperpj[_pj]) + ' sak</span>');
+                    _td_arr.push('<span class="tooltip_bdy"> Nilai standart : ' + Forecast.ceil2(_kebperpj[_pj]) + ' sak</span><input class="number jml_forecast" data-tglkebutuhan="' + Config._convertTgl(Config._getDateStr(_nextDate)) + '" data-kodepj="' + _pj + '" data-standart="' + _kebperpj[_pj] + '" type="text" value="' + Forecast.ceil2(_forecastperpj[_pj]) + '"/>');
                 }
                 _tr_arr.push('<td  data-tglKeb="' + Config._convertTgl(Config._getDateStr(_nextDate)) + '" data-umur="' + _umur + '">' + _td_arr.join('</td><td class="has-tooltip_bdy">') + '</td>');
                 if (_totalPerTglKirim[_tglKirimSebelumnya] == undefined) {

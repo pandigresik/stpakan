@@ -2,8 +2,8 @@
 <div id="div_permintaan_pakan"></div>
 
 <div id="farm_versi_baru" class="hide"><?php echo json_encode($versi_baru) ?></div>
-<link rel="stylesheet" type="text/css" href="assets/css/jquery.stickytable.css?v=0.2" >
-<script type="text/javascript" src="assets/js/forecast/config.js"></script>
-<script type="text/javascript" src="assets/js/jquery.stickytable.js"></script>
-<script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js"></script>
-<script type="text/javascript" src="assets/js/permintaan_pakan_v2/permintaan_pakan.js"></script>
+<link rel="stylesheet" type="text/css" href="assets/css/jquery.stickytable.css?v=<?php echo CSSVERSION ?>" >
+<script type="text/javascript" src="assets/js/forecast/config.js?version=<?php echo JSVERSION ?>"></script>
+<script type="text/javascript" src="assets/js/jquery.stickytable.js?v=<?php echo JSVERSION ?>"></script>
+<script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js?v=<?php echo JSVERSION ?>"></script>
+<script type="text/javascript" src="assets/js/permintaan_pakan_v2/permintaan_pakan.js?v=<?php echo JSVERSION ?>"></script>

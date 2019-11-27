@@ -11,11 +11,7 @@ class SinkronisasiControllerHook{
     $route_sinc = $this->CI->config->item('route_sinkronisasi');
     $method_sinc = $this->CI->config->item('methode_sinkronisasi');
     $params = $this->getParams();
-<<<<<<< HEAD
   
-=======
-
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
     if(in_array($route,$route_sinc)){
         $this->CI->load->module('sinkronisasi/entrysinkronisasi','entrysinkronisasi');
         $func = $method_sinc[$route];
@@ -48,7 +44,6 @@ class SinkronisasiControllerHook{
 			}*/
 		}
 		return $result;
-<<<<<<< HEAD
   }
   
   function log_message($message){
@@ -57,7 +52,4 @@ class SinkronisasiControllerHook{
     fwrite($handle, $message . "\n\n");  
   }
   
-=======
-	}
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 }

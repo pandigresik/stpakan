@@ -41,7 +41,7 @@ th.header_pakan{
 #container_detailrhk{
 	max-height : 400px;
 	overflow : auto;
-//	border : 1px solid gray;
+/*	border : 1px solid gray;*/
 }
 td.terima_sak{
 	min-width : 50px;

@@ -218,7 +218,7 @@ class Permintaan_pakan extends MY_Controller
                 $view_pp = $user_level == 'KDV' ? 'list_pp_kadiv' : 'list_pp';
                 break;
         }
-
+        
         $data['keterangan_reject'] = $keterangan_reject;
         if (in_array($user_level, $this->_canCreatePP)) {
             $pesan = 'Belum ada PP yang dibuat';
@@ -897,6 +897,7 @@ SQL;
                 $arr = $this->mpp->list_kebutuhan_pakan_bdy($kode_farm, $no_reg, $awal, $akhir);
             }
         }
+        
         $summary_perpakan = array();
         $urut_pakan = array();
         $tmp = array();
@@ -1064,7 +1065,9 @@ SQL;
                 'berat_badan' => !empty($bb_awal['berat_badan']) ? $bb_awal['berat_badan'] : 0,
                 'hari' => '0',
             );
-            $bbStandartLalu = 0;
+            $bbStandartLalu = $bbLalu;
+            $bbStandart = array();
+            //$stdBudidaya = $this->detailStandartBudidaya($noreg);
             foreach ($rhk as $r) {
                 $jmlPanen = isset($panen[$r['tgl_transaksi']]) ? $panen[$r['tgl_transaksi']]['jml_panen'] : 0;
                 if ($r['umur'] > 7) {
@@ -1083,7 +1086,12 @@ SQL;
                     'berat_badan' => $bb_rata,
                     'hari' => $umur,
                 );
-
+                /*$data_bb_standart = array(
+                    'berat_badan' => ($stdBudidaya[$umur]['target_bb'] / 1000),
+                    'hari' => $umur,
+                );
+                $adgStandart = hitungADG($data_bb_standart, $bbStandartLalu);
+                */
                 $adg = hitungADG($data_bb, $bbLalu);
                 $ip = hitungIP($dh, $bb_rata, round($fcr, 3), $umur);
                 $tmp = array(
@@ -1096,9 +1104,11 @@ SQL;
                     'fcr' => round($fcr, 3),
                     'adg' => $adg,
                     'ip' => $ip,
+                   // 'adg_standart' => $adgStandart
                 );
                 array_push($result, $tmp);
                 $bbLalu = $data_bb;
+                //$bbStandartLalu = $data_bb_standart;
             }
         }
 
@@ -1162,6 +1172,10 @@ SQL;
                             'nama_barang' => $baris['nama_barang'],
                             'populasi' => $baris['populasi'],
                             'lhk_terakhir' => $baris['lhk_terakhir'],
+                            'adg' => $baris['adg'],
+                            'adg_standart' => $baris['adg_standart'],
+                            'kons' => $baris['kons'],
+                            'kons_standart' => $baris['kons_standart'],
                             'sisa_gudang' => isset($sisa_gudang[$kodepj]) ? $sisa_gudang[$kodepj] : 0,
                             'sisa_kandang' => isset($sisa_kandang[$kodepj]) ? $sisa_kandang[$kodepj] : 0,
                         ),
@@ -1775,5 +1789,10 @@ SQL;
         );
 
         $this->load->view('permintaan_pakan_v2/bdy/rencana_panen', $data);
+    }
+
+    private function detailStandartBudidaya($noreg){
+        $kodestd_sql = $this->db->select('kode_std_budidaya')->where(array('no_reg' => $noreg))->get_compiled_select('kandang_siklus');       
+        return arr2DToarrKey($this->db->select(['std_umur','target_bb'])->where('kode_std_budidaya in ( '.$kodestd_sql.' )')->get('m_std_budidaya_d')->result_array(),'std_umur');
     }
 }

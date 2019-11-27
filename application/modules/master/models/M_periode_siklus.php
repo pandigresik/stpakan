@@ -230,11 +230,7 @@ SQL;
 			SELECT min(no_pallet) FROM MOVEMENT_D WHERE KETERANGAN2 in (
 				'$no_reg'
 			) AND KETERANGAN1 = 'PUT'
-<<<<<<< HEAD
 		)r
-=======
-		)
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 
 SQL;
 		return $this->db->query($sql);

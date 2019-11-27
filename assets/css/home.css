@@ -168,6 +168,11 @@ table.custom_table thead th {
     vertical-align: middle;
 }
 
+table.custom_table tfoot th {
+    text-align: center;
+    vertical-align: middle;
+}
+
 table.custom_table thead th>div {
     margin: 0 auto;
 }

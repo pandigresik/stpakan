@@ -46,6 +46,8 @@ foreach($tmp as $kodepj => $perpakan){
 						echo '<th rowspan="2">Kandang</th>';
 						echo '<th rowspan="2" class="">Populasi</th>';
 						echo '<th rowspan="2">Tanggal LHK</th>';
+						echo '<th rowspan="2">ADG</th>';
+						echo '<th rowspan="2">% ADG</th>';
 						echo '<th rowspan="2">Kebutuhan (Sak)</th>';
 						echo '<th colspan="2">Kuantitas per Kandang (Sak)</th>';
 						echo '<th rowspan="2">Persetujuan (Sak)</th>';
@@ -81,6 +83,8 @@ foreach($tmp as $kodepj => $perpakan){
 						echo '<td data-noreg="'.$noreg.'"><span class="glyphicon glyphicon-chevron-right" onclick="Permintaan.hidden_child(this)"></span>&nbsp;'.$cekbox_reset.' '.$kodekandang.'</td>';
 						echo '<td class="number">'.formatAngka($summary_perpakan[$kodepj]['kandang'][$kodekandang]['populasi'] ,0).'</td>';
 						echo '<td><span class="link_span" onclick="Permintaan.show_lhk_bdy(this)">'.tglIndonesia($summary_perpakan[$kodepj]['kandang'][$kodekandang]['lhk_terakhir'],'-',' ').'</span></td>';
+						echo '<td>0</td>';
+						echo '<td>0</td>';
 						echo '<td class="number"><span class="link_span" onclick="Permintaan.show_lhk_bdy(this)">'.formatAngka($summary_perpakan[$kodepj]['kandang'][$kodekandang]['kuantitas_keb'],3).'</span></td>';
 						echo '<td class="number">'.formatAngka($summary_perpakan[$kodepj]['kandang'][$kodekandang]['optimasi_pp'],0).'</td>';
 				//		echo '<td class="number jml_order">'.$sumReview['jml_optimasi'].'</td>';

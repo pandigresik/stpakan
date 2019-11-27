@@ -108,22 +108,16 @@ SQL;
 			,coalesce(rrp.jml_permintaan, (select top 1 jml_order from lpb_e le join lpb l on l.no_lpb = le.no_lpb and l.status_lpb =  'A' where le.no_reg = oke.no_reg and le.kode_barang = md.kode_barang)) jml_permintaan
 			,mb.nama_barang
 			,case when datediff(day,min(md.picked_date),oke.tgl_kebutuhan) < 1 then 1 else 0 end telat_dropping 
-<<<<<<< HEAD
 			,tp.user_buat user_verifikasi_kandang
 			,tp.tgl_buat timbang_kandang
 			,tp.berat as berat_kandang
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 		from order_kandang_e oke
 		join order_kandang_d okd on okd.no_order = oke.no_order and okd.no_reg = oke.no_reg and okd.status_order = 'C'
 		left join rhk_rekomendasi_pakan rrp on rrp.tgl_kebutuhan = oke.tgl_kebutuhan and rrp.kode_barang = oke.kode_barang and rrp.no_reg = oke.no_reg
 		join movement_d md on md.no_referensi = oke.no_order and md.kode_farm = okd.kode_farm and md.keterangan2 = oke.no_reg and oke.kode_barang = md.kode_barang
 		join m_pegawai mp on mp.kode_pegawai = md.picked_name
 		join m_barang mb on mb.kode_barang = md.kode_barang
-<<<<<<< HEAD
 		left join timbang_pakan tp on tp.no_order = oke.no_order and tp.no_reg = oke.no_reg
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 		where oke.no_reg = '{$noreg}'
 		group by oke.no_reg
 			,oke.tgl_kebutuhan
@@ -132,12 +126,9 @@ SQL;
 			,mp.nama_pegawai
 			,rrp.jml_permintaan
 			,mb.nama_barang
-<<<<<<< HEAD
 			,tp.user_buat
 			,tp.tgl_buat
 			,tp.berat
-=======
->>>>>>> 53ac33e8886f01e73c357c79450caa9cbb1d4526
 		order by min(md.picked_date)	
 SQL;
 		return $this->db->query($sql)->result_array();		

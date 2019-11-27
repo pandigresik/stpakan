@@ -111,7 +111,7 @@ $breadcumb_pp = generateBreadcumb(array('Kepala Farm','Kadept PI','Kadiv Budiday
                             if(!$indexPerTgl){
                                 echo '<td rowspan="'.$rowspanTgl.'" onclick="Permintaan.show_lhk_bdy(this)" data-noreg="'.$noreg.'" data-tgl_transaksi="'.$_tgl.'"  class="link_span">i</td>';
                             }
-                            echo '<td>'.$rhkTglBarang['jml_pakai'].'</td>';
+                            echo '<td onclick="KSP.showDetailTimbangSilo(this)" data-noreg="'.$noreg.'" data-tgl_transaksi="'.$_tgl.'"  class="link_span">'.$rhkTglBarang['jml_pakai'].'</td>';
                             echo '<td>'.$stokHarianKandangTglBarang.'</td>';
                             if(!$indexPerTgl){
                                 $class_entri = $rhkTglBarang['telat_entry'] ? 'abang' : '';
