@@ -98,6 +98,11 @@ SQL;
 		$adgStandartValue = 'DBO.ADGSTANDART_VALUE(le.NO_REG,le.TGL_LHK) as adg_standart';
 
 		$sql = <<<SQL
+select x.* 
+	,case when x.adg < x.adg_standart then (select top 1 ket_review from review_lpb_budidaya where no_lpb = x.no_lpb)
+		else NULL 
+	end ket_review
+from (		
 		select lpb.no_lpb
 			,mp.kode_strain
 			,mf.nama_farm			
@@ -171,6 +176,7 @@ SQL;
 						,sum(coalesce(jml_rekomendasi,jml_optimasi)) jml_rekomendasi
 						,sum(coalesce(jml_review,jml_optimasi)) jml_review
 			from review_lpb_budidaya
+			where tgl_kebutuhan >= cast(getdate() - 45 as date)
 			group by no_lpb
 		)rlb
 				on rlb.no_lpb = lpb.no_lpb
@@ -191,9 +197,9 @@ SQL;
 			,rlb.jml_optimasi
 			,rlb.jml_rekomendasi
 			,rlb.jml_review
-		order by lpb.tgl_buat desc
+)x order by tgl_buat desc
 SQL;
-		
+		// log_message('error',$sql);
 		return $this->db->query($sql);
 
 	}

@@ -320,7 +320,7 @@ QUERY;
         ) rhk on rhk.NO_REG = siklus.NO_REG and rhk.TGL_TRANSAKSI = CAST(getdate() + @maxCetak - 1 AS DATE)
         {$joinPengawas}
         where siklus.KODE_FARM =  '{$kode_farm}' and siklus.STATUS_SIKLUS = 'O'
-        AND DATEDIFF(DAY, siklus.TGL_DOC_IN, getdate()) >= 1
+        AND DATEDIFF(DAY, siklus.TGL_DOC_IN, getdate()) >= 0
 QUERY;
 
         

@@ -661,7 +661,8 @@ if(!function_exists('buildHistoryPP')){
 			case 'RV':
 				$class_review = !$status_review ? 'abang' : '';
 				if(!empty($baris['tgl_review'])){
-					array_push($result,'<div class="'.$class_review.'">[ '.$baris['user_review'].' ] - Dikoreksi, '.convertElemenTglWaktuIndonesia($baris['tgl_review']).'</div>');
+					$ketReview = !empty($baris['ket_review']) ? '<span class="abang">( '.$baris['ket_review'].' )</span> ': ' ';
+					array_push($result,'<div class="'.$class_review.'">[ '.$baris['user_review'].' ] - Dikoreksi, '.$ketReview.convertElemenTglWaktuIndonesia($baris['tgl_review']).'</div>');
 				}	
 			case 'N':
 				$class_rilis = !$status_rilis ? 'abang' : '';

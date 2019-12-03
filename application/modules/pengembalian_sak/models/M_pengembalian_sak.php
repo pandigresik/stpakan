@@ -250,7 +250,7 @@ SQL;
 
 	public function cek_input_lhk($noreg){
 		return $this->db
-				->where('tgl_transaksi = cast(getdate() - 1 as date)')
+				->where('tgl_transaksi = cast(getdate() - 0 as date)')
 				->where(array('no_reg'=> $noreg))
 				->where('ack_kf is not null')
 				->get('rhk');

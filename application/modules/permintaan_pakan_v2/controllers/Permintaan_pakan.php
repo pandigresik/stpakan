@@ -27,6 +27,7 @@ class Permintaan_pakan extends MY_Controller
         $this->result = array('status' => 0, 'content' => '', 'message' => '');
         $this->_user = $this->session->userdata('kode_user');
         $this->load->helper('stpakan');
+        $this->load->config('stpakan');
         $this->load->model('permintaan_pakan_v2/m_permintaan_pakan', 'mpp');
 
         $this->_canCreatePP = array('KF', 'P');

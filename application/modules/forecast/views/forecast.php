@@ -41,6 +41,6 @@
 </div>
 
 <script type="text/javascript" src="assets/js/forecast/config.js"></script>
-<script type="text/javascript" src="assets/js/forecast/forecastHandler.js"></script> 
+<script type="text/javascript" src="assets/js/forecast/forecastHandler.js?"></script> 
 <script type="text/javascript" src="assets/js/forecast/forecast.js"></script>
   
