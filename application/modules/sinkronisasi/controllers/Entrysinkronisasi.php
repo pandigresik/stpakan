@@ -937,6 +937,7 @@ SQL;
 				,'{"kode_farm" : "'+kode_farm+'","kode_barang" : "'+kode_barang+'","keterangan1" : "'+keterangan1+'","keterangan2" : "'+keterangan2+'","kode_siklus" : "'+cast(kode_siklus as varchar(10))+'","no_referensi" : "'+cast(no_referensi as varchar(max))+'"}' as kunci
 				, 0 status_identity
 		from glangsing_movement_d gmd
+        join glangsing_movement gm on gm.kode_siklus = gmd.kode_siklus
 		where gmd.kode_farm = :key3 and gmd.kode_siklus = :key4 and gmd.kode_barang = :key5 and no_referensi = :key2
 SQL;
             //	$kodeFarm = $this->db->select('kode_farm')->where(array('no_lpb'=>$no_pp))->get('lpb')->row_array();
