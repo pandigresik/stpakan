@@ -7,6 +7,7 @@ class Forecast extends MY_Controller{
 	protected $_user;
 	protected $_nama_user;
 	protected $grup_farm;
+	private $autoApprove = 1;
 	private $_canSetFlock = array();
 	private $_canSetACK = array();
 	public function __construct(){
@@ -2254,6 +2255,7 @@ class Forecast extends MY_Controller{
 		$tglserver = $tgl->saatini;
 
 		/* insert ke tabel cycle_state_transition */
+		$stateKonfirmasi = $this->autoApprove ? $state[$aksi]['KDV'] : $state[$aksi][$user_level];
 		foreach($noreg_konfirmasi as $n){
 			$z = array(
 				'cycle' => $n['cycle'],
@@ -2261,7 +2263,7 @@ class Forecast extends MY_Controller{
 				'noreg' => $n['noreg'],
 				'stamp' => $tglserver,
 				'user'  => $this->_user,
-				'state' => $state[$aksi][$user_level]
+				'state' => $stateKonfirmasi
 			);
 			if(!empty($note)){
 				$z['note'] = $note;
@@ -2270,7 +2272,7 @@ class Forecast extends MY_Controller{
 		}
 
 		if($aksi == 'approve'){
-			if($user_level == 'KDV'){
+			if($user_level == 'KDV' || $this->autoApprove){
 				/* ubah statusnya kode_siklus pada m_periode menjadi A */
 				$this->load->model('forecast/m_periode','mp');
 				$this->mp->update_by(array('kode_siklus'=>$kode_siklus['kode_siklus'],'status_periode'=>'N'),array('status_periode'=>'A'));
@@ -2294,6 +2296,7 @@ class Forecast extends MY_Controller{
 		else{
 			$this->db->trans_commit();
 			$this->result['status'] = 1;
+			$this->result['autoApprove'] = $this->autoApprove;
 			$periode_siklus= $this->db->select('periode_siklus')->where(array('kode_siklus'=>$kode_siklus['kode_siklus']))->get('m_periode')->row_array();
 			if($aksi == 'approve'){
 					$this->result['message'] = 'Perencanaan DOC In siklus '.$periode_siklus['periode_siklus'].' berhasil dilakukan';

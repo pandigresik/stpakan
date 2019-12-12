@@ -6,11 +6,9 @@
 							echo '<tr>';
 							echo '<th></th>';
 							echo '<th class=" no_pp">No. PP</th>';
-							echo '<th class="" >Farm</th>';
-							echo '<th class="">Flock</th>';
 							echo '<th class="">Kandang</th>';							
 							echo '<th>Tanggal <br /> Kirim</th>';
-							echo '<th class="tgl_kebutuhan">Tanggal <br /> Kebutuhan</th>';
+							echo '<th class="">Tanggal <br /> Kebutuhan</th>';
 							echo '<th>Umur Pakan</th>';
 							echo '<th>ADG</th>';	
 							echo '<th>% STD</th>';							
@@ -48,9 +46,7 @@
 								//$status_lpb = convertKode('status_approve',$baris['status_lpb']);																
 								echo '<td><span onclick="Permintaan.showDetailPPBudidaya(this)" class="glyphicon glyphicon-plus-sign"></span></td>';
 								echo '<td class=" no_pp">'.$baris['no_lpb'].'</td>';
-								echo '<td class="">'.$baris['nama_farm'].'</td>';
-								echo '<td class="">'.$flok.'</td>';
-								echo '<td class="">Kandang '.$kandang.'</td>';								
+								echo '<td class=""><div>'.implode('</div><div>',[$baris['nama_farm'],'Flok ' .$flok,'Kandang '.$kandang]).'</div></td>';								
 								echo '<td>'.$tgl_kirim.'</td>';
 								echo '<td>'.$tgl_kebutuhan.'</td>';								
 								echo '<td>'.$umur_pakan.'</td>';

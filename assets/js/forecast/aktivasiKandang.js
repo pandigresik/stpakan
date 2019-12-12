@@ -16,12 +16,12 @@ var AktivasiKandang = {
     maxKirim: 2, //2
     maxKirim25: 1, //1
     /* standarnya adalah pp adalah 3 */
-    maxKebutuhanPakan: 3,
+    maxKebutuhanPakan: 2,
     /* standarnya adalah pp hanya untuk pp pertama kali */
     maxKebutuhanPakanDoc: 7,
     maxKebutuhanHarian: 1,
-    umurPakanHarian: 19,
-    ppAkanPanen: 22,
+    umurPakanHarian: 21,
+    ppAkanPanen: 25,
 
     rejectedElm: null,
     setKandangReject: function(idFarm, tglDocIn, noreg) {
@@ -374,6 +374,7 @@ var AktivasiKandang = {
         });
 
         var _rencanaKirim = $(this.generateRencanaKirimInput({}, idFarm, _tglDocIn, _populasi));
+        
         var _opsi = {
             beforeShowDay: function(date) { return [!Config.is_hari_libur(Config._getDateStr(date), Permintaan.get_hari_libur())]; },
             dateFormat: 'dd M yy',
@@ -543,14 +544,8 @@ var AktivasiKandang = {
                                     Forecast.rencanaKirimBdy[_tglDocIn] = _tmpKirimTersimpan;
                                     /* hidden border dari input jumlah forecast */
                                     $('input.jml_forecast').addClass('no_border').prop('readonly', 1);
-                                    var _k = $('label.terpilih').next('ul').find('li:first');
-                                    var _tm;
-                                    _k.closest('ul').find('li').each(function(i) {
-                                        $(this).find('span._status_approval').text('P1');
-                                        $(this).find('a').css({ 'color': AktivasiKandang.statusWarna['P1'] });
-                                    });
-                                    $(elm).closest('div.row').remove();
-                                    bootbox.hideAll();
+                                    AktivasiKandang.autoApprovePengiriman(idFarm, _tglDocIn);             
+                                    $(elm).remove();         
                                 } else {
                                     toastr.error(data.message);
                                 }
@@ -561,6 +556,28 @@ var AktivasiKandang = {
             });
 
         }
+    },
+
+    autoApprovePengiriman: function(kode_farm,tgl_docin){
+        $.ajax({
+            url: 'forecast/forecast/approveRejectKonfirmasiDOCIn',
+            data: { kode_farm: kode_farm, tgl_docin: tgl_docin, aksi: 'approve' },
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+                if (data.status) {
+                    toastr.success(data.message);
+                    bootbox.hideAll();
+                    var _k = $('label.terpilih').next('ul').find('li:first');
+                    _k.closest('ul').find('li').each(function(i) {
+                    $(this).find('span._status_approval').text('P1');
+                        $(this).find('a').css({ 'color': AktivasiKandang.statusWarna['P1'] });
+                    });
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+        });
     },
     copyRencanaPengiriman: function(elm, idFarm, _tglDocIn, nama_farm) {
         var _data = Forecast.getRencanaKirimBdy(idFarm, _tglDocIn);
@@ -794,7 +811,6 @@ var AktivasiKandang = {
                     _tdKirim.find('span').remove();
                 }
             }
-
 
             if (AktivasiKandang.getBisaKonfirmasi() == 1 && bolehRubahTglKirim) {
                 _tdKirim.dblclick(function() {

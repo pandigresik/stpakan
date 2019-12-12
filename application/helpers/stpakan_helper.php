@@ -383,7 +383,7 @@ if (! function_exists('convertElemenTglWaktuIndonesia')){
 if (! function_exists('pecahLaluConvertElemenTglWaktuIndonesia')){
 	function pecahLaluConvertElemenTglWaktuIndonesia($elm,$detik = false){
 		$t = explode(' s/d ',$elm);
-		return convertElemenTglIndonesia($t[0]). ' s/d ' .convertElemenTglIndonesia($t[1]);
+		return '<div>'.convertElemenTglIndonesia($t[0]). '</div><div> s/d </div><div>' .convertElemenTglIndonesia($t[1]).'<div>';
 	}
 }
 

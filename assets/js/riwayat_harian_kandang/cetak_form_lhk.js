@@ -349,6 +349,7 @@ var CetakLHK = {
                 }
             })
             .done(function(data) {
+                _ini._timerAbsensi = false;
                 bootbox.hideAll();
                 if (data.status == 1) {
                     //tambahan generate nomor pengambilan pada saat selesai melakukan cetak LHK
@@ -372,7 +373,7 @@ var CetakLHK = {
                                     bootbox.hideAll();
                                     bootbox.alert(generate_data.message);
 
-                                    $('.bootbox').modal('hide');
+                                    //$('.bootbox').modal('hide');
                                     $('tbody').empty();
                                 }
                             })

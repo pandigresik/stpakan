@@ -199,8 +199,9 @@ SQL;
         /* output dalam format json */
         $output_arr = json_decode($output, true);
         if ($output_arr['status']) {
+            $autoApprove = $output_arr['autoApprove'];
             if ($aksi == 'approve') {
-                if ($user_level == 'KDV') {
+                if ($user_level == 'KDV' || $autoApprove) {
                     $kode_siklus = $this->db->select('no_reg,kode_siklus,flok_bdy')->where(array('kode_farm' => $kodeFarm, 'tgl_doc_in' => $tgldocin))->get('kandang_siklus')->row_array();
                     //$noreg_konfirmasi = $this->db->select('noreg')->where(array('cycle'=>$kode_siklus['kode_siklus'],'flock'=>$kode_siklus['flok_bdy']))->get_compiled_select('cycle_state_transition');
                     $sqlDetail = <<<SQL

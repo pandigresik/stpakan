@@ -11,7 +11,22 @@
 							$class_pakan_tambahan = '';	
 							$summary = $perbarang['summary'];
 							$review_kb = isset($review[$kb]) ? $review[$kb] : array();							
+							$classAdg = '';
+							$adgDibawahStandart = 0;
+							if(isset($summary['adg'])){
+								if($summary['adg'] < $summary['adg_standart']){
+									$classAdg = 'abang';
+									$adgDibawahStandart = 1;
+								}
+							}
 							foreach($pertanggal as $p){
+								$maxJumlahReview = 1000;
+								if($adgDibawahStandart){
+									$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
+								}else{
+									$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['kuantitas'] * .5);
+								}
+								
 								$tgl_keb = $p['tgl_asli'];
 								$jmlRekomendasi = isset($review_kb[$tgl_keb]) ? $review_kb[$tgl_keb]['JML_REKOMENDASI'] : '';								
 								$jmlReview = isset($review_kb[$tgl_keb]) ? $review_kb[$tgl_keb]['JML_REVIEW'] : '';
@@ -38,12 +53,10 @@
 								}
 
 								$input_kf = '<input class="required '.$class_pakan_tambahan.'" '.$readonly_rekomendasi.' name="jml_rekomendasi" size="1" type="text" data-max="'.$p['rekomendasi_pp'].'"  value="'.$jmlRekomendasi.'" />';
-								$review_kdp = $show_review ? '<input class="'.$requiered_review.'" '.$readonly_review.' name="jml_review" size="1" type="text" value="'.$jmlReview.'" />' : '';
+								$review_kdp = $show_review ? '<input class="'.$requiered_review.'" '.$readonly_review.' name="jml_review" size="1" type="text" value="'.$jmlReview.'"  data-max="'.$maxJumlahReview.'" />' : '';
 								$keterangan_kf = '<textarea name="ket_rekomendasi" class="required" '.$readonly_rekomendasi.' cols="10" rows="6" data-minlength="10" maxlength="60">'.$ketRekomendasi.'</textarea>';
-								$keterangan_kdp = $show_review ? '<textarea name="ket_review" class="'.$requiered_review.'" '.$readonly_review.' cols="10" rows="6" data-minlength="10" maxlength="60">'.$ketReview.'</textarea>' : '';
+								$keterangan_kdp = $show_review ? '<textarea name="ket_review" class="'.$requiered_review.'" '.$readonly_review.' cols="10" rows="6" data-minlength="10"  data-maxlength="1000">'.$ketReview.'</textarea>' : '';
 
-								
-								
 								echo '<tr data-kode_barang="'.$kb.'" class="'.$class_pakan_tambahan.'" ondblclick="Permintaan.pilihPakanTambahan(this)">';
 								if(!$index){
 									echo '<td class="kode_barang" data-kode_barang="'.$kb.'" rowspan="'.$rowspan.'">'.$summary['nama_barang'].'</td>';
@@ -57,8 +70,8 @@
 								if(!$index){
 									//echo '<td class="sisa_gudang" rowspan="'.$rowspan.'">'.$summary['sisa_gudang'].'</td>';
 									echo '<td class="sisa_kandang" rowspan="'.$rowspan.'">'.$summary['sisa_kandang'].'</td>';									
-									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['adg']) ? formatAngka($summary['adg'] ,0) : '').'</td>';
-									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['adg_standart']) ? formatAngka(($summary['adg'] / $summary['adg_standart']) * 100 ,2) : '').' %</td>';
+									echo '<td class="'.$classAdg.'" rowspan="'.$rowspan.'">'.(!empty($summary['adg']) ? formatAngka($summary['adg'] ,0) : '').'</td>';
+									echo '<td class="'.$classAdg.'" rowspan="'.$rowspan.'">'.(!empty($summary['adg_standart']) ? formatAngka(($summary['adg'] / $summary['adg_standart']) * 100 ,2) : '').' %</td>';
 									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['kons']) ? formatAngka($summary['kons'],0) : '').'</td>';
 									echo '<td rowspan="'.$rowspan.'">'.(!empty($summary['kons_standart']) ? formatAngka(($summary['kons'] / $summary['kons_standart']) * 100 ,2) : '').' %</td>';
 								}

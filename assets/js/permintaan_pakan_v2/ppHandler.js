@@ -286,10 +286,12 @@ var Permintaan = {
                 }
             },
         }).done(function() {
-            $('#kebutuhan_pakan_internal').find('input[name=jml_review]').numeric();
+            $('#kebutuhan_pakan_internal').find('input[name=jml_review]').each(function() {
+                $(this).numeric({ max: $(this).data('max'), min: 0 });
+            })
             $('#kebutuhan_pakan_internal').find('input[name=jml_rekomendasi]:not([readonly])').each(function() {
-                    $(this).numeric({ max: $(this).data('max'), min: 0 });
-                })
+                $(this).numeric({ max: $(this).data('max'), min: 0 });
+            })
                 /** get rencana panen */
 
         });

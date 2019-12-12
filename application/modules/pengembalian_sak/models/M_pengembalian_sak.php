@@ -206,7 +206,7 @@ SQL;*/
 		$sql = <<<SQL
 			select rsk.NO_REG+'-'+rsk.NO_URUT NO_PENGEMBALIAN
 				,mk.NAMA_KANDANG
-				,mk.NO_FLOK
+				,ks.FLOK_BDY as NO_FLOK
 				,rsk.TGL_BUAT
 				,mb.NAMA_BARANG NAMA_PAKAN
 				,sum(rskip.JML_KIRIM) JML_KIRIM
@@ -240,7 +240,7 @@ SQL;*/
 				,rsk.id
 				,rsk.NO_URUT
 				,mk.NAMA_KANDANG
-				,mk.NO_FLOK
+				,ks.FLOK_BDY
 				,mb.NAMA_BARANG
 				,rsk.TGL_BUAT
 			order by rsk.tgl_buat DESC, rsk.no_urut ASC

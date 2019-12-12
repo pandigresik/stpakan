@@ -471,7 +471,7 @@ class Cetak_form_lhk extends MX_Controller{
 		$ks = $this->db->select('kode_siklus,flok_bdy')->where(array('no_reg' => $noreg))->get('kandang_siklus')->row_array();
 		$query_rhk = $this->db->select(array('no_reg'))->like('no_reg',substr($noreg,0,10),'after')->where(array('tgl_transaksi' => $tglTransaksi))->where('ack1 is not null')->get_compiled_select('rhk');
 		$rhk = $this->db->select('count(*) as total_rhk')->where(array('status_siklus' => 'O'))->where($ks)->where('no_reg not in ('.$query_rhk.')')->get('kandang_siklus')->row_array();
-	
+		//log_message('error',$this->db->last_query());
 		if(empty($rhk['total_rhk'])){
 			$tglKebutuhan = tglSetelah($tglTransaksi,2);
 			$result['status'] = 1;
