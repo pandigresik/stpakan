@@ -933,12 +933,15 @@ SQL;
                     'lock_pp' => $lock_pp,
                 );
                 if (!empty($tmp)) {
+                    $setMaxReview = $this->db->select(array('kode_config','value'))->where(array('kode_config' => '_setMaxJmlReview','kode_farm' => $kode_farm,'context' => 'pp','status' => '1'))->get('SYS_CONFIG_GENERAL')->row_array();
+                    
                     $data['kebutuhan_pakan'] = $this->load->view('permintaan_pakan_v2/'.$grup_farm.'/kebutuhan_pakan',array(
                             'kebutuhan_pakan' => $tmp,
                             'edit_rekomendasi' => $editRekomendasi,
                             'edit_review' => $editReview,
                             'review' => $review,
                             'show_review' => isset($this->_showReview[$user_level]) ? in_array($status, $this->_showReview[$user_level]) : 0,
+                            'set_max_review' => empty($setMaxReview) ? 1 : $setMaxReview['value'],
                     ),
                     true);
                 }

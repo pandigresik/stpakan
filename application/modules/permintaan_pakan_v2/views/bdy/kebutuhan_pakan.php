@@ -1,4 +1,6 @@
-				<?php 								
+				<?php
+					$setMaxReview = isset($set_max_review) ? $set_max_review : 1; 	
+//					log_message('error',$setMaxReview);							
 					if(!empty($kebutuhan_pakan)){						
 						$readonly_rekomendasi = !$edit_rekomendasi ? 'readonly' : '';
 						$readonly_review = !$edit_review ? 'readonly' : '';
@@ -21,11 +23,6 @@
 							}
 							foreach($pertanggal as $p){
 								$maxJumlahReview = 1000;
-								if($adgDibawahStandart){
-									$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
-								}else{
-									$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['kuantitas'] * .5);
-								}
 								
 								$tgl_keb = $p['tgl_asli'];
 								$jmlRekomendasi = isset($review_kb[$tgl_keb]) ? $review_kb[$tgl_keb]['JML_REKOMENDASI'] : '';								
@@ -50,6 +47,15 @@
 								}
 								if($p['forecast'] <= 0){									
 									$class_pakan_tambahan = 'pakan_tambahan';																		
+								}
+
+								/** jika bukan pakan tambahan, maka set maksimal review */
+								if(empty($class_pakan_tambahan) && $setMaxReview){
+									if($adgDibawahStandart){
+										$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
+									}else{
+										$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['kuantitas'] * .5);
+									}
 								}
 
 								$input_kf = '<input class="required '.$class_pakan_tambahan.'" '.$readonly_rekomendasi.' name="jml_rekomendasi" size="1" type="text" data-max="'.$p['rekomendasi_pp'].'"  value="'.$jmlRekomendasi.'" />';

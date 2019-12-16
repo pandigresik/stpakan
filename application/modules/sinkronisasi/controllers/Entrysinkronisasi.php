@@ -935,7 +935,7 @@ SQL;
 		select :key1 as sinkronisasi
 				, 'I' as aksi
 				, 'glangsing_movement_d' as tabel
-				,'{"kode_farm" : "'+kode_farm+'","kode_barang" : "'+kode_barang+'","keterangan1" : "'+keterangan1+'","keterangan2" : "'+keterangan2+'","kode_siklus" : "'+cast(kode_siklus as varchar(10))+'","no_referensi" : "'+cast(no_referensi as varchar(max))+'"}' as kunci
+				,'{"kode_farm" : "'+gmd.kode_farm+'","kode_barang" : "'+gmd.kode_barang+'","keterangan1" : "'+keterangan1+'","keterangan2" : "'+keterangan2+'","kode_siklus" : "'+cast(gmd.kode_siklus as varchar(10))+'","no_referensi" : "'+cast(no_referensi as varchar(max))+'"}' as kunci
 				, 0 status_identity
 		from glangsing_movement_d gmd
         join glangsing_movement gm on gm.kode_siklus = gmd.kode_siklus
@@ -3304,6 +3304,9 @@ SQL;
         $noreg = $params['POST']['noreg'];
         if ($output_arr['status']) {
             if ($nextstatus == 'A') {
+                if(!is_array($noreg)){
+                    $noreg = [$noreg];
+                }
                 $noreg_str = "('".implode("','", $noreg)."')";
                 $sqlDetail = <<<SQL
 					select :key1 as sinkronisasi

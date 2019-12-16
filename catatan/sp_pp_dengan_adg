@@ -1,4 +1,4 @@
-create procedure [dbo].[pp_bdy_v3] (
+alter procedure [dbo].[pp_bdy_v3] (
 	@kode_farm varchar(10),
 	@noreg varchar(30),
 	@tgl_kebutuhan_awal date,
@@ -6,7 +6,13 @@ create procedure [dbo].[pp_bdy_v3] (
 	@tgl_awal_ganti_pakan date
 )
 /* manambahkan ADG sebagai komponen penentu rekomendasi pakan */
-as
+ as
+/*declare @kode_farm varchar(10) = 'CJ'
+declare @noreg varchar(30) = 'CJ/2019-6/08'
+declare @tgl_kebutuhan_awal date = '2019-12-08',
+	@tgl_kebutuhan_akhir date = '2019-12-19',
+	@tgl_awal_ganti_pakan date = NULL
+*/	
 begin
 SET NOCOUNT ON;
 declare @umur int,@pakan1 varchar(30),@pakan2 varchar(30),@jml_ganti_pakan int, @keb_pakan int, @adg_pengali float,@tmp_adg_pengali float
@@ -212,7 +218,12 @@ if @tmp_adg_pengali is not null set @adg_pengali = @tmp_adg_pengali
 select ks.kode_kandang,
 	gp.pakan kode_barang,
 	convert(float,coalesce(l.populasi,ks.jml_populasi) * gp.kebutuhan_pakan )/50000 kebutuhan_pakan_standart,
-	convert(float,coalesce(l.populasi,ks.jml_populasi) * gp.kebutuhan_pakan * coalesce(gp.komposisi_pakan,1) * @adg_pengali)/50000 kebutuhan_pakan,
+	-- jika dibawah umur 10, maka abaikan pengali adg
+	case when gp.umur < 12 then
+		convert(float,coalesce(l.populasi,ks.jml_populasi) * gp.kebutuhan_pakan * coalesce(gp.komposisi_pakan,1))/50000
+	else 
+		convert(float,coalesce(l.populasi,ks.jml_populasi) * gp.kebutuhan_pakan * coalesce(gp.komposisi_pakan,1) * @adg_pengali)/50000
+	end kebutuhan_pakan,
 	ks.no_reg,
 	l.tgl_transaksi lhk_terakhir,
 	l.adg,
@@ -247,53 +258,314 @@ drop table #awal_ganti_pakan
 end;
 
 
-create PROCEDURE [dbo].[pp_bdy_approve_v2]
-	@no_lpb varchar(25) 
-AS
-BEGIN
-	
-	SET NOCOUNT ON;
+alter procedure [dbo].[get_sisa_pakan_bdy_v2](
+	@kode_farm varchar(10),
+	@no_lpb varchar(20),
+	@noreg varchar(30)
+)
+as
+begin
+set nocount on
+declare @rhk_kandang as table(
+	no_reg varchar(20),
+	rhkterkahir date
+)
+-- cari total pakan yang telah dikirim ke kandang
+declare @pakan_kirim_kandang as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	jumlah int
+)
+-- cari total pakan yang seharusnya telah dikirim ke kandang
+/*
+declare @pakan_kirim_dari_gudang as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	jumlah int
+)
+*/
+declare @total_pp as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	jumlah int
+)
 
-/* cari docin dan standart yang digunakan */
-select * 
-into #ks
-from kandang_siklus
-where no_reg in (select distinct no_reg from lpb_e where no_lpb = @no_lpb)
-select * 
-into #rv
-from review_lpb_budidaya where no_lpb = @no_lpb
-select le.KODE_BARANG kode_barang
-	,k.KODE_KANDANG kode_kandang
-	,le.JML_PERFORMANCE kebutuhan_pakan
-	,le.KOMPOSISI_PAKAN komposisi_pakan 
-	,le.JML_ORDER pp
-	,le.NO_REG no_reg
-	,le.TGL_KEBUTUHAN tglkebutuhan
-	,le.TGL_LHK lhk_terakhir
-	,dbo.ADG_VALUE(le.NO_REG,le.TGL_LHK) as adg
-	,dbo.ADGSTANDART_VALUE(le.NO_REG,le.TGL_LHK) as adg_standart
-	,(select (sum(rhk_pakan.BRT_PAKAI) / rhk.C_JUMLAH) * 1000  from rhk_pakan where rhk_pakan.NO_REG = rhk.no_reg and rhk_pakan.TGL_TRANSAKSI = rhk.tgl_transaksi) as kons
-	,(select PKN_HR from M_STD_BUDIDAYA_D where KODE_STD_BUDIDAYA = k.kode_std_budidaya and STD_UMUR = datediff(day,k.tgl_doc_in,rhk.tgl_transaksi) ) as kons_standart
-	,datediff(day,k.TGL_DOC_IN,le.TGL_KEBUTUHAN) umur
-	,coalesce(rhk.C_JUMLAH,k.jml_populasi) populasi
-	,mb.NAMA_BARANG nama_barang
-	,dbo.BENTUK_CONVERTION(mb.BENTUK_BARANG) bentuk
-into #l 
-from lpb_e le
-inner join #ks k
-	on le.NO_REG = k.NO_REG
-inner join m_barang mb
-	on mb.KODE_BARANG = le.KODE_BARANG
-left join rhk 
-	on rhk.NO_REG = le.NO_REG and rhk.TGL_TRANSAKSI = le.TGL_LHK
-where no_lpb = @no_lpb
+declare @konsumsi_pakan_total as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	konsumsi int
+)
 
-select * from #l order by umur,kode_kandang
+declare @total_retur as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	jumlah int
+)
 
-drop table #ks
-drop table #rv
-drop table #l
-end;
+declare @retur_saat_pp as table(
+	no_reg varchar(20),
+	kode_barang varchar(20),
+	jenis_kelamin char(1),
+	jumlah int
+)
+
+declare @hutang_pp_sebelumnya as table(
+	no_reg varchar(20),
+	jenis_kelamin char(1),
+	kode_barang varchar(20),
+	hutang_pp numeric(15,3),
+	pengurang_pp int
+)
+
+declare @approve_retur_sak as table(
+	no_reg varchar(20),
+	keputusan char(1),
+	retur_sak_kosong uniqueidentifier
+)
+
+declare @param varchar(max)
+
+declare @query_total_pp varchar(max)
+declare @pp_lalu varchar(30)
+declare @tgl_pp varchar(30)
+declare @tgl_pp_lama varchar(30)
+
+if @no_lpb is null 
+	begin
+		set @tgl_pp = getdate()
+		set @param = ''
+		select top 1 @tgl_pp_lama = l.tgl_buat,@pp_lalu = l.no_lpb 
+		from lpb l
+		inner join lpb_e le
+			on l.no_lpb = le.no_lpb AND le.NO_REG = @noreg		
+		where l.STATUS_LPB = 'A' and l.kode_farm = @kode_farm
+		order by l.tgl_buat desc
+		
+		if @pp_lalu != ''
+			begin
+			insert into @hutang_pp_sebelumnya
+					select no_reg
+							,jenis_kelamin
+							,kode_barang
+							,case 
+								when abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN)) > 1 then 0
+								when abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN)) < 0 then 0
+								else abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN))
+							end
+							,sum(PENGURANG_PP) 
+						from lpb_e 					
+						where no_lpb = @pp_lalu
+						group by no_lpb,no_reg,jenis_kelamin,kode_barang 
+					
+			end
+		
+	end
+else
+	begin
+		set @tgl_pp = (select top 1 l.TGL_BUAT from lpb l where l.no_lpb = @no_lpb )
+		set @param = 'and l.tgl_buat < '''+@tgl_pp+''''
+		select top 1 @tgl_pp_lama = l.tgl_buat,@pp_lalu = l.no_lpb 
+		from lpb l
+		inner join lpb_e le
+			on l.no_lpb = le.no_lpb AND le.NO_REG = @noreg		
+		where l.STATUS_LPB = 'A' and l.kode_farm = @kode_farm and l.tgl_buat < @tgl_pp
+		order by l.tgl_buat desc
+	--	select top 1 @tgl_pp_lama = tgl_buat,@pp_lalu = no_lpb from lpb where kode_farm = @kode_farm and status_lpb = 'A' and tgl_buat < @tgl_pp order by tgl_buat desc
+		
+		if @pp_lalu != ''
+			begin
+			insert into @hutang_pp_sebelumnya
+					select no_reg
+							,jenis_kelamin
+							,kode_barang
+							,case 
+								when abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN)) > 1 then 0
+								when abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN)) < 0 then 0
+								else abs(sum(JML_ORDER) - sum(JML_ORDER_TANPA_PEMBULATAN))
+							end
+							,sum(PENGURANG_PP) 
+						from lpb_e 					
+						where no_lpb = @pp_lalu
+						group by no_reg,jenis_kelamin,kode_barang 
+					
+			end
+		
+	end
+
+select rp.no_reg
+	,max(rp.TGL_TRANSAKSI) lhkterkahir
+into #z
+from rhk_pakan rp
+where rp.NO_REG = @noreg and rp.TGL_TRANSAKSI < @tgl_pp
+GROUP BY rp.no_reg
+set @query_total_pp = '
+		select rk.NO_REG
+				,le.KODE_BARANG
+				,le.JENIS_KELAMIN
+				,sum(le.jml_order) total_pp
+
+		from  #z rk
+		inner join lpb_e le
+			on le.NO_REG = rk.no_reg 
+		inner join lpb l
+			on l.NO_LPB = le.NO_LPB and l.STATUS_LPB = ''A''' + @param +'
+		group by rk.NO_REG
+				,le.JENIS_KELAMIN
+				,le.KODE_BARANG'
+
+insert into @pakan_kirim_kandang
+select rk.no_reg
+	,kmd.KODE_BARANG
+	,kmd.JENIS_KELAMIN
+	,sum(abs(kmd.jml_order)) telah_kirim
+from #z rk
+inner join KANDANG_MOVEMENT_D kmd 
+	on rk.NO_REG = kmd.NO_REG AND KETERANGAN1 = 'PENERIMAAN KANDANG' and kmd.TGL_TRANSAKSI <= rk.lhkterkahir and kmd.tgl_buat <= @tgl_pp
+inner join  PENERIMAAN_KANDANG pk on pk.no_reg = rk.no_reg and kmd.KETERANGAN2 = pk.NO_PENERIMAAN_KANDANG
+inner join order_kandang_e oke on oke.NO_REG = pk.NO_REG and oke.NO_ORDER = pk.no_order and oke.KODE_BARANG = kmd.KODE_BARANG and oke.TGL_KEBUTUHAN <= rk.lhkterkahir
+group by rk.no_reg
+		,kmd.KODE_BARANG
+		,kmd.JENIS_KELAMIN
+/*
+INSERT INTO @pakan_kirim_dari_gudang
+select rk.no_reg
+	,le.KODE_BARANG
+	,le.JENIS_KELAMIN
+	,sum(abs(le.jml_order)) harus_kirim
+from #z rk
+inner join lpb_e le 
+	on rk.NO_REG = le.NO_REG AND le.TGL_KEBUTUHAN <= rk.lhkterkahir
+INNER JOIN lpb l  
+    ON l.NO_LPB = le.NO_LPB AND l.STATUS_LPB = 'A'	
+group by rk.no_reg
+		,le.KODE_BARANG
+		,le.JENIS_KELAMIN
+*/		
+-- cari tglkebutuhanakhir yang telah diplot perkandang
+
+insert into @total_pp
+exec(@query_total_pp)
+
+-- cari konsumsi sampai dengan tgl rhkterakhir
+insert into @konsumsi_pakan_total
+select rk.no_reg
+	,rp.KODE_BARANG
+	,rp.JENIS_KELAMIN
+	,sum(abs(rp.jml_pakai)) telah_terpakai
+from #z rk
+inner join rhk_pakan rp 
+	on rk.NO_REG = rp.NO_REG and rp.TGL_TRANSAKSI <= rk.lhkterkahir
+group by rk.no_reg
+		,rp.KODE_BARANG
+		,rp.JENIS_KELAMIN
+
+insert into @retur_saat_pp 
+select rsk.NO_REG
+		,rski.KODE_PAKAN
+		,rski.jenis_kelamin
+		,sum(rskitp.JML_SAK) jml_retur
+	from RETUR_SAK_KOSONG rsk	
+	inner join RETUR_SAK_KOSONG_ITEM_PAKAN rski
+		on rsk.id = rski.RETUR_SAK_KOSONG
+	inner join RETUR_SAK_KOSONG_ITEM_TIMBANG_PAKAN rskitp
+		on rskitp.RETUR_SAK_KOSONG_ITEM_PAKAN = rski.id
+	WHERE rsk.NO_REG = @noreg and cast(rsk.TGL_BUAT as date) <= @tgl_pp and cast(rsk.TGL_BUAT as date) >= @tgl_pp_lama
+	group by rsk.NO_REG ,rski.KODE_PAKAN, rski.jenis_kelamin
+
+insert into @total_retur
+select rsk.NO_REG
+		,rski.KODE_PAKAN
+		,rski.jenis_kelamin
+		,sum(rskitp.JML_SAK) jml_retur
+	from RETUR_SAK_KOSONG rsk	
+	inner join RETUR_SAK_KOSONG_ITEM_PAKAN rski
+		on rsk.id = rski.RETUR_SAK_KOSONG
+	inner join RETUR_SAK_KOSONG_ITEM_TIMBANG_PAKAN rskitp
+		on rskitp.RETUR_SAK_KOSONG_ITEM_PAKAN = rski.id
+	where rsk.NO_REG = @noreg AND cast(rsk.TGL_BUAT as date) <= @tgl_pp
+	group by rsk.NO_REG ,rski.KODE_PAKAN, rski.jenis_kelamin
+/*
+insert into @approve_retur_sak
+select rhrs.NO_REG
+	,rhrs.KEPUTUSAN
+	,rhrs.RETUR_SAK_KOSONG
+from REVIEW_HUTANG_RETUR_SAK rhrs
+inner join (
+	select rsk.no_reg,rsk.id from RETUR_SAK_KOSONG rsk 
+	inner join (
+		select max(tgl_buat) terakhir_kembali,no_reg from RETUR_SAK_KOSONG	group by no_reg	
+	)rsk_akhir on rsk_akhir.NO_REG = rsk.NO_REG and rsk.TGL_BUAT = rsk_akhir.terakhir_kembali
+)retur_terakhir on retur_terakhir.id = rhrs.RETUR_SAK_KOSONG and retur_terakhir.NO_REG = rhrs.NO_REG
+*/
+select yy.no_reg
+		,yy.kode_barang
+		,yy.jenis_kelamin
+		,yy.nama_barang
+		,yy.hutang_pp_sebelumnya
+		,yy.hutang_retur_sak 
+/*		,case 
+			when yy.hutang_retur_sak > 0 
+				then case yy.approve_hutang_retur_sak when 1 then 0 else yy.hutang_retur_sak end
+			else 0		
+		end pengurang_pp
+	*/	
+		,0 pengurang_pp
+		,yy.hutang_pp_sebelumnya sisa_konsumsi	
+		,yy.sisa_kandang	
+		,yy.sisa_gudang	
+from (
+select rk.no_reg
+		,tp.kode_barang
+		,tp.jenis_kelamin
+		,mb.nama_barang
+		,coalesce(pkk.jumlah,0) - coalesce(kb.konsumsi,0) sisa_kandang
+--		,coalesce(pkg.jumlah,0) - coalesce(pkk.jumlah,0) sisa_gudang
+		,0 sisa_gudang
+		,coalesce(hs.hutang_pp,0) hutang_pp_sebelumnya
+		-- cari hutang retur pp terakhir, akumulasi hutang sak - pengurang pp sebelumnya
+		,case 
+			when (coalesce(kb.konsumsi,0) - coalesce(tr.jumlah,0)) < coalesce(hs.pengurang_pp,0) then 0
+			else coalesce(kb.konsumsi,0) - coalesce(tr.jumlah,0) - coalesce(hs.pengurang_pp,0)
+		end hutang_retur_sak
+		-- jika 1 berarti dianggap sebagai pengurang
+	/*	,case 
+			when ars.keputusan = 'A' then 1
+			else 0
+			end approve_hutang_retur_sak
+			*/
+		
+from #z rk
+left join @total_pp tp
+on rk.no_reg = tp.no_reg
+left join m_barang mb
+	on mb.KODE_BARANG = tp.kode_barang
+left join @pakan_kirim_kandang pkk
+	on pkk.no_reg = tp.no_reg and pkk.jenis_kelamin = tp.jenis_kelamin and pkk.kode_barang = tp.kode_barang
+/*
+left join @pakan_kirim_dari_gudang pkg
+	on pkg.no_reg = tp.no_reg and pkg.jenis_kelamin = tp.jenis_kelamin and pkg.kode_barang = tp.kode_barang	
+*/
+left join @konsumsi_pakan_total kb
+	on tp.no_reg = kb.no_reg  and tp.jenis_kelamin = kb.jenis_kelamin and tp.kode_barang = kb.kode_barang
+left join @total_retur tr
+	on tr.no_reg = tp.no_reg  and tr.jenis_kelamin = tp.jenis_kelamin and tr.kode_barang = tp.kode_barang
+left join @retur_saat_pp rsp
+	on rsp.no_reg = tp.no_reg  and rsp.jenis_kelamin = tp.jenis_kelamin and rsp.kode_barang = tp.kode_barang
+left join @hutang_pp_sebelumnya hs
+	on hs.no_reg = tp.no_reg and hs.jenis_kelamin = tp.jenis_kelamin and hs.kode_barang = tp.kode_barang 
+-- left join @approve_retur_sak ars
+--	on ars.no_reg = tp.no_reg
+)yy
+
+drop table #z
+
+end
+
 
 
 create procedure [dbo].[pp_bdy_pakan_tambahan_v3] (
@@ -446,9 +718,5 @@ BEGIN
 END
 
 
-INSERT INTO dbo.SYS_CONFIG_GENERAL (KODE_FARM,KODE_CONFIG,DESCRIPTION,CONTEXT,VALUE,STATUS) VALUES 
-('0','maxKebutuhanPakan','N hari kebutuhan pakan ( default 3)','aktivasiSiklus','3','1'),
-('0','maxKebutuhanPakanDoc','N hari kebutuhan pakan awal docin( default 7)','aktivasiSiklus','7','1'),
-('0','maxKebutuhanHarian','N hari kebutuhan pakan harian ( default 1)','aktivasiSiklus','1','1'),
-('0','umurPakanHarian','N umur sebelum pakan harian ( default 19)','aktivasiSiklus','19','1'),
-('0','ppAkanPanen','N umur akan panen ( default 22)','aktivasiSiklus','22','1')
+
+alter table dbo.review_lpb_budidaya alter column ket_review varchar(max)

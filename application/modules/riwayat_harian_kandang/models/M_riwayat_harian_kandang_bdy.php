@@ -1256,19 +1256,21 @@ QUERY;
 	}
 
 	function belumDropping($noreg,$tgldocin){
+		$kode_farm = $this->session->userdata('kode_farm');
 		$sql = <<<SQL
+		declare @hKebutuhan integer =  (select value from SYS_CONFIG_GENERAL where KODE_FARM = '{$kode_farm}' and KODE_CONFIG = '_control_droping_rhk' and context='rhk')
 		select count(*) ada
 		from
 			(
 				select distinct le.no_reg,le.tgl_kebutuhan
 				from lpb l 
-				join lpb_e le on l.no_lpb = le.no_lpb and le.no_reg = '{$noreg}' and le.tgl_kebutuhan <= DATEADD(day,2,'{$tgldocin}') and le.tgl_kebutuhan = cast(getdate() as date)
+				join lpb_e le on l.no_lpb = le.no_lpb and le.no_reg = '{$noreg}' and le.tgl_kebutuhan <= DATEADD(day,2,'{$tgldocin}') and le.tgl_kebutuhan = cast(getdate() + @hKebutuhan as date)
 				where l.STATUS_LPB = 'A'
 				union all
 				select distinct rpp.no_reg,rpp.tgl_kebutuhan 
 				from rhk_rekomendasi_pakan rpp
 				where rpp.no_reg = '{$noreg}' 
-				and rpp.tgl_kebutuhan = cast(getdate() as date)
+				and rpp.tgl_kebutuhan = cast(getdate() + @hKebutuhan as date)
 				and rpp.jml_permintaan > 0
 				and datediff(day,'{$tgldocin}',rpp.tgl_kebutuhan) >= 3
 			)rekomendasi 
@@ -1277,7 +1279,7 @@ QUERY;
 				,(select sum(jml_on_pick) from movement_d where KETERANGAN2 = '{$noreg}' and NO_REFERENSI = oke.no_order) belum_dropping
 				from order_kandang_e oke 
 				join ORDER_KANDANG_D okd on oke.NO_ORDER = okd.no_order and oke.no_reg = okd.no_reg 
-				where oke.no_reg = '{$noreg}'  and oke.tgl_kebutuhan = cast(getdate() as date)
+				where oke.no_reg = '{$noreg}'  and oke.tgl_kebutuhan = cast(getdate() + @hKebutuhan as date)
 				group by oke.tgl_kebutuhan,oke.no_order
 			)dropping on rekomendasi.tgl_kebutuhan = dropping.tgl_kebutuhan
 		where (dropping.belum_dropping > 0 or dropping.tgl_kebutuhan is null)

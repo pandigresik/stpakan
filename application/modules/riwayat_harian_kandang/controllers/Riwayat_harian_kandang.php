@@ -110,7 +110,7 @@ class Riwayat_harian_kandang extends MY_Controller
                     return;
                 }
 
-                /** pastikan sudah droping pakan untuk tanggal kebutuhan hari ini */
+                /** pastikan sudah droping pakan untuk tanggal kebutuhan besok, karena rhk dientri di hari H */
                 $belumDropping = $this->m_riwayat->belumDropping($cetakRhk['NO_REG'], $tmp['TGL_DOC_IN']);
                 if ($belumDropping['ada']) {
                     $this->result['message'] = 'Dropping masih belum selesai dilakukan';
