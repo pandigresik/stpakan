@@ -481,10 +481,18 @@ if(!function_exists('tabelkonfirmasippic')){
 	}
 
 }
+
 if(!function_exists('tglSebelum')){
 	function tglSebelum($tgl,$hari){
-		$date = new \DateTime($tgl);$date = new \DateTime($tgl);
+		$date = new \DateTime($tgl);
 		return $date->sub(new \DateInterval('P'.$hari.'D'))->format('Y-m-d');
+	}
+}
+
+if(!function_exists('detikSetelah')){
+	function detikSetelah($tgl,$detik){
+		$date = new \DateTime($tgl);
+		return $date->add(new \DateInterval('PT'.$detik.'S'))->format('Y-m-d h:i:s');
 	}
 }
 

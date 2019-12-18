@@ -5,7 +5,7 @@
 						$readonly_rekomendasi = !$edit_rekomendasi ? 'readonly' : '';
 						$readonly_review = !$edit_review ? 'readonly' : '';
 						$requiered_review = $edit_review ? 'required' : '';
-						
+						$umurKebutuhanMulaiKontrolAdg = 8;
 						foreach($kebutuhan_pakan as $kb => $perbarang){														
 							$pertanggal = $perbarang['pertanggal'];
 							$rowspan = count($pertanggal);							
@@ -22,7 +22,7 @@
 								}
 							}
 							foreach($pertanggal as $p){
-								$maxJumlahReview = 1000;
+								$maxJumlahReview = 10000;
 								
 								$tgl_keb = $p['tgl_asli'];
 								$jmlRekomendasi = isset($review_kb[$tgl_keb]) ? $review_kb[$tgl_keb]['JML_REKOMENDASI'] : '';								
@@ -50,14 +50,16 @@
 								}
 
 								/** jika bukan pakan tambahan, maka set maksimal review */
-								if(empty($class_pakan_tambahan) && $setMaxReview){
-									if($adgDibawahStandart){
-										$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
-									}else{
-										$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['kuantitas'] * .5);
+								if($p['umur'] >= $umurKebutuhanMulaiKontrolAdg){
+									if(empty($class_pakan_tambahan) && $setMaxReview){
+										if($adgDibawahStandart){
+											$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
+										}else{
+											$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['kuantitas'] * .5);
+										}
 									}
 								}
-
+								
 								$input_kf = '<input class="required '.$class_pakan_tambahan.'" '.$readonly_rekomendasi.' name="jml_rekomendasi" size="1" type="text" data-max="'.$p['rekomendasi_pp'].'"  value="'.$jmlRekomendasi.'" />';
 								$review_kdp = $show_review ? '<input class="'.$requiered_review.'" '.$readonly_review.' name="jml_review" size="1" type="text" value="'.$jmlReview.'"  data-max="'.$maxJumlahReview.'" />' : '';
 								$keterangan_kf = '<textarea name="ket_rekomendasi" class="required" '.$readonly_rekomendasi.' cols="10" rows="6" data-minlength="10" maxlength="60">'.$ketRekomendasi.'</textarea>';

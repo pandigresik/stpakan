@@ -5,5 +5,5 @@
 <link rel="stylesheet" type="text/css" href="assets/css/jquery.stickytable.css" >
 <script type="text/javascript" src="assets/js/forecast/config.js"></script>
 <script type="text/javascript" src="assets/js/jquery.stickytable.js"></script>
-<script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js"></script>
+<script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js?v=2.1"></script>
 <script type="text/javascript" src="assets/js/permintaan_pakan_v2/permintaan_pakan.js"></script>

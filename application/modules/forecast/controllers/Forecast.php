@@ -2252,7 +2252,7 @@ class Forecast extends MY_Controller{
 			'reject' => array('KD'=> 'RJ', 'KDV' => 'RJ'),
 		);
 		$tgl = Modules::run('home/home/getDateServer');
-		$tglserver = $tgl->saatini;
+		$tglserver = detikSetelah($tgl->saatini,2);
 
 		/* insert ke tabel cycle_state_transition */
 		$stateKonfirmasi = $this->autoApprove ? $state[$aksi]['KDV'] : $state[$aksi][$user_level];
