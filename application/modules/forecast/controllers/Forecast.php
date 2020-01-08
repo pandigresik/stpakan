@@ -2081,7 +2081,8 @@ class Forecast extends MY_Controller{
 		$std = $this->input->post('std');
 		$kodefarm = $this->input->post('kodefarm');
 		$tglefektif = $this->input->post('tgl_efektif');
-		$u = $this->db->where('kode_farm = \''.$kodefarm.'\' and tgl_doc_in > getdate() + 6')->update('kandang_siklus',array('kode_std_budidaya'=>$std));
+		//$u = $this->db->where('kode_farm = \''.$kodefarm.'\' and tgl_doc_in > getdate() + 6')->update('kandang_siklus',array('kode_std_budidaya'=>$std));
+		$u = $this->db->where('kode_farm = \''.$kodefarm.'\' and tgl_doc_in >= \''.$tglefektif.'\'')->update('kandang_siklus',array('kode_std_budidaya'=>$std));
 		if($u){
 			$this->result['status'] = 1;
 			$this->result['message'] = 'Kode standart budidaya berhasil diupdate';

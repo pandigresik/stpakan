@@ -2,7 +2,13 @@
     'use strict';
     /* jika pilihan farm bukan kosong maka load farm yang dipilih */
     var _farm_terpilih = $('#list_farm select');
-
+    /** update tanggal server, untuk memastikan tgl di browser sudah sama */
+    $.get('api/general/tanggalserver',{},function(data){
+        if(data.status){
+            $('#tanggal_server').data('tanggal_server',data.content);
+        }
+    },'json');
+    
     //	Config._setCurrentFarm(_farm_terpilih.val());
     if (!empty(_farm_terpilih.val())) {
         Permintaan.load_farm(_farm_terpilih);
@@ -22,4 +28,5 @@
             _farm_terpilih.find('option[value=' + i + ']').remove();
         }
     }
+
 }());

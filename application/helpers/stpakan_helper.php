@@ -492,7 +492,7 @@ if(!function_exists('tglSebelum')){
 if(!function_exists('detikSetelah')){
 	function detikSetelah($tgl,$detik){
 		$date = new \DateTime($tgl);
-		return $date->add(new \DateInterval('PT'.$detik.'S'))->format('Y-m-d h:i:s');
+		return $date->add(new \DateInterval('PT'.$detik.'S'))->format('Y-m-d H:i:s');
 	}
 }
 

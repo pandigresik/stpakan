@@ -249,8 +249,10 @@ SQL;
 	}
 
 	public function cek_input_lhk($noreg){
+		$rhk_terkahir_sql = $this->db->select('max(tgl_transaksi)')->where(array('no_reg'=> $noreg))->get_compiled_select('rhk');
 		return $this->db
-				->where('tgl_transaksi = cast(getdate() - 0 as date)')
+			//	->where('tgl_transaksi = cast(getdate() - 0 as date)')
+				->where('tgl_transaksi = ( '.$rhk_terkahir_sql.' )')
 				->where(array('no_reg'=> $noreg))
 				->where('ack_kf is not null')
 				->get('rhk');
