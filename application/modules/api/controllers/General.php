@@ -87,7 +87,6 @@ SQL;
     public function tanggalserver_get()
     {
         $this->result['content'] = date('Y-m-d');
-        $this->result['content'] = '2030-12-12';
         $this->result['status'] = 1;
         $this->response($this->result, 200);
     }
