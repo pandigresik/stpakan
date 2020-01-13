@@ -180,7 +180,7 @@ class Timbangdoc extends REST_Controller
 		]);
 		$listNoreg[$noreg]['jml_box'] += $jmlbox;
 		$listNoreg[$noreg]['jml_ekor'] += $jmlekor;
-		$listNoreg[$noreg]['total_berat'] += $berat;
+		$listNoreg[$noreg]['total_berat'] += ($berat - $tarabox);
 		$listNoreg[$noreg]['jml_timbang'] += 1;
 		$listNoreg[$noreg]['bb_rata2'] = round((($listNoreg[$noreg]['total_berat'] * 1000) / $listNoreg[$noreg]['jml_ekor']),2);
 	}

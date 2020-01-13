@@ -2,7 +2,7 @@
 /* controller user ini akan digunakan untuk autentikasi dan otorisasi 
  * semua controller yang bebas diakses seharusnya mengextends MX_Controller atau CI_Controller
  * */
-class Std_budidaya_bdy extends MX_Controller{
+class Std_budidaya_bdy extends MY_Controller{
 	
 	public function __construct(){
 		parent::__construct();

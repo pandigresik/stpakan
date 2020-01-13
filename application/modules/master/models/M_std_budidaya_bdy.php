@@ -26,17 +26,21 @@ QUERY;
     public function get_last_std($kode_strain, $kode_farm)
     {
         $sql = <<<QUERY
-			select m_std.kode_std_budidaya
-				   ,m_std.kode_strain
-				   ,m_std.tgl_efektif
-				   ,coalesce(convert(varchar(20),(select DATEADD(DAY, -1, tgl_efektif) from m_std_budidaya where kode_std_budidaya = substring(m_std.kode_std_budidaya, 0, CHARINDEX('-', m_std.kode_std_budidaya)+1)+convert(varchar(4),substring(m_std.kode_std_budidaya, (CHARINDEX('-', m_std.kode_std_budidaya)+1),2)+1))),'-') tgl_akhir
-				   ,replace(convert(varchar(11),m_std.tgl_efektif,106),' ',' ') tgl_efektif_formated
-				   ,coalesce(convert(varchar(20),replace(convert(varchar(11),(select DATEADD(DAY, -1, tgl_efektif) from m_std_budidaya where kode_std_budidaya = substring(m_std.kode_std_budidaya, 0, CHARINDEX('-', m_std.kode_std_budidaya)+1)+convert(varchar(4),substring(m_std.kode_std_budidaya, (CHARINDEX('-', m_std.kode_std_budidaya)+1),2)+1)),106),' ',' ')),'-') tgl_akhir_formated
-				   ,mf.nama_farm
-			from m_std_budidaya m_std
-			left join m_farm mf on mf.kode_farm = m_std.kode_farm
-			where m_std.kode_strain = '{$kode_strain}' and m_std.kode_farm in ({$kode_farm})
-			order by m_std.tgl_efektif
+        select  x.*
+        ,coalesce(replace(convert(varchar(11),x.tgl_akhir,106),' ',' '),'-') tgl_akhir_formated
+    from(
+        select m_std.kode_std_budidaya
+                       ,m_std.kode_strain
+                       ,m_std.tgl_efektif
+                       ,(select dateadd(day,-1,min(tgl_efektif)) from m_std_budidaya where kode_farm = m_std.kode_farm and tgl_efektif > m_std.tgl_efektif) tgl_akhir
+                       ,replace(convert(varchar(11),m_std.tgl_efektif,106),' ',' ') tgl_efektif_formated
+                       ,mf.nama_farm
+                from m_std_budidaya m_std
+                left join m_farm mf on mf.kode_farm = m_std.kode_farm
+                where m_std.kode_strain = '{$kode_strain}' and m_std.kode_farm in ({$kode_farm})
+    )x
+    
+                order by x.tgl_efektif
 QUERY;
 
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);

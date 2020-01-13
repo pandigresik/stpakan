@@ -620,4 +620,12 @@ class Tes extends MX_Controller
         echo $ssocr->run();
         
     }
+
+    public function detikSetelah(){
+        $tgl = Modules::run('home/home/getDateServer');
+        echo $tgl->saatini;
+        echo '<br >';
+        $tglserver = detikSetelah($tgl->saatini,2);
+        echo $tglserver;
+    }
 }

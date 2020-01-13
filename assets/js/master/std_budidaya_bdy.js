@@ -255,23 +255,7 @@ $('#btnNew').click(function(){
 					label: "Ya",
 					className: "btn-primary",
 					callback: function() {
-						var tgl_efektif = selected_riwayat_date.split(" "); 
-						var index = months.indexOf(tgl_efektif[1]);
-						tahun = parseInt(tgl_efektif[2]);
-						bulan = parseInt(index);
-						hari = parseInt(tgl_efektif[0]);
-						
-						$( "#inp_tanggalefektif" ).datepicker( { 
-							dateFormat: 'dd MM yy',
-							setDate: new Date(tahun, bulan, hari + 1),
-							minDate: new Date(tahun, bulan, hari + 1) 
-						});
-						
-						var nextDate = new Date(tahun, bulan, hari + 1);
-						var day = nextDate.getDate();
-						var monthIndex = nextDate.getMonth();
-						var year = nextDate.getFullYear();
-						$( "#inp_tanggalefektif" ).val(day +' '+months[monthIndex]+' '+year);
+						setTanggalEfektifDefault();
 												
 						$.ajax({
 							type:'POST',
@@ -364,7 +348,6 @@ $('#btnNew').click(function(){
 	}
 	else{
 		var kode_strain = $('#inp_strain').val();
-		
 		bootbox.dialog({
 			message: "Apakah Anda akan membuat standar budidaya baru?",
 			title: "",
@@ -373,55 +356,7 @@ $('#btnNew').click(function(){
 					label: "Ya",
 					className: "btn-primary",
 					callback: function() {
-						var tgl_efektif_arr = new Array();
-						var index_tgl = 0;
-						var pad = '00';
-						$('#riwayat-standar-budidaya > tbody  > tr').each(function() {
-							tgl_awal = $(this).find('td:nth-child(2)').text();
-							tgl = $(this).find('td:nth-child(3)').text();
-							
-							tgl = (tgl == '-') ? tgl_awal : tgl;
-							
-							if(!empty(tgl)){								
-								tgl_temp = tgl.split(" "); 
-								var index = months.indexOf(tgl_temp[1]);
-								tahun = parseInt(tgl_temp[2]);
-								bulan = parseInt(index);
-								hari = parseInt(tgl_temp[0]);
-								
-								bulan_pad = (pad + bulan).slice(-pad.length);
-								hari_pad = (pad + hari).slice(-pad.length);
-								tgl_efektif_arr[index_tgl] = tahun+bulan_pad+hari_pad;
-							}
-						});
-						
-						if(tgl_efektif_arr.length > 0){
-							tgl_efektif_arr.reverse(); 
-							tgl_last = tgl_efektif_arr[0];
-							
-							
-							
-							tahun_last = parseInt(tgl_last.substr(0,4));
-							bulan_last = parseInt(tgl_last.substr(4,2));
-							hari_last = parseInt(tgl_last.substr(6,2));
-							
-							$( "#inp_tanggalefektif" ).datepicker( { 
-								dateFormat: 'dd MM yy',
-								setDate: new Date(tahun_last, bulan_last, hari_last + 1),
-								minDate: new Date(tahun_last, bulan_last, hari_last + 1) 
-							});
-							
-							var nextDate = new Date(tahun_last, bulan_last, hari_last + 1);
-							var day = nextDate.getDate();
-							var monthIndex = nextDate.getMonth();
-							var year = nextDate.getFullYear();
-							$( "#inp_tanggalefektif" ).val(day +' '+months_id[monthIndex]+' '+year);					
-						}else{
-							$( "#inp_tanggalefektif" ).datepicker( { 
-								dateFormat: 'dd MM yy'
-							});
-						}
-						
+						setTanggalEfektifDefault();
 						$( "#kontrol_input_kebutuhan" ).show();
 						
 						$.ajax({
@@ -1543,17 +1478,6 @@ function cekBudgetPakan(col_bpkum, col_bphr){
 }
 
 function cekBBFCR(col_bb, col_fcr){
-	// var col_bb = new Array();
-	// var col_fcr = new Array();
-	
-	// $('input[name^="col_bb"]').each(function() {
-		// col_bb.push($(this).val());
-	// });
-	
-	// $('input[name^="col_fcr"]').each(function() {
-		// col_fcr.push($(this).val());
-	// });
-	
 	for(var i=0;i<col_bb.length;i++){
 		var current_val = col_bb[i];
 				
@@ -1594,6 +1518,61 @@ function cekBBFCR(col_bb, col_fcr){
 	
 	return true;
 }
+
+function setTanggalEfektifDefault(){
+	var tgl_efektif_arr = new Array();
+	var nextDate;
+						var index_tgl = 0;
+						var pad = '00';
+						$('#riwayat-standar-budidaya > tbody  > tr:last').each(function() {
+							tgl_awal = $(this).find('td:nth-child(2)').text();
+							tgl = $(this).find('td:nth-child(3)').text();
+							
+							tgl = (tgl == '-') ? tgl_awal : tgl;
+							
+							if(!empty(tgl)){								
+								tgl_temp = tgl.split(" "); 
+								var index = months.indexOf(tgl_temp[1]);
+								tahun = parseInt(tgl_temp[2]);
+								bulan = parseInt(index);
+								hari = parseInt(tgl_temp[0]);
+								
+								bulan_pad = (pad + bulan).slice(-pad.length);
+								hari_pad = (pad + hari).slice(-pad.length);
+								tgl_efektif_arr[index_tgl] = tahun+bulan_pad+hari_pad;
+							}
+						});
+						
+						if(tgl_efektif_arr.length > 0){
+							tgl_efektif_arr.reverse(); 
+							tgl_last = tgl_efektif_arr[0];
+							
+							tahun_last = parseInt(tgl_last.substr(0,4));
+							bulan_last = parseInt(tgl_last.substr(4,2));
+							hari_last = parseInt(tgl_last.substr(6,2));
+							
+							nextDate = new Date(tahun_last, bulan_last, hari_last + 1);
+							/** jika nextDate < hari ini, maka set menjadi hari ini */
+							if(nextDate < new Date()){
+								nextDate = new Date();
+							}
+						}else{
+							nextDate = new Date();
+							
+						}
+	var day = nextDate.getDate();
+	var monthIndex = nextDate.getMonth();
+	var year = nextDate.getFullYear();
+	$( "#inp_tanggalefektif" ).datepicker( { 
+		dateFormat: 'dd MM yy',
+		setDate: nextDate,
+		minDate: nextDate 
+	});
+	//$( "#inp_tanggalefektif" ).datepicker('option','minDate',nextDate );
+
+	$( "#inp_tanggalefektif" ).val(day +' '+months_id[monthIndex]+' '+year);											
+}
+
 
 (function ($) {
 	$.fn.formNavigation = function () {

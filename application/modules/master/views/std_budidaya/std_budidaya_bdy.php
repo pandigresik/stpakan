@@ -263,5 +263,5 @@
     }
 </style>
 
-<script type="text/javascript" src="assets/js/master/std_budidaya_bdy.js"></script>
+<script type="text/javascript" src="assets/js/master/std_budidaya_bdy.js?v=0.1>"></script>
 <script type="text/javascript" src="assets/js/master/combomulticolumn.js"></script>
