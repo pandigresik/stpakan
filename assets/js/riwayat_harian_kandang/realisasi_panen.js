@@ -146,7 +146,7 @@ function refresh_available_do(no_reg = null, tgl_panen = null, sj_panen = null) 
             var _berat_max;
             $.each(data.do, function(key, value) {
                 temp_available_do.push(value);
-                _berat_max = value.BERAT;
+                _berat_max = value.BERAT_MAX;
                 if (data.do_nyeser[value.NO_DO] !== undefined) {
                     _berat_max = data.do_nyeser[value.NO_DO];
                 }

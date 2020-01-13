@@ -14,8 +14,8 @@ class M_realisasi_panen extends CI_Model{
 		}
 		$sql = <<<QUERY
 		select plg.NAMA_PELANGGAN
-		,NO_DO,KODE_PELANGGAN,JUMLAH,TGL_BUAT,TGL_PANEN,KODE_FARM,NO_REG,NO_SJ,RIT,NOPOL,ID_SOPIR,SOPIR,NIK_TIMPANEN,MULAI_PANEN,SELESAI_PANEN,jam_brngkt,jam_tiba_farm,jam_tiba_rpa,jam_potong 
-		,CASE WHEN substring(DO.NO_DO,0,4) = 'BDY' THEN BERAT + (BERAT * .1) ELSE 2500 END MAX_RIT
+		,NO_DO,KODE_PELANGGAN,JUMLAH,TGL_BUAT,BERAT,TGL_PANEN,KODE_FARM,NO_REG,NO_SJ,RIT,NOPOL,ID_SOPIR,SOPIR,NIK_TIMPANEN,MULAI_PANEN,SELESAI_PANEN,jam_brngkt,jam_tiba_farm,jam_tiba_rpa,jam_potong 
+		,CASE WHEN substring(DO.NO_DO,0,4) = 'BDY' THEN BERAT + (BERAT * .1) ELSE 2500 END BERAT_MAX
 		,CASE WHEN substring(DO.NO_DO,0,4) = 'BDY' THEN 3300 ELSE 2500 END MAX_RIT
 		from REALISASI_PANEN_DO do
 		inner join M_PELANGGAN plg on plg.kode_pelanggan = do.kode_pelanggan 
