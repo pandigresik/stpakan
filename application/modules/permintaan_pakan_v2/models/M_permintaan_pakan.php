@@ -886,7 +886,7 @@ SQL;
 	/** dibagi sejumlah kandang, karena pada forecast itu perflok bukan perkandang */
 	public function budgetPakanNoReg($noreg){
 		$sql = <<<SQL
-		SELECT mb.kode_barang,mb.nama_barang,ceiling(sum(fd.JML_FORECAST) / (SELECT count(no_reg) FROM KANDANG_SIKLUS WHERE flok_bdy = f.KODE_FLOK_BDY AND kode_siklus = f.KODE_SIKLUS)) budget
+		SELECT mb.kode_barang,mb.nama_barang,ceiling(sum(fd.JML_FORECAST) / (SELECT count(no_reg) FROM KANDANG_SIKLUS WHERE flok_bdy = f.KODE_FLOK_BDY AND kode_siklus = f.KODE_SIKLUS and status_siklus = 'O')) budget
 		FROM FORECAST f
 		JOIN FORECAST_D fd ON fd.FORECAST = f.id
 		JOIN kandang_siklus ks ON ks.KODE_SIKLUS = f.KODE_SIKLUS 

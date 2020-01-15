@@ -144,13 +144,15 @@ function refresh_available_do(no_reg = null, tgl_panen = null, sj_panen = null) 
             }
             html_option.push('<option ' + attr + ' value=""></option>');
             var _berat_max;
+            var _lock_tonase_do;
             $.each(data.do, function(key, value) {
                 temp_available_do.push(value);
-                _berat_max = value.BERAT_MAX;
+                _berat_max = value.BERAT;
+                _lock_tonase_do = value.LOCK_TONASE_DO;
                 if (data.do_nyeser[value.NO_DO] !== undefined) {
                     _berat_max = data.do_nyeser[value.NO_DO];
                 }
-                var html = '<option data-no_sj="' + value.NO_SJ + '" data-kode_plg="' + value.KODE_PELANGGAN + '" data-nama_pelanggan="' + value.NAMA_PELANGGAN + '" data-max_berat_rit="' + value.MAX_RIT + '" data-berat_max="' + _berat_max + '" data-berat="' + value.BERAT + '" data-jumlah="' + value.JUMLAH + '" data-tgl_panen="' + value.TGL_PANEN + '" value="' + value.NO_DO + '">' + value.NO_DO + '</option>';
+                var html = '<option data-lock_tonase_do="'+_lock_tonase_do+'" data-no_sj="' + value.NO_SJ + '" data-kode_plg="' + value.KODE_PELANGGAN + '" data-nama_pelanggan="' + value.NAMA_PELANGGAN + '" data-max_berat_rit="' + value.MAX_RIT + '" data-berat_max="' + _berat_max + '" data-berat="' + value.BERAT + '" data-jumlah="' + value.JUMLAH + '" data-tgl_panen="' + value.TGL_PANEN + '" value="' + value.NO_DO + '">' + value.NO_DO + '</option>';
                 html_option.push(html);
             });
 
@@ -1265,226 +1267,79 @@ $('#btnSimpan').click(function() {
             _resumeEntry.push('<tr><td>' + no_sj_01 + '</td><td>' + tgl_panen + '</td><td>' + umur_panen + '</td><td>' + number_format(jumlah_realisasi, 0, ',', '.') + '</td><td>' + number_format(tonase_realisasi, 0, ',', '.') + '</td><td>' + number_format(bb_rata_rata, 3, ',', '.') + '</td></tr>');
             _resumeEntry.push('</tbody>');
             _resumeEntry.push('</table>');
-            if (no_do == '') {
-                bootbox.dialog({
-                    message: "Penyimpanan realisasi panen tanpa No DO. Apakah Anda yakin untuk melanjutkan proses penyimpanan?",
-                    title: "Konfirmasi",
-                    buttons: {
-                        success: {
-                            label: "Ya",
-                            className: "btn-primary",
-                            callback: function() {
-                                bootbox.dialog({
-                                    message: "Apakah Anda yakin untuk melanjutkan proses penyimpanan surat jalan berikut ?" + _resumeEntry.join('') + " Realisasi panen yang telah disimpan tidak dapat diubah.",
-                                    title: "Konfirmasi",
-                                    buttons: {
-                                        success: {
-                                            label: "Ya",
-                                            className: "btn-primary",
-                                            callback: function() {
-                                                /*Simpan Admin Farm*/
-                                                simpan_farm(no_reg, no_sj_01, no_do, tgl_panen, umur_panen,
-                                                    tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat);
-                                            }
-                                        },
-                                        danger: {
-                                            label: "Tidak",
-                                            className: "btn-default",
-                                            callback: function() {
-
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        },
-                        danger: {
-                            label: "Tidak",
-                            className: "btn-default",
-                            callback: function() {
-
-                            }
-                        }
-                    }
-                });
-            } else {
+            
                 var tr = $('#inp_tgl_panen').parent().parent().parent();
                 var td_tonase_pakai = $('#inp_no_do').find('option:selected').data('berat_max'); //$(tr).find('td').eq(3).find('span').html();
                 var td_max_rit = $('#inp_no_do').find('option:selected').data('max_berat_rit');
                 var td_jumlah_pakai = $(tr).find('td').eq(4).find('span').html();
+                var lock_tonase_do = $('#inp_no_do').find('option:selected').data('lock_tonase_do'); 
 
                 if (parseFloat(tonase_realisasi) > parseFloat(td_tonase_pakai)) {
-                    toastr.warning("Tonase realisasi lebih besar dari tonase DO ( " + td_tonase_pakai + " )");
+                    if(lock_tonase_do){
+                        toastr.warning("Tonase realisasi lebih besar dari tonase DO ( " + td_tonase_pakai + " )");
+                        return false;
+                    }else{
+                        dialogKonfirmasiOverDO(_resumeEntry,no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat);
+                    }
+                }else{
+                    dialogSimpanRealisasi(_resumeEntry,no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat);
                 }
 
-                if (parseFloat(tonase_realisasi) > parseFloat(td_max_rit)) {
+                /**
+                 * if (parseFloat(tonase_realisasi) > parseFloat(td_max_rit)) {
                     toastr.error("Tonase realisasi tidak boleh lebih besar dari maximum rit ( " + td_max_rit + " )");
-                } else {
-                    bootbox.dialog({
-                        message: "Apakah Anda yakin untuk melanjutkan proses penyimpanan surat jalan berikut ?" + _resumeEntry.join('') + " Realisasi panen yang telah disimpan tidak dapat diubah.",
-                        title: "Konfirmasi",
-                        buttons: {
-                            success: {
-                                label: "Ya",
-                                className: "btn-primary",
-                                callback: function() {
-                                    /*Simpan Admin Farm*/
-                                    simpan_farm(no_reg, no_sj_01, no_do, tgl_panen, umur_panen,
-                                        tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat);
-                                }
-                            },
-                            danger: {
-                                label: "Tidak",
-                                className: "btn-default",
-                                callback: function() {
-
-                                }
-                            }
-                        }
-                    });
                 }
-            }
-
+                 */
             passed = false;
-        } else {
-            //Admin Budidaya
-            if (passed && arr_tara_berat.length < 1) {
-                toastr.warning("Hasil penimbangan tara harus diisi", 'Warning');
-                passed = false;
-            }
-
-            if (passed && arr_ayam_tonase.length < 1) {
-                toastr.warning("Hasil penimbangan ayam harus diisi", 'Warning');
-                passed = false;
-            }
-
-            if (passed && (parseInt($('#total_tara_box').html()) < 25 || empty($('#total_tara_box').html()))) {
-                toastr.warning("Penimbangan tara minimal sebanyak 25 keranjang", 'Warning');
-                passed = false;
-            }
-
-            if (passed) {
-                var tot_timbang_ayam = $('#inp_tot_ayam').val();
-                var tot_timbang_netto = $('#inp_tot_netto').val();
-
-                $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        url: "riwayat_harian_kandang/realisasi_panen/compare_data/",
-                        data: {
-                            no_reg: no_reg,
-                            no_sj: no_sj,
-                            no_do: no_do,
-                            tot_timbang_ayam: tot_timbang_ayam,
-                            tot_timbang_netto: tot_timbang_netto
-                        }
-                    })
-                    .done(function(data) {
-                        if (data.result == "ok") {
-                            bootbox.dialog({
-                                message: "Apakah Anda yakin melakukan penyimpanan?",
-                                title: "Konfirmasi",
-                                buttons: {
-                                    success: {
-                                        label: "Ya",
-                                        className: "btn-primary",
-                                        callback: function() {
-                                            berat_tara = $('#inp_tot_tarra').val();
-
-                                            $.ajax({
-                                                    type: 'POST',
-                                                    dataType: 'json',
-                                                    url: "riwayat_harian_kandang/realisasi_panen/simpan_detil_penimbangan/",
-                                                    data: {
-                                                        no_reg: no_reg,
-                                                        no_sj: no_sj,
-                                                        no_do: no_do,
-                                                        berat_tara: berat_tara,
-                                                        arr_tara_berat: arr_tara_berat,
-                                                        arr_tara_box: arr_tara_box,
-                                                        arr_ayam_jumlah: arr_ayam_jumlah,
-                                                        arr_ayam_tonase: arr_ayam_tonase,
-                                                        tot_timbang_ayam: tot_timbang_ayam,
-                                                        tot_timbang_netto: tot_timbang_netto,
-                                                        jumlah_akhir: data.akt_timbang_ayam,
-                                                        berat_akhir: data.akt_timbang_netto,
-                                                        level_user: level_user
-                                                    }
-                                                })
-                                                .done(function(data) {
-                                                    if (data.result == "success") {
-                                                        toastr.success("Penyimpanan Realisasi Panen berhasil dilakukan", 'Informasi');
-                                                    } else {
-                                                        toastr.warning("Penyimpanan Realisasi Panen gagal dilakukan", 'Warning');
-                                                    }
-
-                                                    $('#detil_realisasi_panen').hide();
-                                                    initializeData();
-                                                })
-                                                .fail(function(reason) {
-                                                    console.info(reason);
-                                                })
-                                                .then(function(data) {});
-
-                                        }
-                                    },
-                                    danger: {
-                                        label: "Tidak",
-                                        className: "btn-default",
-                                        callback: function() {
-
-                                        }
-                                    }
-                                }
-                            });
-                        } else {
-                            var akt_timbang_ayam = data.akt_timbang_ayam;
-                            var akt_timbang_netto = data.akt_timbang_netto;
-                            berat_tara = $('#inp_tot_tarra').val();
-
-                            var html = '' +
-                                '<tr>' +
-                                '<td class="vert-align">' + tot_timbang_netto + '</td>' +
-                                '<td class="vert-align">' + akt_timbang_netto + '</td>' +
-                                '<td class="vert-align">' + tot_timbang_ayam + '</td>' +
-                                '<td class="vert-align">' + akt_timbang_ayam + '</td>' +
-                                '</tr>';
-
-                            console.log("selected_do>>" + selected_do);
-                            console.log("#inp_no_do>>" + $('#inp_no_do').val());
-                            console.log("no_do>>" + no_do);
-
-                            $('#btnBatalPenyimpanan').attr("data-jawab", 'Farm');
-                            $('#btnBatalPenyimpanan').attr("data-no_reg", no_reg);
-                            $('#btnBatalPenyimpanan').attr("data-no_sj", no_sj);
-                            $('#btnBatalPenyimpanan').attr("data-no_do", no_do);
-                            $('#btnBatalPenyimpanan').attr("data-berat_tara", berat_tara);
-                            $('#btnBatalPenyimpanan').attr("data-berat_akhir", data.akt_timbang_netto);
-                            $('#btnBatalPenyimpanan').attr("data-jumlah_akhir", data.akt_timbang_ayam);
-                            $('#btnBatalPenyimpanan').attr("data-berat_timbang", tot_timbang_netto);
-                            $('#btnBatalPenyimpanan').attr("data-jumlah_timbang", tot_timbang_ayam);
-
-                            $('#btnSimpanPenyimpanan').attr("data-jawab", 'Bdy');
-                            $('#btnSimpanPenyimpanan').attr("data-no_reg", no_reg);
-                            $('#btnSimpanPenyimpanan').attr("data-no_sj", no_sj);
-                            $('#btnSimpanPenyimpanan').attr("data-no_do", no_do);
-                            $('#btnSimpanPenyimpanan').attr("data-berat_tara", berat_tara);
-                            $('#btnSimpanPenyimpanan').attr("data-berat_akhir", tot_timbang_netto);
-                            $('#btnSimpanPenyimpanan').attr("data-jumlah_akhir", tot_timbang_ayam);
-
-                            $('#tb_perbandingan > tbody').html(html);
-                            $('#modal_notif_penimbangan').modal('show');
-                        }
-                    })
-                    .fail(function(reason) {
-                        console.info(reason);
-                    })
-                    .then(function(data) {});
-            }
-        }
+        } 
     }
 });
 
+function dialogSimpanRealisasi(_resumeEntry,no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat){
+    bootbox.dialog({
+        message: "Apakah Anda yakin untuk melanjutkan proses penyimpanan surat jalan berikut ?" + _resumeEntry.join('') + " Realisasi panen yang telah disimpan tidak dapat diubah.",
+        title: "Konfirmasi",
+        buttons: {
+            success: {
+                label: "Ya",
+                className: "btn-primary",
+                callback: function() {
+                    /*Simpan Admin Farm*/
+                    simpan_farm(no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat);
+                }
+            },
+            danger: {
+                label: "Tidak",
+                className: "btn-default",
+                callback: function() {
+
+                }
+            }
+        }
+    });
+}
+function dialogKonfirmasiOverDO(_resumeEntry,no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat){
+    bootbox.dialog({
+        message: "Tonase realisasi panen sebanyak "+tonase_realisasi+" total tersebut melebihi tonase DO. Apakah anda yakin akan melanjutkan ?",
+        title: "Konfirmasi",
+        buttons: {
+            success: {
+                label: "Ya",
+                className: "btn-primary",
+                callback: function() {
+                    dialogSimpanRealisasi(_resumeEntry,no_reg, no_sj_01, no_do, tgl_panen, umur_panen,tonase_realisasi, jumlah_realisasi, tgl_datang, tgl_mulai, tgl_selesai, tgl_buat)
+                }
+            },
+            danger: {
+                label: "Tidak",
+                className: "btn-default",
+                callback: function() {
+
+                }
+            }
+        }
+    });
+}
 function update_do(elm) {
     var tr = $(elm).parent().parent();
     var td_umur_panen = $(tr).find('td').eq(1).find('span');

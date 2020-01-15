@@ -427,7 +427,7 @@
 <link type="text/css" href="assets/libs/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
 <script type="text/javascript" src="assets/libs/bootstrap/js/moment.js"></script>
 <script type="text/javascript" src="assets/libs/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="assets/js/riwayat_harian_kandang/realisasi_panen.js"></script>
+<script type="text/javascript" src="assets/js/riwayat_harian_kandang/realisasi_panen.js?v=0.12"></script>
 
 <script type="text/javascript">
 
