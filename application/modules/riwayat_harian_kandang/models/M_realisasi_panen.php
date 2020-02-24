@@ -127,7 +127,7 @@ QUERY;
 					$success = 0;
 					for($i=0;$i<count($panen_tara);$i++){
 						$this->dbSqlServer->insert("realisasi_panen_tara_keranjang", $panen_tara[$i]);
-						log_message("error", $this->dbSqlServer->last_query());
+						//log_message("error", $this->dbSqlServer->last_query());
 						if($this->dbSqlServer->affected_rows() > 0){
 							$success++;
 						}
@@ -206,6 +206,11 @@ QUERY;
 
 	function simpan_admin_farm($panen){
 		$this->dbSqlServer->trans_begin();
+		/** override nilai no_do, karena beberapa kali gak sesuai */
+		$do_database = $this->dbSqlServer->select('no_do')->where(array('no_sj' => $panen['NO_SURAT_JALAN']))->get('realisasi_panen_do')->row_array();
+		if(!empty($do_database)){
+			$panen['NO_DO'] = $do_database['no_do'];
+		}
 		$this->dbSqlServer->insert("realisasi_panen", $panen);
 		
 		if($this->dbSqlServer->affected_rows() > 0){

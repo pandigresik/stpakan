@@ -193,7 +193,7 @@ class Kontrol_stok_glangsing extends MY_Controller {
 			if(count($result) > 0){
 				$list_response_html = array();
 				$content['data_list_date'] = $result;
-				$content['data_list_ppsk'] = $ppsk;
+				$content['data_list_ppsk'] = simpleGrouping($ppsk,'tgl_kebutuhan');				
 				$content['button_ppsk'] = $this->btn_ppsk;
 				$content['level_user'] = $this->session->userdata('level_user');
 				$response_html = $this->load->view('report/bdy/list_report_ppsk_new',$content, TRUE);

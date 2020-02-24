@@ -120,77 +120,41 @@ div.scroll {
                       $no_ppsk = '';
                       $keterangan = '';
                       $status = '';
-                      foreach ($data_list_ppsk as $key => $val){
-                        if($v_ppsk['tgl_kebutuhan'] == $val['tgl_kebutuhan']){
-                          if($no_ppsk != $val['no_ppsk']){
-                            if($keterangan != ''){
-                              ?>
-                              <td class="alasan"><?php echo $val['alasan']?></td>
-                              <td class="terpakai"><?php echo $v_ppsk['pakaireal_'.$kodeBudget] ?></td>
-                              <td class="sisa_budget"><?php echo $v_ppsk['budgetTersedia_'.$kodeBudget] ?></td>
-                              <td class="statusApproval ">
-                                <?php
-                                  if($level_user == 'KDV'){
-                                    echo $button_ppsk[$level_user][$status];
-                                    /*
-                                    if($val['jml_over_budget'] > 0){
-                                      echo $button_ppsk[$level_user][$status];
-                                    }else{
-                                      echo $button_ppsk['KF'][$status];
-                                    }*/
-                                  }else{
-                                    echo $button_ppsk[$level_user][$status];                                    
-                                  }
-                                ?>
-                              </td>
-                              <td class="keterangan"><?php echo $keterangan?></td></tr>
-                              <?php
-                            }
-                            $keterangan = '';
+                      if(isset($data_list_ppsk[$v_ppsk['tgl_kebutuhan']])){
+                        //log_message('error',$v_ppsk['tgl_kebutuhan'].' datanya '.json_encode($data_list_ppsk[$v_ppsk['tgl_kebutuhan']]));
+                        $perTglKebutuhan = $data_list_ppsk[$v_ppsk['tgl_kebutuhan']];
+                        $perNomerPpsk = simpleGrouping($perTglKebutuhan,'no_ppsk');                        
+                        foreach ($perNomerPpsk as $key => $valPerPpsk){                                             
+                            $val = $valPerPpsk[0];                                                        
+                          //log_message('error',json_encode($val));                                                                                                     
                             $no_ppsk = $val['no_ppsk'];
                             $kodeBudget = $val['kode_budget'];
-                            ?>
-                              <tr data-no_ppsk='<?php echo $val['no_ppsk']?>'>
-                              <td class="no_ppsk"><?php echo $val['no_ppsk']?></td>
-                              <td class="nama_budget"><?php echo $val['nama_budget']?></td>
-                              <td class="budget_tersedia"><?php echo ($v_ppsk['budgetTersedia_'.$kodeBudget] + $v_ppsk['pakaireal_'.$kodeBudget]) ?></td>
-                              <td class="jml_diminta"><?php echo $val['jml_diminta']?></td>
-                              <td class="jml_over_budget"><?php echo $val['jml_over_budget']?></td>                             
-                            <?php
-                          }
-
-                          $status = $val['status'];
-                          $keterangan .= '<div style="text-align:left">['.$val['nama_pegawai'].'] - '.$val['status_text'].', '.convertElemenTglWaktuIndonesia($val['tgl_buat']).'</div>';
-                          $keterangan .= ($val['keterangan'] != '') ? '<div style="text-align:left;color:#ff0000">('.$val['keterangan'].')</div>' : '';
-                      ?>
-                        
-                      
-                      <?php 
-                          }
-                        }
-                        if($keterangan != ''){
-                          ?>
-                          <td class="alasan"><?php echo $val['alasan']?></td>
-                          <td class="terpakai"><?php echo $v_ppsk['pakaireal_'.$kodeBudget] ?></td>
-                          <td class="sisa_budget"><?php echo $v_ppsk['budgetTersedia_'.$kodeBudget] ?></td>
-                          <td class="statusApproval ">
-                            <?php
-                              if($level_user == 'KDV'){
-                                if($val['jml_over_budget'] > 0){
-                                  echo $button_ppsk[$level_user][$status];
-                                }else{
-                                  echo $button_ppsk['KF'][$status];
-                                }
-                              }else{
-                                echo $button_ppsk[$level_user][$status];                                    
-                              }
-                            ?>
-                          </td>
-                          <td class="keterangan"><?php echo $keterangan?></td></tr>
-                          <?php
-                        }
-                       ?>
-                    </tbody>
+                            $keteranganArr = array();
+                            foreach($valPerPpsk as $_valTmp){
+                              $status = $_valTmp['status'];
+                              $logKeterangan = ($_valTmp['keterangan'] != '') ? '<div style="text-align:left;color:#ff0000">('.$_valTmp['keterangan'].')</div>' : '';
+                              $keteranganArr[] = '<div style="text-align:left">['.$_valTmp['nama_pegawai'].'] - '.$_valTmp['status_text'].', '.convertElemenTglWaktuIndonesia($_valTmp['tgl_buat']).$logKeterangan.'</div>';
+                            }
+                            $keterangan = implode(" ",$keteranganArr);
+                            echo '
+                              <tr data-no_ppsk="'.$val['no_ppsk'].'">
+                              <td class="no_ppsk">'.$val['no_ppsk'].'</td>
+                              <td class="nama_budget">'.$val['nama_budget'].'</td>
+                              <td class="budget_tersedia">'.($v_ppsk['budgetTersedia_'.$kodeBudget] + $v_ppsk['pakaireal_'.$kodeBudget]).'</td>
+                              <td class="jml_diminta">'.$val['jml_diminta'].'</td>
+                              <td class="jml_over_budget">'.$val['jml_over_budget'].'</td>                             
+                              <td class="alasan">'.$val['alasan'].'</td>
+                              <td class="terpakai">'.$v_ppsk['pakaireal_'.$kodeBudget].'</td>
+                              <td class="sisa_budget">'.$v_ppsk['budgetTersedia_'.$kodeBudget].'</td>
+                              <td class="statusApproval ">'.$button_ppsk[$level_user][$status].'</td>
+                              <td class="keterangan">'.$keterangan.'</td>
+                          </tr>
+                              ';
+                                                       
+                        }   
+                      }
+                   ?>   
+                   </tbody>
                   </table>
                </td>
              </tr>

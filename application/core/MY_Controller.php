@@ -69,7 +69,7 @@ class Cstpakan_Controller extends MX_Controller{
 	}
 }
 /* konfigurasi untuk client koneksi ke webservice oracle*/
-class Cproduksi_Controller extends MX_Controller{
+class Chris_Controller extends MX_Controller{
 	public function __construct(){
 		// Load the library
 		parent::__construct();
