@@ -45,7 +45,7 @@ class VerifikasiSJdoc extends REST_Controller
 	public function checksjdoc_post(){
 		$output 		= array('status' => 0,'content' => '','message' => '');
 		$data 			= json_decode($this->post('data'),1); 
-		$no_sj_check	= $this->db->where(array('NO_SJ' => $data['no_sj_doc']))->get('BAP_DOC_SJ')->result();
+		$no_sj_check	= $this->db->where(array('NO_SJ' => $data['no_sj_doc'],'KODE_HATCHERY' => $data['hatchery']))->get('BAP_DOC_SJ')->result();
 		$param_kandang	= array(
 				'KODE_FARM'			=>	$data['farm'],
 				'KODE_KANDANG'		=>	$data['kandang'],
