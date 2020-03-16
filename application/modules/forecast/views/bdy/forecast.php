@@ -84,7 +84,7 @@ $hide_breadcomb = isset($breadcomb) ? $breadcomb : '';
 <script type="text/javascript" src="assets/js/forecast/config.js"></script>
 <!-- ppHandler digunakan untuk menghitung perkiraan tanggal kirim -->
 <script type="text/javascript" src="assets/js/permintaan_pakan_v2/ppHandler.js"></script>
-<script type="text/javascript" src="assets/js/forecast/forecastHandler.js?v=0.15"></script>
+<script type="text/javascript" src="assets/js/forecast/forecastHandler.js?v=0.16"></script>
 <script type="text/javascript" src="assets/js/forecast/aktivasiKandang.js?v=0.16"></script>
 <script type="text/javascript" src="assets/js/forecast/farm_bdy.js"></script>
 
