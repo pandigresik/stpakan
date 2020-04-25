@@ -704,9 +704,10 @@ if(!function_exists('hitungIP')){
 	function hitungIP($dh,$bb,$fcr,$umur){
 		$result = null;
 		if(!empty($bb) && !empty($fcr)){
-		//	$result = round((($dh / 100) * $bb * 100) / ($fcr * $umur));			
-			$result = ceil((($dh * $bb ) / ($fcr * $umur)) * 100);			
+		//	$result = round((($dh / 100) * $bb * 100) / ($fcr * $umur));							
 		//	$result = round((($dh * $bb ) / ($fcr * $umur)) * 100);			
+			$result = ceil((($dh * $bb ) / ($fcr * $umur)) * 100);		
+			//$result = (($dh * $bb ) / ($fcr * $umur)) * 100;						
 		}
 		return $result;
 	}
@@ -748,4 +749,42 @@ if(!function_exists('generateBreadcumb')){
 		}
 		return $result;
 	}
-}	
+}
+if(!function_exists('sendTelegram')){
+	function sendTelegram($pesan, $chatId = '-350754437'){
+
+		$apiToken = '882313901:AAGrVtf5tIQBVTb3Kfin1bqO_4FBYKuwhOg';
+		$url = "https://api.telegram.org/bot$apiToken/sendMessage";
+		
+		$post = [
+			'chat_id' => $chatId,
+			'text' => $pesan,
+			'parse_mode' => 'markdown'
+		];
+
+		$header = [
+		"X-Requested-With: XMLHttpRequest",
+		"User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36" 
+		];
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		//curl_setopt($ch, CURLOPT_REFERER, $refer);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post );   
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$datas = curl_exec($ch);
+		$error = curl_error($ch);
+		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+
+		/*
+		$debug['text'] = $pesan;
+		$debug['code'] = $status;
+		$debug['status'] = $error;
+		$debug['respon'] = json_decode($datas, true);
+		print_r($debug);
+		*/
+		}
+	}		

@@ -1273,7 +1273,10 @@ class Report extends MY_Controller {
 		$result = null;
 		if(!empty($bb) && !empty($fcr)){
 		//	$result = round((($dh / 100) * $bb * 100) / ($fcr * $umur));
-			$result = round((($dh / 100) * $bb * 10000) / ($fcr * $umur));
+			//$result = round((($dh / 100) * $bb * 10000) / ($fcr * $umur));
+			$dh = $dh / 100;
+			$bb = $bb * 100;
+			$result = hitungIP($dh,$bb,$fcr,$umur);
 		}
 		
 		return $result;

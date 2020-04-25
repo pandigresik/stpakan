@@ -115,7 +115,7 @@
                     $total_panen += $jp['total'];
                 }
                 $bb_rata_panen = ($bp / $total_panen) * 1000;
-                $umur_panen = $up / $total_panen;
+                $umur_panen = round($up / $total_panen, 2);
                 $bb_panen = $bp;
                 $dh_panen = $total_panen / $populasi_awal['stok_awal'] * 100;
                 $selisih_panen = $populasi_awal['stok_awal'] - $total_panen ;
@@ -277,7 +277,7 @@
             
             if($bb_panen > 0){
                 $fcr_panen = round($summary_pakan['pakai_kg'] / $bb_panen , 3);
-                $ip_panen = formatAngka((($dh_panen * (round($bb_rata_panen / 1000,2)) * 100) / ($fcr_panen * $umur_panen )),0);
+				$ip_panen = formatAngka((($dh_panen * (round($bb_rata_panen / 1000,3)) * 100) / ($fcr_panen * $umur_panen )),0);				
                 $fcr_panen = formatAngka($fcr_panen,3);
                 $dh_panen = formatAngka($dh_panen,2);
             }
