@@ -96,7 +96,7 @@ class Cetak_form_lhk extends MX_Controller{
 			$jml_maks_pp_order = $this->m_rhk->maksPPKandangTglKebutuhan($noreg, $kodefarm, $tglkebutuhan);
 			
 			foreach ($data["pakan"] as $key=>$val) {
-				$data["pakan"][$key]['JML_STOK_PAKAN_PAKAI'] = $data['pakan_pakai'][$val['KODE_BARANG']]['jml_stok'];
+				$data["pakan"][$key]['JML_STOK_PAKAN_PAKAI'] = isset($data['pakan_pakai'][$val['KODE_BARANG']]) ? $data['pakan_pakai'][$val['KODE_BARANG']]['jml_stok'] : 0;
 				$data["pakan"][$key]['JML_MAKS_PP_ORDER'] = isset($jml_maks_pp_order[$val['KODE_BARANG']]) ? $jml_maks_pp_order[$val['KODE_BARANG']] : 0;
 			}
 
@@ -382,8 +382,19 @@ class Cetak_form_lhk extends MX_Controller{
 					if(empty($berat_pakan)){
 						$berat_pakan = $val['jml_pakai'] * 50;
 					}
-					$stok_akhir = $stok_pakan['JML_STOK'] - $val['jml_pakai'];
-					$berat_akhir = $stok_pakan['BERAT_STOK'] - $berat_pakan;
+					/** jika di kandang movement belum ada, insert dulu */
+					if(empty($stok_pakan)){						
+						$this->db->insert('kandang_movement',array(
+							'jml_stok' => 0
+							,'berat_stok' => 0
+							,'no_reg' => $no_reg
+							,'kode_barang' => $val['kode_barang']
+						));						
+					}else{
+						$stok_akhir = $stok_pakan['JML_STOK'] - $val['jml_pakai'];
+						$berat_akhir = $stok_pakan['BERAT_STOK'] - $berat_pakan;
+					}
+					
 					
 					$kandang_movement_d = array(
 						'no_reg' => $no_reg,
