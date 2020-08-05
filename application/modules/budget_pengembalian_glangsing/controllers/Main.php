@@ -313,8 +313,8 @@ SQL;
 		JOIN (
 			SELECT no_ppsk,max(no_urut) no_urut FROM log_ppsk_new WHERE no_ppsk LIKE 'PPSK/$kode_farm/$periode%' GROUP BY no_ppsk
 		)ppsk_terakhir ON ppsk_terakhir.no_ppsk = lpn.no_ppsk AND ppsk_terakhir.no_urut = lpn.no_urut
-		WHERE lpn.status not in ('A') and lpn.no_ppsk LIKE 'PPSK/$kode_farm/$periode%'
-		-- WHERE lpn.status not in ('A','RJ') and lpn.no_ppsk LIKE 'PPSK/$kode_farm/$periode%'
+	--	WHERE lpn.status not in ('A') and lpn.no_ppsk LIKE 'PPSK/$kode_farm/$periode%'
+		WHERE lpn.status not in ('A','RJ') and lpn.no_ppsk LIKE 'PPSK/$kode_farm/$periode%'
 SQL;
 		
       $query = $this->db->query($sql);

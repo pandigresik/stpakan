@@ -51,8 +51,7 @@
 
 								/** jika bukan pakan tambahan, maka set maksimal review */
 								if($p['umur'] >= $umurKebutuhanMulaiKontrolAdg){
-									//if(empty($class_pakan_tambahan) && $setMaxReview){
-									if($setMaxReview){
+									if(empty($class_pakan_tambahan) && $setMaxReview){
 										if($adgDibawahStandart){
 											$maxJumlahReview = $p['rekomendasi_pp'] + floor($p['rekomendasi_pp'] * .5);
 										}else{

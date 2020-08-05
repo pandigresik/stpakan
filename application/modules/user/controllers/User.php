@@ -239,6 +239,5 @@ class User extends MX_Controller {
 			'WKBA'=> 'KDB'
 		);
 		return isset($kodeBaru[$userLevel]) ? $kodeBaru[$userLevel] : $userLevel;
-	}
-
+	}	
 }

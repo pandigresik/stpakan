@@ -4,25 +4,25 @@ var ImportBapd = {
     awalDOCIn: null,
     thnDOCIn: null,
     periodeSiklus: {},
-    setKandangSiklus: function(ks) {
+    setKandangSiklus: function (ks) {
         this.kandangSiklus = ks;
     },
-    getKandangSiklus: function() {
+    getKandangSiklus: function () {
         return this.kandangSiklus;
     },
-    getDataDocIn: function() {
+    getDataDocIn: function () {
         return this.dataDOCIn;
     },
-    setDataDocIn: function(obj) {
+    setDataDocIn: function (obj) {
         this.dataDOCIn = obj;
     },
-    setPeriodeSiklus: function(periodeSiklus) {
+    setPeriodeSiklus: function (periodeSiklus) {
         this.periodeSiklus = periodeSiklus;
     },
-    getPeriodeSiklus: function() {
+    getPeriodeSiklus: function () {
         return this.periodeSiklus;
     },
-    showDiv: function(target) {
+    showDiv: function (target) {
         var t = $(target);
         if (t.is(':hidden')) {
             t.show();
@@ -30,7 +30,7 @@ var ImportBapd = {
             t.hide();
         }
     },
-    lihatData: function(elm, simpan) {
+    lihatData: function (elm, simpan) {
         $('#detailkodebox').find('table').remove();
         var files = $('#file-upload').get(0).files;;
         if (empty($('#docinfile').val())) {
@@ -48,10 +48,12 @@ var ImportBapd = {
         for (i = 0, f = files[i]; i != files.length; ++i) {
             var reader = new FileReader();
             var name = f.name;
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var data = e.target.result;
                 var _error = 0;
-                var workbook = XLSX.read(data, { type: 'binary' });
+                var workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
                 var _y = ImportBapd.to_json(workbook);
                 var _k = ImportBapd.periksaNamaKolom(_y);
                 _error += _k.err;
@@ -73,7 +75,7 @@ var ImportBapd = {
             reader.readAsBinaryString(f);
         }
     },
-    kumpulkanData: function(obj) {
+    kumpulkanData: function (obj) {
         var _dataBox = [];
         for (var _sn in obj) {
             var _x = obj[_sn];
@@ -84,9 +86,19 @@ var ImportBapd = {
         return _dataBox;
     },
     validNamaKolom: ['FARM', 'SIKLUS', 'KANDANG', 'NO_SJ', 'KODE_BOX', 'JML_BOX'],
-    validFormatKolom: { 'FARM': /^\w{2}/, 'SIKLUS': /^\d{4}\-\d{1}$/, 'KANDANG': /^\d{2}$/, 'NO_SJ': /\w+$/, 'KODE_BOX': /\w+$/, 'JML_BOX': /\d+$/ },
-    periksaNamaKolom: function(dataJson) {
-        var _result = { err: 1, msg: [] };
+    validFormatKolom: {
+        'FARM': /^\w{2}/,
+        'SIKLUS': /^\d{4}\-\d{1}$/,
+        'KANDANG': /^\d{2}$/,
+        'NO_SJ': /\w+$/,
+        'KODE_BOX': /\w+$/,
+        'JML_BOX': /\d+$/
+    },
+    periksaNamaKolom: function (dataJson) {
+        var _result = {
+            err: 1,
+            msg: []
+        };
         var _i = 0;
         var _tmp, _error = 0;
         for (var _sn in dataJson) {
@@ -108,7 +120,7 @@ var ImportBapd = {
         }
     },
 
-    buatTabel: function(obj) {
+    buatTabel: function (obj) {
         var _tbody = [],
             _tr = [],
             _table = [];
@@ -130,7 +142,7 @@ var ImportBapd = {
         return '<div class="sticky-table"><table class="table table-bordered">' + _table.join('') + '</table>';
     },
 
-    isTanggalValid: function(str) {
+    isTanggalValid: function (str) {
         var polaTanggal = /\d{2}\/\d{2}\/\d{4}/;
         var _error = 0;
         if (!polaTanggal.test(str)) {
@@ -149,7 +161,7 @@ var ImportBapd = {
         return !_error;
     },
     /* format yang diberikan adalah format indonesia DD/MM/YYY*/
-    getValidDate: function(str, separatorAsal, separatorTujuan) {
+    getValidDate: function (str, separatorAsal, separatorTujuan) {
         if (!empty(str)) {
             var _y = str.split('/');
             return _y.reverse().join('-');
@@ -157,7 +169,7 @@ var ImportBapd = {
             return null;
         }
     },
-    isValidDate: function(str) {
+    isValidDate: function (str) {
         if (!empty(str)) {
             var t = new Date(str);
             return t == 'Invalid Date' ? 0 : 1;
@@ -165,9 +177,9 @@ var ImportBapd = {
             return 0;
         }
     },
-    to_json: function(workbook) {
+    to_json: function (workbook) {
         var result = {};
-        workbook.SheetNames.forEach(function(sheetName) {
+        workbook.SheetNames.forEach(function (sheetName) {
             var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
             if (roa.length > 0) {
                 result[sheetName] = roa;
@@ -176,7 +188,7 @@ var ImportBapd = {
         return result;
     },
     /* simpan rencana doc in */
-    simpanData: function(elm) {
+    simpanData: function (elm) {
         var _error = 0;
         var _table = $('#detailkodebox').find('table');
         if (!_table.length) {
@@ -186,7 +198,7 @@ var ImportBapd = {
         }
 
     },
-    execSimpanData: function(elm) {
+    execSimpanData: function (elm) {
         var _dataKirim = [],
             _td, _tr;
         var _tableKirim = $('#detailkodebox').find('table');
@@ -194,9 +206,9 @@ var ImportBapd = {
             toastr.error('Mohon memilih lampiran terlebih dahulu');
             return;
         } else {
-            _tableKirim.find('tbody>tr').each(function() {
+            _tableKirim.find('tbody>tr').each(function () {
                 _tr = {};
-                $(this).find('td').each(function(i, v) {
+                $(this).find('td').each(function (i, v) {
                     _tr[ImportBapd.validNamaKolom[i]] = $(v).text();
                 });
                 _tr['NO_REG'] = [_tr['FARM'], _tr['SIKLUS'], _tr['KANDANG']].join('/');
@@ -210,13 +222,17 @@ var ImportBapd = {
         var _siklus = $('#tablebapd').find('tbody>tr.terpilih>td.periode_siklus').text();
         $.ajax({
             url: 'penerimaan_docin/import_box/simpan_box',
-            data: { data: _dataKirim, farm: _farm, siklus: _siklus },
-            beforeSend: function() {
+            data: {
+                data: _dataKirim,
+                farm: _farm,
+                siklus: _siklus
+            },
+            beforeSend: function () {
                 toastr.info('Mohon tunggu proses menyimpan data ...');
             },
             type: 'post',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (data.status) {
                     toastr.success(data.message);
                     $('#main_content').empty().load('penerimaan_docin/import_box/index');
@@ -229,7 +245,7 @@ var ImportBapd = {
         });
     },
 
-    preview: function() {
+    preview: function () {
         var _tr = $('#tablebapd tbody>tr.terpilih');
         var _error = 0;
         var _kode_farm = _tr.find('td.kode_farm').data('kode_farm');
@@ -239,10 +255,13 @@ var ImportBapd = {
             /* dapatkan semua farm pada tahun tersebut */
             $.ajax({
                 url: 'penerimaan_docin/import_box/list_farm_preview',
-                data: { kode_farm: _kode_farm, periode_siklus: _periode_siklus },
+                data: {
+                    kode_farm: _kode_farm,
+                    periode_siklus: _periode_siklus
+                },
                 type: 'post',
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     if (data.status) {
                         $('#detailkodebox').html(data.content);
                     } else {
@@ -255,7 +274,7 @@ var ImportBapd = {
 
     },
 
-    pilihSiklus: function(elm) {
+    pilihSiklus: function (elm) {
         var _sudahUpload = $(elm).data('upload');
         if (_sudahUpload) {
             $('#divBtn').find('div.sudahupload').removeClass('hide');
@@ -269,7 +288,7 @@ var ImportBapd = {
         $('#detailkodebox').html('');
     },
 
-    import: function() {
+    import: function () {
         var _template = [
             '<form class="form form-horizontal">',
             '<div class="form-group">',
@@ -294,7 +313,7 @@ var ImportBapd = {
         ];
         $('#detailkodebox').html(_template.join(''));
     },
-    cari: function(elm) {
+    cari: function (elm) {
         var _form = $(elm).closest('form');
         var _periode = _form.find('select[name=kode_siklus] option:selected').text();
         var _nama_farm = _form.find('select[name=kode_farm] option:selected').text();
@@ -306,25 +325,25 @@ var ImportBapd = {
             $('#tablebapd tbody>tr>td.periode_siklus:not(:contains(' + _periode + '))').closest('tr').hide();
         }
     },
-    laporanBapd: function() {
+    laporanBapd: function () {
         var _farm = $('#tablebapd').find('tbody>tr.terpilih>td.kode_farm').data('kode_farm');
         var _siklus = $('#tablebapd').find('tbody>tr.terpilih>td.periode_siklus').text();
         var _url = '#report/laporan_bapd?periode=' + _siklus + '&kodefarm=' + _farm;
         window.open(_url, "_blank")
     }
 };
-(function() {
+(function () {
     'use strict';
     $('#preview_div,#import_div').hide();
-    $(document).on('change', '.btn-file :file', function(e) {
+    $(document).on('change', '.btn-file :file', function (e) {
         var input = $(this),
             numFiles = input.get(0).files ? input.get(0).files.length : 1,
             label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
         var _file = input.get(0).files[0];
-        var _validType = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+        var _validType = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ''];
 
         if (!in_array(_file.type, _validType)) {
-            bootbox.alert("File yang dapat diunggah hanya dengan format xls atau xlsx", function() {
+            bootbox.alert("File yang dapat diunggah hanya dengan format xls atau xlsx " + _file.type, function () {
                 $('#docinfile').val('');
                 $('#file-upload').val('');
             });

@@ -145,7 +145,14 @@ SQL;
 										foreach($data_aksi as $update){
 											$update = $this->removeKeyUpdate($update,array_keys($where));
 											//$this->db->where($where)->$aksi($nama_tabel,$update);
-											$rawSQL = $this->db->where($where)->set($update)->get_compiled_update($nama_tabel);
+											/** periksa dulu apakah ada datanya atau tidak, jika tidak ada lakukan insert */
+											$checkData = $this->db->where($where)->get($nama_tabel)->row_array();
+											if(!empty($checkData)){
+												$rawSQL = $this->db->where($where)->set($update)->get_compiled_update($nama_tabel);
+											}else{
+												$rawSQL = $this->db->set($update)->get_compiled_insert($nama_tabel);
+											}	
+
 											if($identity){
 												$sqlAll = <<<sql
 												SET IDENTITY_INSERT {$nama_tabel} ON
@@ -162,7 +169,15 @@ sql;
 									}else{
 										//$this->db->where($where)->$aksi($nama_tabel,$data_aksi);
 										$data_aksi = $this->removeKeyUpdate($data_aksi,array_keys($where));
-										$rawSQL = $this->db->where($where)->set($data_aksi)->get_compiled_update($nama_tabel);
+										
+										/** periksa dulu apakah ada datanya atau tidak, jika tidak ada lakukan insert */
+										$checkData = $this->db->where($where)->get($nama_tabel)->row_array();
+										if (!empty($checkData)) {
+											$rawSQL = $this->db->where($where)->set($data_aksi)->get_compiled_update($nama_tabel);
+										} else {
+											$rawSQL = $this->db->set($data_aksi)->get_compiled_insert($nama_tabel);
+										}
+										
 										if($identity){
 											$sqlAll = <<<sql
 											SET IDENTITY_INSERT {$nama_tabel} ON
@@ -180,11 +195,11 @@ sql;
 									/** ini untuk delete */
 									$rawSQL = $this->db->where($where)->get_compiled_delete($nama_tabel);
 									$this->db->query($rawSQL);
-									log_message('error','hapus id sinkron '.$data_sinkron['id'].' '.$rawSQL);
+									//log_message('error','hapus id sinkron '.$data_sinkron['id'].' '.$rawSQL);
 								}								
 							}else{
 								$rawSQL = $this->db->set($data_aksi)->get_compiled_insert($nama_tabel);
-								log_message('error','insert id sinkron '.$data_sinkron['id'].' '.$rawSQL);
+								//log_message('error','insert id sinkron '.$data_sinkron['id'].' '.$rawSQL);
 								if($identity){
 									$sqlAll = <<<sql
 									SET IDENTITY_INSERT {$nama_tabel} ON

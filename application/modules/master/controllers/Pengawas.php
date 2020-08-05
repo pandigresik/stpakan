@@ -140,9 +140,13 @@ class Pengawas extends MX_Controller{
 			"password"=>$password,
 			"status_pegawai"=>$status
 		);
-		
+		$this->db->where(array('kode_pegawai' => $kodepengawas))->delete('pegawai_d');
+		foreach ($list_farm as $lf) {
+			$pegawai_d = array('kode_pegawai' => $kodepengawas, 'kode_farm' => $lf);
+			$this->db->insert('pegawai_d', $pegawai_d);
+		}
 		$result = $this->m_pengawas->update($data, $kodepengawas);
-	
+		
 		$return = array();
 		$return["form_mode"] = "ubah";
 		if($result){

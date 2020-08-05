@@ -133,7 +133,7 @@ $('#master-pengawas > tbody').on('dblclick','tr',function() {
 		$('#inp_kodepengawas').val(data.kode_pegawai);
 		$('#inp_namapengawas').val(data.nama_pegawai);
 		var _list_farm = data.list_farm;
-		$('input[name ^= kode_farm]').prop('disabled',true);
+		//$('input[name ^= kode_farm]').prop('disabled',true);
 		for(var i in _list_farm){
 			$('input[name ^= kode_farm][value='+_list_farm[i]+']').prop('checked',true);
 		}

@@ -260,7 +260,7 @@ SQL;
 				on cst.flock = ks.FLOK_BDY
 				and cst.cycle = ks.kode_siklus
 		where ks.kode_std_budidaya is not null and ks.flok_bdy is not null and ks.status_siklus = 'P'
-  	and ks.TGL_DOC_IN >= cast(getdate() - 50 as date)
+--  	and ks.TGL_DOC_IN >= cast(getdate() as date)
 --	and ks.KODE_SIKLUS in (select KODE_SIKLUS from M_PERIODE where KODE_FARM and STATUS_PERIODE = 'A')
 		and cst.state is null
 		union

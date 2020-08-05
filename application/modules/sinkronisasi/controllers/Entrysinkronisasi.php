@@ -155,8 +155,11 @@ SQL;
     public function update_std_farm($params, $output)
     {
         $kodeFarm = $params['POST']['kodefarm'];
-        $tglDocIn = $params['POST']['std']; /* standart budidaya */
-
+        $kodeStd = $params['POST']['std']; /* standart budidaya */
+        $tglDocIn = $params['POST']['tgl_efktif']; /* standart budidaya */
+        if(empty($tglDocIn)){
+            $tglDocIn = date('Y-m-d');
+        }
         /* output dalam format json */
         $output_arr = json_decode($output, true);
         if ($output_arr['status']) {
@@ -167,7 +170,7 @@ SQL;
 					,'{"no_reg" : "'+no_reg+'"}' as kunci
 					, 0 status_identity
 				from kandang_siklus
-				where kode_farm = :key2 and tgl_doc_in > getdate() + 6
+				where kode_farm = :key2 and tgl_doc_in >= '{$tglDocIn}'
 SQL;
         }
         /* yang melakukan adalah kabag_admin, posisinya di grha jadi server asal di set serverUtama */
@@ -623,6 +626,9 @@ SQL;
                 $this->sinkronisasi->insert($datatransaksi, $dataKey, implode(' union all ', $sqlDetail));
                 if ($this->db->trans_status() === false) {
                     $this->db->trans_rollback();
+                    if($statusLpb == 'N'){
+                        $this->notifikasiPPTelegram($no_pp);
+                    }
                     log_message('error', 'isi tabel sinkronisasi aksi simpan_pp_v2 gagal pada '.date('Y-m-d H:i:s'));
                 } else {
                     $this->db->trans_commit();
@@ -2660,7 +2666,32 @@ SQL;
         if ($output_arr['result'] == 'success') {
             $kodepengawas = $params['POST']['kodepengawas'];
             $list_farm = $params['POST']['list_farm'];
+            $farmDefault = $this->db->query('select kode_farm from m_farm')->result_array();
             $this->db->trans_begin();
+            /** delete peegawai_d di semua farm */
+            foreach ($farmDefault as $lf) {
+                $_kodeFarm = $lf['kode_farm'];
+                $sqlDetail = <<<QUERY
+				select top 1 :key1 as sinkronisasi
+					, 'D' as aksi
+					, 'pegawai_d' as tabel
+					,'{"kode_pegawai" : "'+mp.kode_pegawai+'", "kode_farm" : "{$_kodeFarm}"}' as kunci
+					, 0 status_identity
+				from pegawai_d mp
+				where mp.kode_pegawai = :key2
+QUERY;
+
+                $datatransaksi = array(
+                    'transaksi' => 'delete_pegawai',
+                    'asal' => $this->serverUtama,
+                    'tujuan' => $_kodeFarm,
+                    'aksi' => 'PUSH',
+                );
+
+                $dataKey = array(':key2' => $kodepengawas);
+                $this->sinkronisasi->insert($datatransaksi, $dataKey, $sqlDetail);
+            }
+            /** update pegawai_d di semua farm terpilih */
             foreach ($list_farm as $lf) {
                 $sqlDetail = <<<SQL
 				select :key1 as sinkronisasi
@@ -2670,6 +2701,14 @@ SQL;
 					, 0 status_identity
 				from m_pegawai mp
 				where mp.kode_pegawai = :key2
+                union all 
+				select :key1 as sinkronisasi
+					, 'I' as aksi
+					, 'pegawai_d' as tabel
+					,'{"kode_pegawai" : "'+mp.kode_pegawai+'", "kode_farm" : "'+mp.kode_farm+'"}' as kunci
+					, 0 status_identity
+				from pegawai_d mp
+				where mp.kode_pegawai = :key2 and mp.kode_farm = '{$lf}'
 
 SQL;
 
@@ -5066,4 +5105,42 @@ QUERY;
             }
         }
     }
+
+    public function notifikasiPPTelegram($no_pp){        
+        $sqlNotifikasiPP = <<<SQL
+                        select mb.nama_barang, sum(rlb.jml_rekomendasi) rekomendasi_kafarm, ld.tgl_kirim, ld.tgl_keb_awal, ld.tgl_keb_akhir 
+                            , (select top 1 no_reg from lpb_e where no_lpb = rlb.no_lpb) as no_reg
+                        from review_lpb_budidaya rlb
+                        join lpb_d ld on ld.no_lpb = rlb.no_lpb 
+                        join m_barang mb on mb.kode_barang = rlb.kode_barang
+                        where rlb.no_lpb = '{$no_pp}'
+                        group by rlb.kode_barang,rlb.no_lpb, mb.nama_barang, ld.tgl_kirim, ld.tgl_keb_awal, ld.tgl_keb_akhir
+SQL;
+                        $sqlResult = $this->db->query($sqlNotifikasiPP)->result_array();
+                        if(!empty($sqlResult)){
+                            $detailBarang = array();
+                            $headerPP = $sqlResult[0];                            
+                            foreach($sqlResult as $r){
+                                array_push($detailBarang, $r['nama_barang'].' - '.$r['rekomendasi_kafarm'].' sak');                                
+                            }
+                            $detailBarangStr = implode(PHP_EOL, $detailBarang);
+                            $pesanPP = "
+Farm $this->serverUtama
+Resume PP $no_pp
+No reg ".$headerPP['no_reg']."
+Tgl kirim ".$headerPP['tgl_kirim']."
+Kebutuhan ".$headerPP['tgl_keb_awal']." s.d ".$headerPP['tgl_keb_akhir']."
+Detail PP :
+{$detailBarangStr}
+";
+                        $this->sendTelegram($pesanPP);
+                        }
+    }
+
+    public function sendTelegram($pesan){	
+        $this->load->helper('stpakan');
+        if(function_exists('sendTelegram')){
+            sendTelegram($pesan);
+        }				
+	}
 }

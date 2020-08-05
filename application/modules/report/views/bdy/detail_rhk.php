@@ -276,10 +276,12 @@
 			}
             
             if($bb_panen > 0){
-                $fcr_panen = round($summary_pakan['pakai_kg'] / $bb_panen , 3);
-				$ip_panen = formatAngka((($dh_panen * (round($bb_rata_panen / 1000,3)) * 100) / ($fcr_panen * $umur_panen )),0);				
+				$fcr_panen = round($summary_pakan['pakai_kg'] / $bb_panen , 3);
+				$dh_panen = round($dh_panen,2);
+				$ip_panen = formatAngka((($dh_panen * (round($bb_rata_panen / 1000,4)) * 100) / ($fcr_panen * $umur_panen )),0);				
                 $fcr_panen = formatAngka($fcr_panen,3);
-                $dh_panen = formatAngka($dh_panen,2);
+				//$dh_panen = formatAngka($dh_panen,2);
+				//log_message('error',round($bb_rata_panen / 1000,3));
             }
 			echo '<tr class="rekap panen">
 				<td class="ftl"><strong>Total Panen</strong></td>

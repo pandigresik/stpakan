@@ -167,10 +167,11 @@
 								}else{
 									$selisihHari = 7 - ($indexDayPengajuan - $indexExp);
 								}
+								/* abaikan untuk pengecekan jika melebihi hari jumat
 								$expiredDate = tglSetelah($data['tgl_pengajuan'],$selisihHari);
 								if($tgl_sekarang >= $expiredDate){
 									$aksi = '';
-								}
+								}*/
 							}
 							
 							$str .= '<td data-kode_farm="'.$data['kode_farm'].'" data-status_pengajuan="'.$val['status'].'" class="tgl_pengajuan" rowspan="~~">

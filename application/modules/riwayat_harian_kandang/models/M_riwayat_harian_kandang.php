@@ -165,7 +165,6 @@ QUERY;
 
     public function get_detail_pakan($noreg, $tgllhk)
     {
-        /*
         $sql = <<<QUERY
         SELECT pakan.NO_REG, pakan.TGL_TRANSAKSI, pakan.JENIS_KELAMIN, barang.KODE_BARANG, barang.NAMA_BARANG, pakan.JML_PAKAI, isnull(rekomendasi.JML_PERMINTAAN,0) as JML_PERMINTAAN
         FROM RHK_PAKAN pakan
@@ -173,17 +172,6 @@ QUERY;
         INNER JOIN M_BARANG barang ON barang.KODE_BARANG = pakan.KODE_BARANG
         WHERE pakan.NO_REG='{$noreg}' AND pakan.TGL_TRANSAKSI LIKE '%{$tgllhk}%';
 QUERY;
-*/
-        /** agar bisa tampil semua, jika ada rekomendasi pakan yang belum masuk rhk_pakan */
-        $sql = <<<QUERY
-        select x.NO_REG, x.TGL_TRANSAKSI, 'C' as JENIS_KELAMIN, barang.KODE_BARANG, barang.NAMA_BARANG, isnull(pakan.JML_PAKAI,0) as JML_PAKAI, isnull(rekomendasi.JML_PERMINTAAN,0) as JML_PERMINTAAN
-        from 
-        (select distinct KODE_BARANG, KETERANGAN2 as NO_REG, '{$tgllhk}' as TGL_TRANSAKSI from movement_d where KETERANGAN2 = '{$noreg}')x
-        inner JOIN M_BARANG barang ON barang.KODE_BARANG = x.KODE_BARANG
-        left join rhk_pakan pakan on pakan.KODE_BARANG = x.KODE_BARANG and pakan.NO_REG = '{$noreg}'
-        and pakan.TGL_TRANSAKSI = '{$tgllhk}'
-        LEFT OUTER JOIN rhk_rekomendasi_pakan rekomendasi ON rekomendasi.NO_REG = x.NO_REG AND rekomendasi.tgl_transaksi=x.TGL_TRANSAKSI AND rekomendasi.KODE_BARANG=x.KODE_BARANG		                 
-QUERY;        
         $stmt = $this->dbSqlServer->conn_id->prepare($sql);
         $stmt->execute();
 
