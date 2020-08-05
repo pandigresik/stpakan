@@ -627,7 +627,7 @@ SQL;
                 if ($this->db->trans_status() === false) {
                     $this->db->trans_rollback();
                     if($statusLpb == 'N'){
-                        $this->notifikasiPPTelegram($no_pp);
+                    //    $this->notifikasiPPTelegram($no_pp);
                     }
                     log_message('error', 'isi tabel sinkronisasi aksi simpan_pp_v2 gagal pada '.date('Y-m-d H:i:s'));
                 } else {
