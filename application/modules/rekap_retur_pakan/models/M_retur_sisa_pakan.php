@@ -455,7 +455,7 @@ QUERY;
 
             if ($status) {
                 //Run Procedure
-                log_message('error', 'sampai sini procedure');
+                //log_message('error', 'sampai sini procedure');
                 $sql = <<<QUERY
 					exec dbo.LHK_PERSETUJUAN_RETUR '{$no_retur}', '{$user}', '{$level_user}'
 QUERY;

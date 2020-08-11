@@ -1,0 +1,455 @@
+alter PROCEDURE [dbo].[LHK_PERSETUJUAN_RETUR]
+ --declare
+	@param_no_retur varchar(20) = 'RL/CJ/2017-1/01-1'
+	, @param_user_buat varchar(5) = 'PG0001'
+	, @param_lvl_user varchar(5) = 'KF'
+WITH EXEC AS CALLER
+AS
+begin transaction
+
+begin try
+
+	declare @param_no_retur_temp varchar(20)
+	declare @kode_farm varchar(5) = 'CJ'
+		, @sinkron_tujuan varchar(5) = 'FM'
+		, @sinkron_id int
+		, @noreg_asal varchar(15)
+		, @noreg_tujuan varchar(15)
+		, @flock_tujuan int
+		, @tipe_retur varchar(10)
+		, @kode_siklus varchar(10)
+		, @sys_pallet varchar(15)
+		, @rtn_pallet varchar(15)
+		, @no_kavling varchar(10)
+		, @kode_pallet varchar(15)
+		, @brt_pallet numeric(10,3)
+		, @max_pallet int = 40
+		, @no_penerimaan_kandang varchar(15)
+        , @check_kandang_movement INT
+					
+	declare @pallet table(no_pallet varchar(15))
+
+	select @kode_farm = ks1.KODE_FARM, @tipe_retur = case when ks1.KODE_FARM = ks2.KODE_FARM then 'kandang' else 'gudang' end 
+		, @noreg_asal = rk.NO_REG, @noreg_tujuan = rk.KETERANGAN1, @flock_tujuan = ks1.FLOK_BDY, @kode_siklus = mp.PERIODE_SIKLUS
+	from RETUR_KANDANG rk
+	inner join KANDANG_SIKLUS ks1 on rk.NO_REG = ks1.NO_REG
+	left join KANDANG_SIKLUS ks2 on rk.KETERANGAN1 = ks2.NO_REG
+	inner join M_PERIODE mp on ks1.KODE_SIKLUS = mp.KODE_SIKLUS
+	where NO_RETUR = @param_no_retur
+	
+	/* kavling */
+	
+	declare @minimum_pallet varchar(50) = (
+		select min(no_pallet) from MOVEMENT_D md
+                       join KANDANG_SIKLUS ks
+                        on ks.NO_REG = md.keterangan2 and ks.status_siklus = 'O' and ks.KODE_FARM = md.KODE_FARM
+                       where md.keterangan1 = 'PUT' and md.KODE_FARM = @kode_farm
+	)
+
+	select ROW_NUMBER() OVER (Order by mk.layout_posisi ASC
+				, mk.no_posisi ASC
+				, mk.no_baris ASC
+				, mk.no_kolom ASC ) AS no, m.*, mp.KODE_PALLET, mp.BRT_BERSIH berat_pallet into #kavling
+	from (
+		select m.no_kavling, sum(m.JML_ON_HAND) jml_on_hand, m.KODE_FARM
+		from MOVEMENT m
+		where m.NO_PALLET like 'SYS%' and m.KODE_FARM = @kode_farm AND m.NO_PALLET >= @minimum_pallet
+		group by m.NO_KAVLING, m.KODE_FARM
+		having sum(m.JML_AVAILABLE) = 0 and sum(m.JML_ON_HAND) = 0
+	) m
+	join M_KAVLING mk on m.KODE_FARM = mk.KODE_FARM and m.NO_KAVLING = mk.NO_KAVLING and mk.STATUS_KAVLING = 'A'
+	join M_PALLET mp on m.KODE_FARM = mp.KODE_FARM and m.NO_KAVLING = mp.NO_KAVLING and mp.STATUS_PALLET = 'N' and mp.BRT_BERSIH is not null
+	order by mk.layout_posisi ASC
+				, mk.no_posisi ASC
+				, mk.no_baris ASC
+				, mk.no_kolom ASC   
+	
+	set @sys_pallet = (select top 1 no_pallet from movement_d where kode_farm = @kode_farm and no_pallet like 'SYS%' order by no_pallet desc)
+	set @rtn_pallet = (select top 1 no_pallet from movement_d where kode_farm = @kode_farm and no_pallet like 'RTN%' order by no_pallet desc)
+	
+	set @no_penerimaan_kandang = (select (right(replicate('0', 8) + convert(varchar, (CONVERT(int,max(no_penerimaan_kandang))+1)), 8)) 
+									from PENERIMAAN_KANDANG 
+									where no_reg = @noreg_tujuan)
+	
+	declare @table table (id int)
+	DECLARE @detail_sinkronisasi AS TABLE (
+		sinkronisasi    INT,
+		aksi            CHAR (1),
+		tabel           VARCHAR (200),
+		kunci           VARCHAR (max),
+		status_identity CHAR (1) NULL
+	)
+	insert into sinkronisasi (transaksi, asal, tujuan, aksi, tgl_buat) output Inserted.id into @table
+	values ('retur_kandang', @kode_farm, @sinkron_tujuan, 'PUSH', getdate())
+	set @sinkron_id = (SELECT id from @table)
+	
+	/* Kurangi stok asal & Create Order */
+	declare @no_order varchar(15)
+	
+	if (@tipe_retur = 'kandang' and @param_lvl_user = 'KF') or (@tipe_retur = 'gudang' and @param_lvl_user = 'AG')
+	begin
+		if (@tipe_retur = 'kandang' and @param_lvl_user = 'KF') 
+		begin
+			set @no_order = (select @kode_siklus+'/'+right(replicate('0', 4)+convert(varchar,(CONVERT(int,replace(replace(max(no_order), @kode_siklus, ''), '/', ''))+1)), 4) 
+				from ORDER_KANDANG 
+				where no_order like @kode_siklus+'%')
+			
+			
+			insert into order_kandang (kode_farm, no_order, no_referensi, status_order, user_buat, user_ubah) 
+			values (@kode_farm, @no_order, @param_no_retur, 'C', @param_user_buat, @param_user_buat)
+
+			insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+			values(@sinkron_id, 'I', 'order_kandang', '"kode_farm":"'+@kode_farm+'","no_order":"'+@no_order+'"',0)
+			
+			insert into order_kandang_d(NO_ORDER, NO_REG, KODE_FARM, STATUS_ORDER, TGL_BUAT, TGL_UBAH, USER_BUAT, USER_UBAH)
+			values(@no_order, @noreg_tujuan, @kode_farm, 'C', getdate(), getdate(), @param_user_buat, @param_user_buat)
+
+			insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+			values(@sinkron_id, 'I', 'order_kandang_d', '"kode_farm":"'+@kode_farm+'","no_order":"'+@no_order+'","no_reg":"'+@noreg_tujuan+'"',0)
+		end
+		
+		
+		declare @kode_barang varchar(15)
+			, @jml_retur int
+			, @jml_retur_temp int
+			, @brt_retur numeric(10,3)
+			, @jml_sisa_retur int
+			, @brt_sisa_retur numeric(10,3)
+			, @jml_awal int
+			, @brt_awal numeric(10,3)
+			, @jml_akhir int
+			, @brt_akhir numeric(10,3)
+			
+		declare cur cursor for
+			select KODE_BARANG, JML_RETUR, BRT_RETUR from RETUR_KANDANG_D
+			where NO_RETUR = @param_no_retur
+			
+		open cur
+		fetch next from cur into @kode_barang,@jml_retur,@brt_retur
+		while @@fetch_status = 0 begin
+			
+			select @jml_awal = jml_akhir, @brt_awal = berat_akhir 
+			from KANDANG_MOVEMENT_D 
+			where no_reg = @noreg_asal 
+				and kode_barang = @kode_barang 
+				and TGL_BUAT in (
+					select max(tgl_buat) 
+					from kandang_movement_d 
+					where no_reg = @noreg_asal 
+						and kode_barang = @kode_barang
+				)
+				
+			set @jml_akhir = @jml_awal - @jml_retur
+			set @brt_akhir = @brt_awal - @brt_retur			            
+
+			insert into kandang_movement_d (
+				no_reg, kode_barang, tgl_transaksi, jenis_kelamin, 
+				jml_awal, jml_order, jml_akhir, berat_awal, berat_order, berat_akhir,
+				keterangan1, keterangan2, tgl_buat, user_buat
+			)values(
+				@noreg_asal, @kode_barang, getdate(), 'C',
+				@jml_awal, @jml_retur * (-1), @jml_akhir, @brt_awal, @brt_retur * (-1), @brt_akhir,
+				'RETUR SISA PAKAN', @param_no_retur, getdate(), @param_user_buat
+			)
+			
+			insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+			values(@sinkron_id, 'I', 'kandang_movement_d', 
+			'"no_reg":"'+@noreg_asal+'","kode_barang":"'+@kode_barang+'","tgl_transaksi":"'+convert(varchar(10), getdate(), 120)+'","keterangan1":"RETUR SISA PAKAN","keterangan2":"'+@param_no_retur+'"',0)
+			
+			update kandang_movement
+			set jml_stok = @jml_akhir, berat_stok = @brt_akhir
+			where kode_barang = @kode_barang and no_reg = @noreg_asal
+			
+			insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+			values(@sinkron_id, 'U', 'kandang_movement', '"no_reg":"'+@noreg_asal+'","kode_barang":"'+@kode_barang+'"',0)
+			
+			/* Insert putaway */
+			set @jml_sisa_retur = @jml_retur
+			set @jml_retur_temp = @jml_retur
+			set @brt_sisa_retur = @brt_retur / @jml_retur
+			
+			while @jml_sisa_retur > 0
+			begin
+			
+				if @rtn_pallet is not null 
+				begin
+					set @rtn_pallet = ('RTN' + right(replicate('0', 8) + convert(varchar, (CONVERT(int,substring(@rtn_pallet,4,8))+1)), 8))
+				end
+				else
+					set @rtn_pallet = 'RTN00000001'
+
+				if @sys_pallet is not null 
+				begin
+					set @sys_pallet = ('SYS' + right(replicate('0', 8) + convert(varchar, (CONVERT(int,substring(@sys_pallet,4,8))+1)), 8))
+				end
+				else
+					set @sys_pallet = 'SYS00000001'  
+					
+				select top 1 @kode_pallet = kode_pallet, @no_kavling = no_kavling, @brt_pallet = berat_pallet
+				from #kavling
+				order by no
+				
+				if @jml_sisa_retur <= 40
+				begin
+					set @jml_retur_temp = @jml_sisa_retur
+					set @jml_sisa_retur = 0
+				end
+				else
+				begin
+					set @jml_retur_temp = 40
+					set @jml_sisa_retur = @jml_sisa_retur - 40
+				end
+				
+				insert into @pallet values(@sys_pallet)
+				
+				insert into movement (
+					kode_farm, no_kavling, no_pallet, kode_barang, jenis_kelamin,
+					jml_on_hand, jml_available, jml_putaway, berat_putaway,	put_name,
+					status_stok, keterangan1, keterangan2, kode_pallet, berat_pallet
+				)values(
+					@kode_farm, @no_kavling, @rtn_pallet, @kode_barang, 'C',
+					@jml_retur_temp, @jml_retur_temp, @jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, @param_user_buat,
+					'RTN', @flock_tujuan, 'RETUR', @kode_pallet, @brt_pallet
+				)
+				
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'movement', '"kode_farm":"'+@kode_farm+'","no_kavling":"'+@no_kavling+'","no_pallet":"'+@rtn_pallet+'","kode_barang":"'+@kode_barang+'"',0)
+					
+				insert into movement (
+					kode_farm, no_kavling, no_pallet, kode_barang, jenis_kelamin,
+					jml_on_hand, jml_available, jml_putaway, berat_putaway,	put_name, put_date, 
+					jml_pick, berat_pick, picked_name, picked_date,
+					status_stok, keterangan1, keterangan2, kode_pallet, berat_pallet
+				)values(
+					@kode_farm, @no_kavling, @sys_pallet, @kode_barang, 'C',
+					@jml_retur_temp, @jml_retur_temp, @jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, @param_user_buat, getdate(),
+					@jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, @param_user_buat, DATEADD(SECOND,1,getdate())
+					,'NM', @flock_tujuan, 'BY SYSTEM', @kode_pallet, @brt_pallet
+				)
+				
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'movement', '"kode_farm":"'+@kode_farm+'","no_kavling":"'+@no_kavling+'","no_pallet":"'+@sys_pallet+'","kode_barang":"'+@kode_barang+'"',0)
+					
+				insert into movement_d (
+					kode_farm, no_kavling, no_pallet, kode_barang, jenis_kelamin, no_referensi, 
+					jml_on_hand, jml_available, jml_putaway, berat_putaway, put_name,
+					status_stok, keterangan1, keterangan2, kode_pallet
+				)values(
+					@kode_farm, @no_kavling, @rtn_pallet, @kode_barang, 'C', @noreg_asal, 
+					@jml_retur_temp, @jml_retur_temp, @jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, @param_user_buat,
+					'RTN', 'RETUR', @param_no_retur, @kode_pallet
+				)
+
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'movement_d', 
+					'"kode_farm":"'+@kode_farm+'","no_kavling":"'+@no_kavling+'","no_pallet":"'+@rtn_pallet+'","kode_barang":"'+@kode_barang+'","no_referensi":"'+@noreg_asal+'","keterangan2":"'+@param_no_retur+'"',0)
+					
+				insert into movement_d (
+					kode_farm, no_kavling, no_pallet, kode_barang, jenis_kelamin, no_referensi, 
+					jml_on_hand, jml_available, jml_putaway, berat_putaway, put_date, put_name,
+					status_stok, keterangan1, keterangan2, kode_pallet
+				)values(
+					@kode_farm, @no_kavling, @sys_pallet, @kode_barang, 'C', @rtn_pallet, 
+					@jml_retur_temp, @jml_retur_temp, @jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, getdate(), @param_user_buat,
+					'NM', 'PUT', @noreg_tujuan, @kode_pallet
+				)
+				
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'movement_d', 
+					'"kode_farm":"'+@kode_farm+'","no_kavling":"'+@no_kavling+'","no_pallet":"'+@sys_pallet+'","kode_barang":"'+@kode_barang+'","no_referensi":"'+@rtn_pallet+'","keterangan2":"'+@noreg_tujuan+'"',0)
+				
+				if (@tipe_retur = 'kandang' and @param_lvl_user = 'KF') 
+				begin
+					insert into pick_d(
+						NO_REG, NO_ORDER, KODE_BARANG, KODE_FARM, NO_KAVLING, NO_PALLET,
+						JML_ORDER, JML_KONVERSI_TIMBANG, JML_ORDER_AKTUAL, 
+						BERAT_ORDER, TGL_BUAT, USER_BUAT, BERAT_TIMBANG
+					)values(
+						@noreg_tujuan, @no_order, @kode_barang, @kode_farm, @no_kavling, @sys_pallet,
+						@jml_retur_temp, @jml_retur_temp * @brt_sisa_retur, @jml_retur_temp,
+						@jml_retur_temp * @brt_sisa_retur, getdate(), @param_user_buat, @jml_retur_temp * @brt_sisa_retur + @brt_pallet
+					)
+					
+					insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+					values(@sinkron_id, 'I', 'pick_d', 
+						'"kode_farm":"'+@kode_farm+'","no_kavling":"'+@no_kavling+'","no_pallet":"'+@sys_pallet+'","kode_barang":"'+@kode_barang+'","no_order":"'+@no_order+'","no_reg":"'+@noreg_tujuan+'"',0)
+				end
+				
+				delete from #kavling
+				where kode_pallet = @kode_pallet
+			end
+					
+			if (@tipe_retur = 'kandang' and @param_lvl_user = 'KF') 
+			begin
+				insert into order_kandang_e(
+					TGL_KEBUTUHAN, NO_ORDER, NO_REG, KODE_BARANG, JENIS_KELAMIN, 
+					JML_ORDER, JML_STOK_AKHIR, JML_STOK_GUDANG, JML_ORDER_OUTSTANDING, JML_RETUR_SAK_KOSONG
+				)values(
+					getdate(), @no_order, @noreg_tujuan, @kode_barang, 'C', @jml_retur, 0, 0, 0, 0
+				)
+
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'order_kandang_e', 
+					'"tgl_kebutuhan":"'+convert(varchar(10), getdate(), 120)+'","no_order":"'+@no_order+'","no_reg":"'+@noreg_tujuan+'","kode_barang":"'+@kode_barang+'"',0)
+			end
+			set @jml_awal = @jml_akhir 
+			set @brt_awal = @brt_akhir
+		
+			fetch next from cur into @kode_barang,@jml_retur,@brt_retur
+		end
+		close cur    
+		deallocate cur
+		
+		/* Insert Picking */
+		if (@tipe_retur = 'kandang' and @param_lvl_user = 'KF') 
+		begin
+			select ma.KODE_FARM, ma.NO_KAVLING, ma.NO_PALLET, ma.KODE_BARANG, ma.JENIS_KELAMIN, @no_order NO_REFERENSI
+				, 0 JML_ON_HAND, 0 JML_AVAILABLE, 0 JML_ON_PUTAWAY, 0 BERAT_ON_PUTAWAY
+				, 0 JML_PUTAWAY, 0 BERAT_PUTAWAY, 0 JML_ON_PICK, 0 BERAT_ON_PICK
+				, ma.JML_PUTAWAY JML_PICK, ma.BERAT_PUTAWAY BERAT_PICK, NULL PUT_DATE, NULL PUT_NAME
+				, DATEADD(SECOND,1,ma.PUT_DATE) PICKED_DATE, ma.PUT_NAME PICKED_NAME, ma.STATUS_STOK, 'PICK' KETERANGAN1
+				, @noreg_tujuan KETERANGAN2, ma.KODE_PALLET, ma.BERAT_AVAILABLE, ma.BERAT_PALLET
+				into #movd
+			from movement_D ma
+			join movement_D mb on mb.NO_PALLET = ma.NO_REFERENSI and mb.KETERANGAN2 = @param_no_retur
+			
+			insert into @detail_sinkronisasi
+			select @sinkron_id, 'I', 'movement_d',
+				'"kode_farm":"'+kode_farm+'","no_kavling":"'+no_kavling+'","no_pallet":"'+no_pallet+'","kode_barang":"'+kode_barang+'","no_referensi":"'+no_referensi+'","keterangan2":"'+keterangan2+'"', 0
+			from #movd
+			
+			insert into movement_D
+			select * from #movd
+			
+            /* jika langsung ke kandang maka update movementnya menjadi 0 */
+            update movement set jml_on_hand = 0, jml_available = 0 where kode_farm = @kode_farm and no_pallet in (
+                select distinct NO_PALLET from #movd
+            )
+			drop table #movd
+				
+			insert into penerimaan_kandang(
+				NO_REG, NO_PENERIMAAN_KANDANG, TGL_TERIMA, NO_ORDER, TGL_BUAT, USER_BUAT
+			)values(
+				@noreg_tujuan, @no_penerimaan_kandang, getdate(), @no_order, getdate(), @param_user_buat
+			)
+			
+			insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+			values(@sinkron_id, 'I', 'penerimaan_kandang', 
+				'"tgl_terima":"'+convert(varchar(10), getdate(), 120)+'","no_reg":"'+@noreg_tujuan+'","no_penerimaan_kandang":"'+@no_penerimaan_kandang+'","no_order":"'+@no_order+'"',0)
+			
+			select @no_penerimaan_kandang NO_PENERIMAAN_KANDANG, KODE_BARANG, NO_REG, 'C' JENIS_KELAMIN, sum(jml_order) JML_TERIMA, USER_BUAT USER_GUDANG
+			into #penkd
+			from pick_d 
+			where no_reg = @noreg_tujuan and no_order = @no_order
+			group by KODE_BARANG, NO_REG, USER_BUAT
+			
+			insert into penerimaan_kandang_d(NO_PENERIMAAN_KANDANG, KODE_BARANG, NO_REG, JENIS_KELAMIN, JML_TERIMA, USER_GUDANG)
+			select * from #penkd
+				
+			insert into @detail_sinkronisasi
+			select @sinkron_id, 'I', 'penerimaan_kandang_d',
+				'"no_penerimaan_kandang":"'+no_penerimaan_kandang+'","kode_barang":"'+kode_barang+'","no_reg":"'+no_reg+'"', 0
+			from #penkd
+			
+			drop table #penkd
+			
+			/* insert stok ke kandang baru*/	
+				
+			declare @jml_pick int
+				, @brt_pick numeric(10,3)
+				
+			declare cur2 cursor for
+				select kode_barang, sum(jml_pick), sum(berat_pick)
+				from movement_d 
+				where kode_farm = @kode_farm and no_referensi = @no_order
+				group by kode_barang		
+			open cur2
+			fetch next from cur2 into @kode_barang,@jml_pick,@brt_pick
+			while @@fetch_status = 0 begin
+--				select @jml_awal = jml_akhir, @brt_awal = berat_akhir 
+--				from KANDANG_MOVEMENT_D 
+--				where no_reg = @noreg_tujuan 
+--					and kode_barang = @kode_barang 
+--					and TGL_BUAT in (
+--						select max(tgl_buat) 
+--						from kandang_movement_d 
+--						where no_reg = @noreg_tujuan 
+--							and kode_barang = @kode_barang
+--					)
+--                
+                set @check_kandang_movement = (
+                        SELECT count(*) from kandang_movement
+                        where no_reg = @noreg_tujuan 
+                        and kode_barang = @kode_barang
+                    )
+
+                if @check_kandang_movement = 0
+                    begin 
+                        insert into kandang_movement(
+					        no_reg, kode_barang, jenis_kelamin, jml_stok, berat_stok
+                        )values(
+                            @noreg_tujuan, @kode_barang, 'C',0,0                            
+                        )    
+                    end
+
+			select @jml_awal = jml_stok, @brt_awal = berat_stok 
+				from KANDANG_MOVEMENT
+				where no_reg = @noreg_tujuan 
+				and kode_barang = @kode_barang 
+                
+                    
+				insert into kandang_movement_d(
+					no_reg, kode_barang, tgl_transaksi, jenis_kelamin, 
+					jml_awal, jml_order, jml_akhir, berat_awal, berat_order, berat_akhir,
+					keterangan1, keterangan2, tgl_buat, user_buat
+				)values(
+					@noreg_tujuan, @kode_barang, getdate(), 'C',
+					@jml_awal, @jml_pick, @jml_awal+@jml_pick, @brt_awal, @brt_pick, @brt_awal+@brt_pick,
+					'PENERIMAAN KANDANG', @no_penerimaan_kandang, getdate(), @param_user_buat
+				)
+				
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'I', 'kandang_movement_d', 
+					'"tgl_transaksi":"'+convert(varchar(10), getdate(), 120)+'","no_reg":"'+@noreg_tujuan+'","kode_barang":"'+@kode_barang+'","keterangan2":"'+@no_penerimaan_kandang+'","keterangan1":"PENERIMAAN KANDANG"',0)
+			
+				update kandang_movement
+				set jml_stok = @jml_awal+@jml_pick, berat_stok = @brt_awal+@brt_pick
+				where kode_barang = @kode_barang and no_reg = @noreg_tujuan
+				
+				insert into @detail_sinkronisasi(sinkronisasi, aksi, tabel, kunci, status_identity)
+				values(@sinkron_id, 'U', 'kandang_movement', '"no_reg":"'+@noreg_tujuan+'","kode_barang":"'+@kode_barang+'"',0)
+			
+				fetch next from cur2 into @kode_barang,@jml_pick,@brt_pick
+			end
+			close cur2 
+			deallocate cur2
+		end
+	end
+		
+  	UPDATE @detail_sinkronisasi SET kunci = '{'+kunci+'}' WHERE sinkronisasi = @sinkron_id
+  	INSERT INTO detail_sinkronisasi 
+  	SELECT * FROM @detail_sinkronisasi
+end try
+begin catch
+  select error_number() as ErrorNumber
+    ,error_severity() as ErrorSeverity
+    ,error_state() as ErrorState
+    ,error_procedure() as ErrorProcedure
+    ,error_line() as ErrorLine
+    ,error_message() as ErrorMessage
+	if @@TRANCOUNT > 0
+	begin
+		rollback transaction
+	  
+		close cur
+		deallocate cur
+	end
+end catch
+
+if @@TRANCOUNT > 0
+begin
+
+	 commit TRANSACTION	
+	drop table #kavling	
+end
+
