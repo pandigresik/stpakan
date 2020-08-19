@@ -192,7 +192,7 @@ QUERY;
           $tmp = $this->db->order_by('no_urut','desc')->where(array('no_ppsk'=>$no_ppsk))->get('log_ppsk_new');
           $tmp = $tmp->row(0);
 
-          if(count($tmp) > 0){
+		  if (count((array) $tmp) > 0) {
              $no_urut = $tmp->no_urut;
           }
           else{

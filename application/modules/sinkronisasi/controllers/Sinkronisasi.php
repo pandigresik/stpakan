@@ -135,7 +135,7 @@ SQL;
 						$aksi = $tabel['aksi'];
 						$identity = $tabel['identity'];
 		
-						$data_aksi = $tabel['data']['datum'];
+						$data_aksi = isset($tabel['data']['datum']) ? $tabel['data']['datum'] : $tabel['data']['item'];
 						$where = isset($tabel['_where']) && !empty($tabel['_where']) ? $tabel['_where'] : null;
 
 						try{
