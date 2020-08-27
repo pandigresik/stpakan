@@ -485,6 +485,7 @@ class Permintaan_pakan extends MY_Controller
             }
             $this->result['lockpp'] = $lockpp;
             if ($kirimSMS) {
+                $this->load->model('permintaan_pakan_v2/m_farm_notifikasi','mfn');
                 $this->load->config('stpakan');
                 $smsDO = $this->config->item('smsDO');
                 $namaFarm = $this->config->item('namaFarm');
@@ -495,10 +496,17 @@ class Permintaan_pakan extends MY_Controller
 		KaFarm {$namaFarm[$kodefarm]} Yth, PP kandang {$kandang} untuk tgl kirim {$tgl_kirim} telah di-approve. PP selanjutnya dapat diajukan. 
 SQL;
 
-                $nomerTelpFarm = isset($smsDO[$kodefarm]) ? $smsDO[$kodefarm] : array();
+                $notifikasiFarm = $this->mfn->as_array()->get_by(array('kode_farm' => $kodefarm));                
+                $nomerWA = NULL;
+                if(!empty($notifikasiFarm)){
+                    $nomerTelpFarm = [$notifikasiFarm['nomer_sms']];
+                    $nomerWA = $notifikasiFarm['group_wa'];
+                }else{
+                    $nomerTelpFarm = isset($smsDO[$kodefarm]) ? $smsDO[$kodefarm] : [];
+                }
                 $nomer = $nomerTelpFarm;
                 if (!empty($nomer)) {
-                    Modules::run('client/csms/sendNotifikasi', $pesan, $nomer);
+                    Modules::run('client/csms/sendNotifikasi', $pesan, $nomer, $nomerWA);
                 }
             }
 
@@ -639,10 +647,18 @@ SQL;
 		KaFarm {$namaFarm[$kodefarm]} Yth, PP kandang {$kandang} untuk tgl kirim {$tgl_kirim} telah di-approve.  PP selanjutnya dapat diajukan. 
 SQL;
 
-                $nomerTelpFarm = isset($smsDO[$kodefarm]) ? $smsDO[$kodefarm] : array();
+                $this->load->model('permintaan_pakan_v2/m_farm_notifikasi','mfn');
+                $notifikasiFarm = $this->mfn->as_array()->get_by(array('kode_farm' => $kodefarm));                
+                $nomerWA = NULL;
+                if(!empty($notifikasiFarm)){
+                    $nomerTelpFarm = [$notifikasiFarm['nomer_sms']];
+                    $nomerWA = $notifikasiFarm['group_wa'];
+                }else{
+                    $nomerTelpFarm = isset($smsDO[$kodefarm]) ? $smsDO[$kodefarm] : [];
+                }
                 $nomer = $nomerTelpFarm;
                 if (!empty($nomer)) {
-                    Modules::run('client/csms/sendNotifikasi', $pesan, $nomer);
+                    Modules::run('client/csms/sendNotifikasi', $pesan, $nomer, $nomerWA);
                 }
             }
             array_push($approved_pp, $no_pp);

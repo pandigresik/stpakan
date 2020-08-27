@@ -213,13 +213,13 @@ class Laporan_bapd extends MY_Controller{
 					);
 					$html = $this->load->view('report/laporan_bapd/bapd_pdf', $dataPDF, true );
 					if($excNum == $dataLen && $excNum%2 == 1){
-						$pdf->AddPage($html);
+						$pdf->AddPage();
 						$pdf->writeHTML ( $html, true, false, true, false, '' );
 					}elseif($excNum%2 == 1){
 						$pdf->AddPage();
 						$pdf->writeHTML ( $html, true, false, true, false, '' );
 					}else{
-						$pdf->Line($html);
+						//$pdf->Line($html);
 						$pdf->writeHTML ( $html, true, false, true, false, '' );
 					}
 				//}

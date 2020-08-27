@@ -23,10 +23,11 @@ class Csms extends MX_Controller{
 
 	}
 
-	public function sendNotifikasi($pesan,$nomer){										
+	public function sendNotifikasi($pesan,$nomer, $wa = NULL){										
 		$dataKirim = array(
 			'nomer' => $nomer,
-			'pesan' => $pesan
+			'pesan' => $pesan,
+			'wa' => $wa
 		);		
 		$result = $this->rest->get('opSms/Stpakan/kirimNotifikasi',$dataKirim);				
 		return $result;
