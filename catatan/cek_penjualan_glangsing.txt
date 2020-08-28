@@ -1,0 +1,9 @@
+SELECT x.jml_stok ,x.kode_barang
+			,(SELECT VALUE FROM SYS_CONFIG_GENERAL WHERE KODE_FARM = 'BW' AND KODE_CONFIG = '_kontrol_stok' AND STATUS = 1) kontrol
+		FROM (
+		SELECT CASE WHEN kode_barang = 'GB' THEN jml_stok - coalesce((SELECT sum(jml) FROM ba_pemusnahan WHERE no_ppsk LIKE 'PPSK/BW/2020-3%'),0)
+			else jml_stok END jml_stok,
+	 kode_barang
+		FROM glangsing_movement
+		where kode_siklus = (SELECT kode_siklus FROM m_periode WHERE kode_farm = 'BW' AND PERIODE_SIKLUS = '2020-3') and kode_barang != 'GBP'
+		)x WHERE jml_stok > 0
